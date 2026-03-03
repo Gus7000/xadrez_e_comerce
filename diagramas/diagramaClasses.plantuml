@@ -1,0 +1,83 @@
+@startuml DiagramaClasses
+
+abstract class Produto {
+    -id: int
+    -nome: String
+    -preco: double
+    -dataCadastro: Date
+    -descricao: String
+}
+
+enum CorPeca {
+    PRETO
+    BRANCO
+}
+
+class Material {
+    -id: int
+    -tipo: String
+}
+
+class Peca {
+    -cor: CorPeca
+    -tipo: TipoPeca
+}
+class kitPeca {
+    -pecas[]: Peca
+}
+enum TipoPeca {
+    REI
+    RAINHA
+    TORRE
+    BISPO
+    CAVALO
+    PEAO
+}
+
+class Tabuleiro {
+    -tamanho: String
+    -cor: String
+}
+
+class Relogio {
+    -modelo: String
+    -tipo: TipoRelogio
+}
+enum TipoRelogio {
+    ANALOGICO
+    DIGITAL
+}
+class JogoCompleto {
+    -descricao: String
+}
+
+class Fabricante {
+    -id: int
+    -nome: String
+    -cnpj: String
+    -telefone: String
+}
+
+'---------------- HERANÇA ----------------
+
+Produto <|-- kitPeca
+Produto <|-- Tabuleiro
+Produto <|-- Relogio
+Produto <|-- JogoCompleto
+
+'---------------- COMPOSIÇÃO ----------------
+
+kitPeca "1" *-- "32..*" Peca
+
+'---------------- AGREGAÇÃO ----------------
+JogoCompleto "1" o-- "1" Tabuleiro
+JogoCompleto "1" o-- "1" kitPeca
+
+Peca "*" o-- "1" Material
+Tabuleiro "*" o-- "1" Material
+
+'---------------- ASSOCIAÇÃO ----------------
+
+Produto "*" --> "1" Fabricante
+
+@enduml

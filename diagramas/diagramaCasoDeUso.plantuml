@@ -1,0 +1,35 @@
+@startuml DiagramaCasoDeUso
+left to right direction
+
+actor Administrador
+
+rectangle SistemaAdministrativoXadrez {
+
+    usecase "Gerenciar Peças" as UC1
+    usecase "Gerenciar Kits de Peças" as UC2
+    usecase "Gerenciar Tabuleiros" as UC3
+    usecase "Gerenciar Relógios" as UC4
+    usecase "Gerenciar Jogos Completos" as UC5
+    usecase "Gerenciar Materiais" as UC6
+    usecase "Gerenciar Fabricantes" as UC7
+
+    usecase "Montar Kit de Peças" as UC8
+    usecase "Montar Jogo Completo" as UC9
+}
+
+Administrador --> UC1
+Administrador --> UC2
+Administrador --> UC3
+Administrador --> UC4
+Administrador --> UC5
+Administrador --> UC6
+Administrador --> UC7
+Administrador --> UC8
+Administrador --> UC9
+
+' Relações
+
+UC2 .> UC8 : <<include>>
+UC5 .> UC9 : <<include>>
+
+@enduml

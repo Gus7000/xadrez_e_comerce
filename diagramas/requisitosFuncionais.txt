@@ -1,0 +1,150 @@
+📌 REQUISITOS FUNCIONAIS
+Sistema Administrativo de Xadrez
+🔷 RF01 – Gerenciar Peças (CRUD)
+
+O sistema deve permitir:
+
+RF01.1 – Cadastrar peça informando:
+
+-nome
+
+-preço
+
+-dataCadastro
+
+-cor (PRETO ou BRANCO)
+
+-tipo (REI, RAINHA, TORRE, BISPO, CAVALO, PEAO)
+
+-material
+
+-fabricante
+
+RF01.2 – Editar peça.
+
+RF01.3 – Consultar peças.
+
+RF01.4 – Remover peça.
+
+🔷 RF02 – Gerenciar Kit de Peças (CRUD)
+
+O sistema deve permitir:
+
+RF02.1 – Cadastrar kit de peças.
+
+RF02.2 – Editar kit.
+
+RF02.3 – Consultar kits.
+
+RF02.4 – Remover kit.
+
+🔷 RF03 – Montar Kit de Peças
+
+RF03.1 – O sistema deve permitir associar 32 ou mais peças a um kit.
+
+RF03.2 – O sistema deve validar que um kit possua no mínimo 32 peças.
+
+RF03.3 – O sistema deve permitir alterar as peças associadas ao kit.
+
+🔷 RF04 – Gerenciar Tabuleiros (CRUD)
+
+O sistema deve permitir:
+
+RF04.1 – Cadastrar tabuleiro informando:
+
+-nome
+
+-preço
+
+-dataCadastro
+
+-tamanho
+
+-cor
+
+-material
+
+-fabricante
+
+RF04.2 – Editar tabuleiro.
+
+RF04.3 – Consultar tabuleiros.
+
+RF04.4 – Remover tabuleiro.
+
+🔷 RF05 – Gerenciar Relógios (CRUD)
+
+O sistema deve permitir:
+
+RF05.1 – Cadastrar relógio informando:
+
+-nome
+
+-preço
+
+-dataCadastro
+
+-modelo
+
+-tipo (ANALOGICO ou DIGITAL)
+
+-fabricante
+
+RF05.2 – Editar relógio.
+
+RF05.3 – Consultar relógios.
+
+RF05.4 – Remover relógio.
+
+🔷 RF06 – Gerenciar Jogos Completos (CRUD)
+
+O sistema deve permitir:
+
+RF06.1 – Cadastrar jogo completo informando:
+
+-nome
+
+-preço
+
+-dataCadastro
+
+-descrição
+
+-fabricante
+
+RF06.2 – Editar jogo completo.
+
+RF06.3 – Consultar jogos completos.
+
+RF06.4 – Remover jogo completo.
+
+🔷 RF07 – Montar Jogo Completo
+
+RF07.1 – O sistema deve permitir associar:
+
+1 tabuleiro
+
+1 kit de peças
+a um jogo completo.
+
+RF07.2 – O sistema deve impedir a existência de jogo completo sem kit ou sem tabuleiro.
+
+🔷 RF08 – Gerenciar Materiais (CRUD)
+
+RF08.1 – Cadastrar material.
+
+RF08.2 – Editar material.
+
+RF08.3 – Consultar material.
+
+RF08.4 – Remover material.
+
+🔷 RF09 – Gerenciar Fabricantes (CRUD)
+
+RF09.1 – Cadastrar fabricante.
+
+RF09.2 – Editar fabricante.
+
+RF09.3 – Consultar fabricante.
+
+RF09.4 – Remover fabricante.
