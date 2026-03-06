@@ -9,12 +9,12 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class EstadoRepository implements PanacheRepository<Estado> {
 
     public PanacheQuery<Estado> findByNome(String nome) {
-        return find("SELECT e FROM e WHERE UPPER(e.nome) LIKE UPPER(?1)",
+        return find("SELECT e FROM Estado e WHERE UPPER(e.nome) LIKE UPPER(?1)",
                 "%" + nome + "%");
     }
 
     public PanacheQuery<Estado> findBySigla(String sigla) {
-        return find("SELECT e FROM e WHERE UPPER(e.nome) LIKE UPPER(?1)",
+        return find("SELECT e FROM  Estado e WHERE UPPER(e.nome) = LIKE UPPER(?1)",
                 sigla);
     }
 
