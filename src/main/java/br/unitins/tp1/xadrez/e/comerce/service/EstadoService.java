@@ -2,7 +2,7 @@ package br.unitins.tp1.xadrez.e.comerce.service;
 
 import java.util.List;
 
-import br.unitins.tp1.xadrez.e.comerce.DTO.EstadoDTO;
+
 import br.unitins.tp1.xadrez.e.comerce.model.Estado;
 
 public interface EstadoService {
@@ -14,9 +14,9 @@ public interface EstadoService {
 
     List<Estado> findByNome(String nome);
 
-    Estado create(EstadoDTO dto);
+    Estado create(Estado estado);
 
-    void update(Long id, EstadoDTO dto);
+    void update(Long id, Estado estado);
 
     void delete(Long id);
 }

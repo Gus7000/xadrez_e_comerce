@@ -2,7 +2,7 @@ package br.unitins.tp1.xadrez.e.comerce.service;
 
 import java.util.List;
 
-import br.unitins.tp1.xadrez.e.comerce.DTO.EstadoDTO;
+
 import br.unitins.tp1.xadrez.e.comerce.model.Estado;
 import br.unitins.tp1.xadrez.e.comerce.repository.EstadoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -38,20 +38,19 @@ public class EstadoServiceImpl implements EstadoService {
 
     @Override
     @Transactional
-    public Estado create(EstadoDTO dto) {
+    public Estado create(Estado estado) {
         Estado estadoCreate = new Estado();
-        estadoCreate.setNome(dto.nome());
-        estadoCreate.setSigla(dto.sigla());
-        repository.persist(estadoCreate);
+        repository.persist(estado);
         return estadoCreate;
     }
 
     @Override
     @Transactional
-    public void update(Long id, EstadoDTO dto) {
-        Estado estadoUpdate = findById(id);
-        estadoUpdate.setNome(dto.nome());
-        estadoUpdate.setSigla(dto.sigla());
+    public void update(Long id, Estado obj) {
+        Estado e = findById(id);
+       e.setNome(obj.getNome());
+       e.setSigla(obj.getSigla());
+       e.setRegiao(obj.getRegiao());
     }
 
     @Override

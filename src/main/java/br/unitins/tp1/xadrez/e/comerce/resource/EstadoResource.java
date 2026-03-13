@@ -1,8 +1,11 @@
 package br.unitins.tp1.xadrez.e.comerce.resource;
 
+
 import java.util.List;
 
-import br.unitins.tp1.xadrez.e.comerce.DTO.EstadoDTO;
+import br.unitins.tp1.xadrez.e.comerce.DTO.EstadoRequestDTO;
+import br.unitins.tp1.xadrez.e.comerce.DTO.EstadoResponseDTO;
+import br.unitins.tp1.xadrez.e.comerce.mapper.EstadoMapper;
 import br.unitins.tp1.xadrez.e.comerce.model.Estado;
 
 import br.unitins.tp1.xadrez.e.comerce.service.EstadoServiceImpl;
@@ -27,32 +30,43 @@ public class EstadoResource {
     EstadoServiceImpl service;
 
     @GET
-    public List<Estado> buscarTodos() {
-        return service.findAll();
+    public List<EstadoResponseDTO> buscarTodos() {
+        /*List<EstadoResponseDTO> lista = new ArrayList<EstadoResponseDTO>();
+        for (Estado estado : service.findAll()){
+            lista.add(EstadoMapper.toResponseDTO(estado));
+        }
+        return lista;*/
+
+        return service.findAll()
+        .stream()
+        .map(e-> EstadoMapper.toResponseDTO(e)).toList();
     }
 
     @POST
     @Transactional
-    public Estado incluir(EstadoDTO estado) {
-        return service.create(estado);
-    }
-
-    @GET
-    @Path("/{id}")
-    public Estado encontrarPorId(@PathParam("id") Long id) {
-        return service.findById(id);
+    public EstadoResponseDTO incluir(EstadoRequestDTO dto) {
+        Estado estado =service.create(EstadoMapper.toEntity(dto));
+        return EstadoMapper.toResponseDTO(estado);
     }
 
     @GET
     @Path("/find/{nome}")
-    public List<Estado> encontrarPorNome(@PathParam("nome") String nome) {
-        return service.findByNome(nome);
+    public List<EstadoResponseDTO> buscarPeloNome(@PathParam("nome") String nome) {
+        return service.findByNome(nome)
+        .stream()
+        .map(e-> EstadoMapper.toResponseDTO(e)).toList();
+    }
+
+    @GET
+    @Path("/{id}")
+    public EstadoResponseDTO buscarPeloId(@PathParam("nome") Long id) {
+        return EstadoMapper.toResponseDTO(service.findById(id));
     }
 
     @PUT
     @Path("/{id}")
-    public void atualizar(@PathParam("id") Long id, EstadoDTO dto) {
-        service.update(id, dto);
+    public void atualizar(@PathParam("id") Long id, EstadoRequestDTO dto) {
+        service.update(id, EstadoMapper.toEntity(dto));
     }
 
     @DELETE
