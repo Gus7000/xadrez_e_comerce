@@ -5,7 +5,7 @@
 -- insert into myentity (id, field) values(3, 'field-3');
 -- alter sequence myentity_seq restart with 4;
 
-insert into estado (sigla, nome, codigo_regiao) values('TO', 'Tocantins',1);
-insert into estado (sigla, nome, codigo_regiao) values('GO', 'Goiás',2);
-insert into estado (sigla, nome, codigo_regiao) values('SP', 'São Paulo',3);
-insert into estado (sigla, nome, codigo_regiao) values('RJ', 'Rio de Janeiro',4);
+insert into relogio (modelo,tipo) values('R2D2', 1);
+insert into relogio (modelo,tipo) values('R2D3', 1);
+insert into relogio (modelo,tipo) values('R2D4', 0);
+insert into relogio (modelo,tipo) values('R2D5', 0);
