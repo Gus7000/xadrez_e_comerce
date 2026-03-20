@@ -2,6 +2,7 @@
 
 Projeto Criado na Aula da Faculdade
 
+Agora o main está sendo usado pro projeto e a branch aula é os codigo feitos em aula para apoio
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
