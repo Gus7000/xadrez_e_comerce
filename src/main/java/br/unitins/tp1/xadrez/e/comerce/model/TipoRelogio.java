@@ -16,17 +16,17 @@ public enum TipoRelogio {
         this.NOME = nome;
     }
 
-    public Long getID() {
+    public Long getId() {
         return ID;
     }
 
-    public String getNOME() {
+    public String getNome() {
         return NOME;
     }
     
     public static TipoRelogio valueOf(Long id){
         for (TipoRelogio tipo : TipoRelogio.values()){
-            if(tipo.getID().equals(id))
+            if(tipo.getId().equals(id))
                 return tipo;
         }
         return null;

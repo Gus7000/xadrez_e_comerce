@@ -1,15 +1,10 @@
 package br.unitins.tp1.xadrez.e.comerce.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
 @Entity
-public class Relogio {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Relogio extends DefaultEntity {
+    
     private String modelo;
     private TipoRelogio tipo;
 
@@ -26,8 +21,6 @@ public class Relogio {
     public void setTipo(TipoRelogio tipo) {
         this.tipo = tipo;
     }
-    public Long getId() {
-        return id;
-    }
+   
     
 }
