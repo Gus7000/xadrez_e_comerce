@@ -69,6 +69,11 @@
             <artifactId>rest-assured</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- Source: https://mvnrepository.com/artifact/io.quarkus/quarkus-hibernate-validator -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-hibernate-validator</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
