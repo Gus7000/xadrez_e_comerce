@@ -18,6 +18,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 @Path("/material")
 @Produces(MediaType.APPLICATION_JSON)
@@ -28,43 +29,49 @@ public class MaterialResource {
     MaterialServiceImpl service;
 
     @GET
-    public List<MaterialResponseDTO> findAll() {
-        return service.findAll().stream().map(MaterialMapper::toResponseDTO).toList();
+    public Response findAll() {
+        List<MaterialResponseDTO> lista = service.findAll().stream().map(MaterialMapper::toResponseDTO).toList();
+        return Response.ok(lista).build();
     }
 
     @GET
     @Path("/{id}")
-    public MaterialResponseDTO findById(@PathParam("id") Long id) {
+    public Response findById(@PathParam("id") Long id) {
         Material material = service.findById(id);
-        return MaterialMapper.toResponseDTO(material);
+        return Response.ok(MaterialMapper.toResponseDTO(material)).build();
     }
 
     @GET
     @Path("/find/tipo/{tipo}")
-    public List<MaterialResponseDTO> findByTipo(@PathParam("tipo") String tipo) {
-        return service.findByTipo(tipo).stream().map(MaterialMapper::toResponseDTO).toList();
+    public Response findByTipo(@PathParam("tipo") String tipo) {
+        List<MaterialResponseDTO> lista = service.findByTipo(tipo).stream().map(MaterialMapper::toResponseDTO).toList();
+        return Response.ok(lista).build();
     }
 
     @POST
     @Transactional
-    public MaterialResponseDTO create(MaterialRequestDTO dto) {
+    public Response create(MaterialRequestDTO dto) {
         Material material = MaterialMapper.toEntity(dto);
         Material created = service.create(material);
-        return MaterialMapper.toResponseDTO(created);
+        return Response.status(201)
+                .entity(MaterialMapper.toResponseDTO(created))
+                .build();
     }
 
     @PUT
     @Path("/{id}")
     @Transactional
-    public void update(@PathParam("id") Long id, MaterialRequestDTO dto) {
+    public Response update(@PathParam("id") Long id, MaterialRequestDTO dto) {
         Material material = MaterialMapper.toEntity(dto);
         service.update(id, material);
+        return Response.noContent().build();
     }
 
     @DELETE
     @Path("/{id}")
     @Transactional
-    public void delete(@PathParam("id") Long id) {
+    public Response delete(@PathParam("id") Long id) {
         service.delete(id);
+        return Response.noContent().build();
     }
 }

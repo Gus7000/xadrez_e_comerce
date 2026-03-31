@@ -18,6 +18,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 @Path("/fabricante")
 @Produces(MediaType.APPLICATION_JSON)
@@ -28,50 +29,54 @@ public class FabricanteResource {
     FabricanteServiceImpl service;
 
     @GET
-    public List<FabricanteResponseDTO> findAll() {
-        return service.findAll().stream().map(FabricanteMapper::toResponseDTO).toList();
+    public Response findAll() {
+        List<FabricanteResponseDTO> lista = service.findAll().stream().map(FabricanteMapper::toResponseDTO).toList();
+        return Response.ok(lista).build();
     }
 
     @GET
     @Path("/{id}")
-    public FabricanteResponseDTO findById(@PathParam("id") Long id) {
+    public Response findById(@PathParam("id") Long id) {
         Fabricante fabricante = service.findById(id);
-        return FabricanteMapper.toResponseDTO(fabricante);
+        return Response.ok(FabricanteMapper.toResponseDTO(fabricante)).build();
     }
 
     @GET
     @Path("/find/nome/{nome}")
-    public List<FabricanteResponseDTO> findByNome(@PathParam("nome") String nome) {
-        return service.findByNome(nome).stream().map(FabricanteMapper::toResponseDTO).toList();
+    public Response findByNome(@PathParam("nome") String nome) {
+        List<FabricanteResponseDTO> lista =service.findByNome(nome).stream().map(FabricanteMapper::toResponseDTO).toList();
+        return Response.ok(lista).build();
     }
 
     @GET
     @Path("/find/cnpj/{cnpj}")
-    public FabricanteResponseDTO findByCnpj(@PathParam("cnpj") String cnpj) {
+    public Response findByCnpj(@PathParam("cnpj") String cnpj) {
         Fabricante fabricante = service.findByCnpj(cnpj);
-        return FabricanteMapper.toResponseDTO(fabricante);
+        return Response.ok(FabricanteMapper.toResponseDTO(fabricante)).build();
     }
 
     @POST
     @Transactional
-    public FabricanteResponseDTO create(FabricanteRequestDTO dto) {
+    public Response create(FabricanteRequestDTO dto) {
         Fabricante fabricante = FabricanteMapper.toEntity(dto);
         Fabricante created = service.create(fabricante);
-        return FabricanteMapper.toResponseDTO(created);
+        return Response.status(201).entity(FabricanteMapper.toResponseDTO(created)).build();
     }
 
     @PUT
     @Path("/{id}")
     @Transactional
-    public void update(@PathParam("id") Long id, FabricanteRequestDTO dto) {
+    public Response update(@PathParam("id") Long id, FabricanteRequestDTO dto) {
         Fabricante fabricante = FabricanteMapper.toEntity(dto);
         service.update(id, fabricante);
+        return Response.noContent().build();
     }
 
     @DELETE
     @Path("/{id}")
     @Transactional
-    public void delete(@PathParam("id") Long id) {
+    public Response delete(@PathParam("id") Long id) {
         service.delete(id);
+        return Response.noContent().build();
     }
 }

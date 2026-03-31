@@ -18,52 +18,82 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 @Path("/relogio")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class RelogioResource {
+
     @Inject
     RelogioServiceImpl service;
 
     @GET
-    public List<RelogioResponseDTO> buscarTodos(){
-        return service.findAll()
-        .stream()
-        .map(r -> RelogioMapper.toResponseDTO(r)).toList();
+    public Response buscarTodos() {
+        List<RelogioResponseDTO> lista = service.findAll()
+                .stream()
+                .map(RelogioMapper::toResponseDTO)
+                .toList();
+
+        return Response.ok(lista).build();
     }
 
     @POST
     @Transactional
-    public RelogioResponseDTO incluir(RelogioRequestDTO dto){
+    public Response incluir(RelogioRequestDTO dto) {
         Relogio relogio = service.create(RelogioMapper.toEntity(dto));
-        return RelogioMapper.toResponseDTO(relogio);
+
+        return Response.status(201)
+                .entity(RelogioMapper.toResponseDTO(relogio))
+                .build();
     }
 
     @GET
-    @Path("/find/{marca}")
-    public List<RelogioResponseDTO> buscarPelaMarca(@PathParam("marca") String marca){
-        return service.findByMarca(marca).stream().map(r -> RelogioMapper.toResponseDTO(r)).toList();
+    @Path("/find/marca/{marca}")
+    public Response buscarPelaMarca(@PathParam("marca") String marca) {
+        List<RelogioResponseDTO> lista = service.findByMarca(marca)
+                .stream()
+                .map(RelogioMapper::toResponseDTO)
+                .toList();
+
+        return Response.ok(lista).build();
     }
+
     @GET
-    @Path("/find/{tipo}")
-    public List<RelogioResponseDTO> buscarPeloTipo(@PathParam("tipo") Long idTipo){
-        return service.findByTipo(idTipo).stream().map(r -> RelogioMapper.toResponseDTO(r)).toList();
+    @Path("/find/tipo/{tipo}")
+    public Response buscarPeloTipo(@PathParam("tipo") Long idTipo) {
+        List<RelogioResponseDTO> lista = service.findByTipo(idTipo)
+                .stream()
+                .map(RelogioMapper::toResponseDTO)
+                .toList();
+
+        return Response.ok(lista).build();
     }
 
     @GET
     @Path("/{id}")
-    public RelogioResponseDTO buscarPeloId(@PathParam("id") Long id){
-        return  RelogioMapper.toResponseDTO(service.findById(id));
+    public Response buscarPeloId(@PathParam("id") Long id) {
+        Relogio relogio = service.findById(id);
+
+        return Response.ok(RelogioMapper.toResponseDTO(relogio)).build();
     }
+
     @PUT
     @Path("/{id}")
-    public void atualizar(@PathParam("id") Long id, RelogioRequestDTO dto){
+    @Transactional
+    public Response atualizar(@PathParam("id") Long id, RelogioRequestDTO dto) {
         service.update(id, RelogioMapper.toEntity(dto));
+
+        return Response.noContent().build();
     }
+
     @DELETE
     @Path("/{id}")
-    public void deletar(@PathParam("id") Long id){
+    @Transactional
+    public Response deletar(@PathParam("id") Long id) {
         service.delete(id);
+
+        return Response.noContent().build();
     }
 }
+
