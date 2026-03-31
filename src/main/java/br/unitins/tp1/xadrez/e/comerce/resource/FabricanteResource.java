@@ -9,6 +9,7 @@ import br.unitins.tp1.xadrez.e.comerce.model.Fabricante;
 import br.unitins.tp1.xadrez.e.comerce.service.FabricanteServiceImpl;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -57,7 +58,7 @@ public class FabricanteResource {
 
     @POST
     @Transactional
-    public Response create(FabricanteRequestDTO dto) {
+    public Response create(@Valid FabricanteRequestDTO dto) {
         Fabricante fabricante = FabricanteMapper.toEntity(dto);
         Fabricante created = service.create(fabricante);
         return Response.status(201).entity(FabricanteMapper.toResponseDTO(created)).build();
@@ -66,7 +67,7 @@ public class FabricanteResource {
     @PUT
     @Path("/{id}")
     @Transactional
-    public Response update(@PathParam("id") Long id, FabricanteRequestDTO dto) {
+    public Response update(@PathParam("id") Long id, @Valid FabricanteRequestDTO dto) {
         Fabricante fabricante = FabricanteMapper.toEntity(dto);
         service.update(id, fabricante);
         return Response.noContent().build();

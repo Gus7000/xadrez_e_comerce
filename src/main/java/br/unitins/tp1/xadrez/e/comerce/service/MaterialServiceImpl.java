@@ -7,6 +7,7 @@ import br.unitins.tp1.xadrez.e.comerce.repository.MaterialRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.NotFoundException;
 
 @ApplicationScoped
 public class MaterialServiceImpl implements MaterialService {
@@ -21,7 +22,13 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public Material findById(Long id) {
-        return repository.findById(id);
+        Material material = repository.findById(id);
+
+        if (material == null) {
+            throw new NotFoundException("Material não encontrado");
+        }
+
+        return material;
     }
 
     @Override
@@ -39,15 +46,25 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     @Transactional
     public void update(Long id, Material material) {
-        Material existing = findById(id);
-        if (existing == null)
-            return;
+        Material existing = repository.findById(id);
+
+        if (existing == null) {
+            throw new NotFoundException("Material não encontrado");
+        }
+
         existing.setTipo(material.getTipo());
+
     }
 
     @Override
     @Transactional
     public void delete(Long id) {
-        repository.deleteById(id);
+        Material existing = repository.findById(id);
+
+        if (existing == null) {
+            throw new NotFoundException("Material não encontrado");
+        }
+
+        repository.delete(existing);
     }
 }

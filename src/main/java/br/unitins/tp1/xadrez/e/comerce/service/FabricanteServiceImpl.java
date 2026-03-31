@@ -6,55 +6,66 @@ import br.unitins.tp1.xadrez.e.comerce.model.Fabricante;
 import br.unitins.tp1.xadrez.e.comerce.repository.FabricanteRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
+import jakarta.ws.rs.NotFoundException;
 
 @ApplicationScoped
-public class FabricanteServiceImpl implements FabricanteService {
+public class FabricanteServiceImpl {
 
     @Inject
     FabricanteRepository repository;
 
-    @Override
     public List<Fabricante> findAll() {
-        return repository.findAll().list();
+        return repository.listAll();
     }
 
-    @Override
     public Fabricante findById(Long id) {
-        return repository.findById(id);
+        Fabricante fabricante = repository.findById(id);
+
+        if (fabricante == null) {
+            throw new NotFoundException("Fabricante não encontrado");
+        }
+
+        return fabricante;
     }
 
-    @Override
     public List<Fabricante> findByNome(String nome) {
         return repository.findByNome(nome).list();
     }
 
-    @Override
     public Fabricante findByCnpj(String cnpj) {
-        return repository.findByCnpj(cnpj);
+        Fabricante fabricante = repository.findByCnpj(cnpj);
+
+        if (fabricante == null) {
+            throw new NotFoundException("Fabricante não encontrado");
+        }
+
+        return fabricante;
     }
 
-    @Override
-    @Transactional
     public Fabricante create(Fabricante fabricante) {
         repository.persist(fabricante);
         return fabricante;
     }
 
-    @Override
-    @Transactional
     public void update(Long id, Fabricante fabricante) {
-        Fabricante existing = findById(id);
-        if (existing == null)
-            return;
-        existing.setNome(fabricante.getNome());
-        existing.setCnpj(fabricante.getCnpj());
-        existing.setTelefone(fabricante.getTelefone());
+        Fabricante entidade = repository.findById(id);
+
+        if (entidade == null) {
+            throw new NotFoundException("Fabricante não encontrado");
+        }
+
+        entidade.setNome(fabricante.getNome());
+        entidade.setCnpj(fabricante.getCnpj());
+        entidade.setTelefone(fabricante.getTelefone());
     }
 
-    @Override
-    @Transactional
     public void delete(Long id) {
-        repository.deleteById(id);
+        Fabricante entidade = repository.findById(id);
+
+        if (entidade == null) {
+            throw new NotFoundException("Fabricante não encontrado");
+        }
+
+        repository.delete(entidade);
     }
 }

@@ -29,6 +29,6 @@ public enum TipoRelogio {
             if(tipo.getId().equals(id))
                 return tipo;
         }
-        return null;
+        throw new IllegalArgumentException("TipoRelogio inválido: " + id);
     }
 }

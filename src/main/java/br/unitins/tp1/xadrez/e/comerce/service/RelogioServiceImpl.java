@@ -7,9 +7,10 @@ import br.unitins.tp1.xadrez.e.comerce.repository.RelogioRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.NotFoundException;
 
 @ApplicationScoped
-public class RelogioServiceImpl implements RelogioSrevice {
+public class RelogioServiceImpl implements RelogioService {
 
     @Inject 
     RelogioRepository repository;
@@ -17,17 +18,22 @@ public class RelogioServiceImpl implements RelogioSrevice {
     @Override
     public List<Relogio> findAll() {
         return repository.findAll().list();
-        
     }
 
     @Override
     public Relogio findById(Long id) {
-       return repository.findById(id);
+        Relogio relogio = repository.findById(id);
+
+        if (relogio == null) {
+            throw new NotFoundException("Relógio não encontrado");
+        }
+
+        return relogio;
     }
 
     @Override
     public List<Relogio> findByMarca(String marca) {
-       return repository.findByMarca(marca).list();
+        return repository.findByMarca(marca).list();
     }
 
     @Override
@@ -38,22 +44,32 @@ public class RelogioServiceImpl implements RelogioSrevice {
     @Override
     @Transactional
     public Relogio create(Relogio relogio) {
-        Relogio relogioCreate = new Relogio();
         repository.persist(relogio);
-        return relogioCreate;
+        return relogio; 
     }
 
     @Override
     @Transactional
     public void update(Long id, Relogio relogio) {
-       Relogio r = findById(id);
-       r.setModelo(relogio.getModelo());
-       r.setTipo(relogio.getTipo());
+        Relogio existente = repository.findById(id);
+
+        if (existente == null) {
+            throw new NotFoundException("Relógio não encontrado");
+        }
+
+        existente.setModelo(relogio.getModelo());
+        existente.setTipo(relogio.getTipo());
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
-       repository.deleteById(id);
+        Relogio existente = repository.findById(id);
+
+        if (existente == null) {
+            throw new NotFoundException("Relógio não encontrado");
+        }
+
+        repository.delete(existente);
     }
-    
 }

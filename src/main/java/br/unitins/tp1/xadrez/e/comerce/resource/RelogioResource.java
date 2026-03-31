@@ -9,6 +9,7 @@ import br.unitins.tp1.xadrez.e.comerce.model.Relogio;
 import br.unitins.tp1.xadrez.e.comerce.service.RelogioServiceImpl;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -40,7 +41,7 @@ public class RelogioResource {
 
     @POST
     @Transactional
-    public Response incluir(RelogioRequestDTO dto) {
+    public Response incluir(@Valid RelogioRequestDTO dto) {
         Relogio relogio = service.create(RelogioMapper.toEntity(dto));
 
         return Response.status(201)
@@ -81,7 +82,7 @@ public class RelogioResource {
     @PUT
     @Path("/{id}")
     @Transactional
-    public Response atualizar(@PathParam("id") Long id, RelogioRequestDTO dto) {
+    public Response atualizar(@PathParam("id") Long id,@Valid RelogioRequestDTO dto) {
         service.update(id, RelogioMapper.toEntity(dto));
 
         return Response.noContent().build();

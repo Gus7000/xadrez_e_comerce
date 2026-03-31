@@ -9,6 +9,7 @@ import br.unitins.tp1.xadrez.e.comerce.model.Material;
 import br.unitins.tp1.xadrez.e.comerce.service.MaterialServiceImpl;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -50,7 +51,7 @@ public class MaterialResource {
 
     @POST
     @Transactional
-    public Response create(MaterialRequestDTO dto) {
+    public Response create(@Valid MaterialRequestDTO dto) {
         Material material = MaterialMapper.toEntity(dto);
         Material created = service.create(material);
         return Response.status(201)
@@ -61,7 +62,7 @@ public class MaterialResource {
     @PUT
     @Path("/{id}")
     @Transactional
-    public Response update(@PathParam("id") Long id, MaterialRequestDTO dto) {
+    public Response update(@PathParam("id") Long id,@Valid MaterialRequestDTO dto) {
         Material material = MaterialMapper.toEntity(dto);
         service.update(id, material);
         return Response.noContent().build();
