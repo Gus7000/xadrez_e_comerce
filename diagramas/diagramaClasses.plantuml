@@ -24,7 +24,7 @@ class Peca {
     -cor: CorPeca
     -tipo: TipoPeca
 }
-class kitPeca {
+class KitPeca {
     -pecas[]: Peca
 }
 enum TipoPeca {
@@ -50,7 +50,6 @@ enum TipoRelogio {
     DIGITAL
 }
 class JogoCompleto {
-    -descricao: String
 }
 
 class Fabricante {
@@ -62,18 +61,19 @@ class Fabricante {
 
 '---------------- HERANÇA ----------------
 
-Produto <|-- kitPeca
+Produto <|-- KitPeca
 Produto <|-- Tabuleiro
 Produto <|-- Relogio
 Produto <|-- JogoCompleto
 
 '---------------- COMPOSIÇÃO ----------------
 
-kitPeca "1" *-- "32..*" Peca
+KitPeca "1" *-- "1..*" ItemKit
+ItemKit "*" --> "1" Peca
 
 '---------------- AGREGAÇÃO ----------------
 JogoCompleto "*" o-- "1" Tabuleiro
-JogoCompleto "*" o-- "1" kitPeca
+JogoCompleto "*" o-- "1" KitPeca
 
 Peca "*" o-- "1" Material
 Tabuleiro "*" o-- "1" Material

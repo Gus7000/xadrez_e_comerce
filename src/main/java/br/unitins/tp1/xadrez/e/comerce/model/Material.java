@@ -4,7 +4,7 @@ import jakarta.persistence.Entity;
 
 @Entity
 public class Material extends DefaultEntity{
-    String tipo;
+    private String tipo;
 
     public String getTipo() {
         return tipo;

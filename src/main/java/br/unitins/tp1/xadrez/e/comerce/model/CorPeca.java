@@ -4,14 +4,14 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
 @JsonFormat(shape = Shape.OBJECT)
-public enum TipoRelogio {
-    ANALOGICO(1L,"Analógico"),
-    DIGITAL(2L, "Digital");
+public enum CorPeca {
+    PRETO(1L,"Preto"),
+    BRANCO(2L, "Branco");
 
     private final Long ID;
     private final String NOME;
 
-    TipoRelogio(Long id, String nome){
+    CorPeca(Long id, String nome){
         this.ID = id;
         this.NOME = nome;
     }
@@ -24,11 +24,11 @@ public enum TipoRelogio {
         return NOME;
     }
     
-    public static TipoRelogio valueOf(Long id){
-        for (TipoRelogio tipo : TipoRelogio.values()){
-            if(tipo.getId().equals(id))
-                return tipo;
+    public static CorPeca valueOf(Long id){
+        for (CorPeca cor : CorPeca.values()){
+            if(cor.getId().equals(id))
+                return cor;
         }
-        throw new IllegalArgumentException("TipoPeca inválido: " + id);
+        throw new IllegalArgumentException("CorPeca inválido: " + id);
     }
 }

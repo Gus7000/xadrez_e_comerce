@@ -41,7 +41,7 @@ public class RelogioResource {
 
     @POST
     @Transactional
-    public Response incluir(@Valid RelogioRequestDTO dto) {
+    public Response create(@Valid RelogioRequestDTO dto) {
         Relogio relogio = service.create(RelogioMapper.toEntity(dto));
 
         return Response.status(201)
