@@ -54,6 +54,10 @@ public class JogoCompletoServiceImpl implements JogoCompletoService {
             throw new NotFoundException("Jogo Completo não encontrado");
         }
 
+        entidade.setNome(jogoCompleto.getNome());
+        entidade.setPreco(jogoCompleto.getPreco());
+        entidade.setDescricao(jogoCompleto.getDescricao());
+        entidade.setFabricante(jogoCompleto.getFabricante());
         entidade.setKitPeca(jogoCompleto.getKitPeca());
         entidade.setTabuleiro(jogoCompleto.getTabuleiro());
     }

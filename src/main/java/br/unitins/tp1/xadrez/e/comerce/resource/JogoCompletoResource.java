@@ -6,6 +6,7 @@ import br.unitins.tp1.xadrez.e.comerce.DTO.JogoCompletoRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.JogoCompletoResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.mapper.JogoCompletoMapper;
 import br.unitins.tp1.xadrez.e.comerce.model.JogoCompleto;
+import br.unitins.tp1.xadrez.e.comerce.repository.FabricanteRepository;
 import br.unitins.tp1.xadrez.e.comerce.repository.KitPecaRepository;
 import br.unitins.tp1.xadrez.e.comerce.repository.TabuleiroRepository;
 import br.unitins.tp1.xadrez.e.comerce.service.JogoCompletoServiceImpl;
@@ -36,6 +37,9 @@ public class JogoCompletoResource {
 
     @Inject
     TabuleiroRepository tabuleiroRepository;
+
+    @Inject
+    FabricanteRepository fabricanteRepository;
 
     @GET
     public Response findAll() {
@@ -69,8 +73,9 @@ public class JogoCompletoResource {
     public Response create(@Valid JogoCompletoRequestDTO dto) {
         var kitPeca = kitPecaRepository.findById(dto.kitPecaId());
         var tabuleiro = tabuleiroRepository.findById(dto.tabuleiroId());
+        var fabricante = fabricanteRepository.findById(dto.fabricanteId());
         
-        JogoCompleto jogoCompleto = JogoCompletoMapper.toEntity(dto, kitPeca, tabuleiro);
+        JogoCompleto jogoCompleto = JogoCompletoMapper.toEntity(dto, kitPeca, tabuleiro, fabricante);
         JogoCompleto criado = service.create(jogoCompleto);
         
         return Response.status(201).entity(JogoCompletoMapper.toResponseDTO(criado)).build();
@@ -82,8 +87,9 @@ public class JogoCompletoResource {
     public Response update(@PathParam("id") Long id, @Valid JogoCompletoRequestDTO dto) {
         var kitPeca = kitPecaRepository.findById(dto.kitPecaId());
         var tabuleiro = tabuleiroRepository.findById(dto.tabuleiroId());
+        var fabricante = fabricanteRepository.findById(dto.fabricanteId());
         
-        JogoCompleto jogoCompleto = JogoCompletoMapper.toEntity(dto, kitPeca, tabuleiro);
+        JogoCompleto jogoCompleto = JogoCompletoMapper.toEntity(dto, kitPeca, tabuleiro, fabricante);
         service.update(id, jogoCompleto);
         
         return Response.noContent().build();

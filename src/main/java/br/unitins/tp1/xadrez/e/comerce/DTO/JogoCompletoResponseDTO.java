@@ -5,6 +5,11 @@ import java.util.List;
 
 public record JogoCompletoResponseDTO(
     Long id,
+    String nome,
+    double preco,
+    String descricao,
+    Long fabricanteId,
+    String fabricanteNome,
     Long kitPecaId,
     List<ItemKitResponseDTO> itens,
     Long tabuleiroId,

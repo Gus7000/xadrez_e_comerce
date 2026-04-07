@@ -59,6 +59,10 @@ public class TabuleiroServiceImpl implements TabuleiroService {
             throw new NotFoundException("Tabuleiro não encontrado");
         }
 
+        entidade.setNome(tabuleiro.getNome());
+        entidade.setPreco(tabuleiro.getPreco());
+        entidade.setDescricao(tabuleiro.getDescricao());
+        entidade.setFabricante(tabuleiro.getFabricante());
         entidade.setTamanho(tabuleiro.getTamanho());
         entidade.setCor(tabuleiro.getCor());
         entidade.setMaterial(tabuleiro.getMaterial());

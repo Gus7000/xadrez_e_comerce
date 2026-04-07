@@ -6,6 +6,7 @@ import br.unitins.tp1.xadrez.e.comerce.DTO.TabuleiroRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.TabuleiroResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.mapper.TabuleiroMapper;
 import br.unitins.tp1.xadrez.e.comerce.model.Tabuleiro;
+import br.unitins.tp1.xadrez.e.comerce.repository.FabricanteRepository;
 import br.unitins.tp1.xadrez.e.comerce.repository.MaterialRepository;
 import br.unitins.tp1.xadrez.e.comerce.service.TabuleiroServiceImpl;
 import jakarta.inject.Inject;
@@ -32,6 +33,9 @@ public class TabuleiroResource {
 
     @Inject
     MaterialRepository materialRepository;
+
+    @Inject
+    FabricanteRepository fabricanteRepository;
 
     @GET
     public Response findAll() {
@@ -71,7 +75,8 @@ public class TabuleiroResource {
     @Transactional
     public Response create(@Valid TabuleiroRequestDTO dto) {
         var material = materialRepository.findById(dto.materialId());
-        Tabuleiro tabuleiro = TabuleiroMapper.toEntity(dto, material);
+        var fabricante = fabricanteRepository.findById(dto.fabricanteId());
+        Tabuleiro tabuleiro = TabuleiroMapper.toEntity(dto, material, fabricante);
         Tabuleiro criado = service.create(tabuleiro);
         
         return Response.status(201).entity(TabuleiroMapper.toResponseDTO(criado)).build();
@@ -82,7 +87,8 @@ public class TabuleiroResource {
     @Transactional
     public Response update(@PathParam("id") Long id, @Valid TabuleiroRequestDTO dto) {
         var material = materialRepository.findById(dto.materialId());
-        Tabuleiro tabuleiro = TabuleiroMapper.toEntity(dto, material);
+        var fabricante = fabricanteRepository.findById(dto.fabricanteId());
+        Tabuleiro tabuleiro = TabuleiroMapper.toEntity(dto, material, fabricante);
         service.update(id, tabuleiro);
         
         return Response.noContent().build();

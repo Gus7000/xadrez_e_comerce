@@ -5,6 +5,11 @@ import java.util.List;
 
 public record KitPecaResponseDTO(
     Long id,
+    String nome,
+    double preco,
+    String descricao,
+    Long fabricanteId,
+    String fabricanteNome,
     List<ItemKitResponseDTO> itens,
     LocalDateTime dataCadastro
 ) {

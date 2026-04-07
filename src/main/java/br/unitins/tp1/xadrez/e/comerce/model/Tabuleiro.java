@@ -7,7 +7,7 @@ import jakarta.persistence.ManyToOne;
 import br.unitins.tp1.xadrez.e.comerce.converter.CorPecaConverter;
 
 @Entity
-public class Tabuleiro extends DefaultEntity {
+public class Tabuleiro extends Produto {
     private String tamanho;
     
     @Convert(converter = CorPecaConverter.class)

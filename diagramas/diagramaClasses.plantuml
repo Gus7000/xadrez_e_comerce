@@ -58,6 +58,9 @@ class Fabricante {
     -cnpj: String
     -telefone: String
 }
+class ItemKit {
+    -int: quantidade
+}
 
 '---------------- HERANÇA ----------------
 

@@ -44,6 +44,10 @@ public class KitPecaServiceImpl implements KitPecaService {
             throw new NotFoundException("Kit de Peças não encontrado");
         }
 
+        entidade.setNome(kitPeca.getNome());
+        entidade.setPreco(kitPeca.getPreco());
+        entidade.setDescricao(kitPeca.getDescricao());
+        entidade.setFabricante(kitPeca.getFabricante());
         entidade.setItens(kitPeca.getItens());
     }
 

@@ -5,7 +5,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class JogoCompleto extends DefaultEntity{
+public class JogoCompleto extends Produto{
     @ManyToOne
     @JoinColumn(name = "id_kit_peca")
     private KitPeca kitPeca;

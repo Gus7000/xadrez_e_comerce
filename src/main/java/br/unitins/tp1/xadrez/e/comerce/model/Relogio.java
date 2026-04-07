@@ -6,7 +6,7 @@ import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 
 @Entity
-public class Relogio extends DefaultEntity {
+public class Relogio extends Produto {
     
     private String modelo;
     @Convert(converter = TipoRelogioConverter.class)

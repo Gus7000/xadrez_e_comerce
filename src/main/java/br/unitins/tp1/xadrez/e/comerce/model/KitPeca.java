@@ -7,7 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 
 @Entity
-public class KitPeca extends DefaultEntity {
+public class KitPeca extends Produto {
    @OneToMany(mappedBy = "kit", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemKit> itens;
 
