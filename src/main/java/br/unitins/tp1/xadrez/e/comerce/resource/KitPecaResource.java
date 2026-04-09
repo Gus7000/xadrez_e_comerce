@@ -6,6 +6,7 @@ import br.unitins.tp1.xadrez.e.comerce.DTO.KitPecaRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.KitPecaResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.mapper.KitPecaMapper;
 import br.unitins.tp1.xadrez.e.comerce.model.KitPeca;
+import br.unitins.tp1.xadrez.e.comerce.repository.FabricanteRepository;
 import br.unitins.tp1.xadrez.e.comerce.repository.PecaRepository;
 import br.unitins.tp1.xadrez.e.comerce.service.KitPecaServiceImpl;
 import jakarta.inject.Inject;
@@ -33,6 +34,9 @@ public class KitPecaResource {
     @Inject
     PecaRepository pecaRepository;
 
+    @Inject
+    FabricanteRepository fabricanteRepository;
+
     @GET
     public Response findAll() {
         List<KitPecaResponseDTO> lista = service.findAll().stream().map(KitPecaMapper::toResponseDTO).toList();
@@ -49,7 +53,7 @@ public class KitPecaResource {
     @POST
     @Transactional
     public Response create(@Valid KitPecaRequestDTO dto) {
-        KitPeca kitPeca = KitPecaMapper.toEntity(dto, pecaRepository);
+        KitPeca kitPeca = KitPecaMapper.toEntity(dto, pecaRepository, fabricanteRepository);
         KitPeca criado = service.create(kitPeca);
         return Response.status(201).entity(KitPecaMapper.toResponseDTO(criado)).build();
     }
@@ -58,7 +62,7 @@ public class KitPecaResource {
     @Path("/{id}")
     @Transactional
     public Response update(@PathParam("id") Long id, @Valid KitPecaRequestDTO dto) {
-        KitPeca kitPeca = KitPecaMapper.toEntity(dto, pecaRepository);
+        KitPeca kitPeca = KitPecaMapper.toEntity(dto, pecaRepository, fabricanteRepository);
         service.update(id, kitPeca);
         return Response.noContent().build();
     }

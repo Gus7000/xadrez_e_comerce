@@ -45,6 +45,7 @@ public class KitPecaServiceImpl implements KitPecaService {
         }
 
         entidade.setItens(kitPeca.getItens());
+        entidade.setFabricante(kitPeca.getFabricante());
     }
 
     @Override

@@ -91,10 +91,11 @@ ItemKit "*" --> "1" Peca
 
 JogoCompleto "*" o-- "1" Tabuleiro
 JogoCompleto "*" o-- "1" KitPeca
+JogoCompleto "*" o-- "0..1" Relogio
 
 '---------------- ASSOCIACAO ----------------
-
-JogoCompleto "*" --> "1" Fabricante
-JogoCompleto "*" --> "0..1" Relogio
+Relogio "*" --> "1" Fabricante
+KitPeca "*" --> "1" Fabricante
+Tabuleiro "*" --> "1" Fabricante
 
 @enduml

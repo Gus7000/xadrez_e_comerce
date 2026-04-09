@@ -3,6 +3,8 @@ package br.unitins.tp1.xadrez.e.comerce.model;
 import br.unitins.tp1.xadrez.e.comerce.converter.TipoRelogioConverter;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Relogio extends DefaultEntity {
@@ -10,6 +12,9 @@ public class Relogio extends DefaultEntity {
     private String modelo;
     @Convert(converter = TipoRelogioConverter.class)
     private TipoRelogio tipo;
+    @ManyToOne
+    @JoinColumn(name = "id_fabricante")
+    private Fabricante fabricante;
 
     
     public String getModelo() {
@@ -23,5 +28,11 @@ public class Relogio extends DefaultEntity {
     }
     public void setTipo(TipoRelogio tipo) {
         this.tipo = tipo;
+    }
+    public Fabricante getFabricante() {
+        return fabricante;
+    }
+    public void setFabricante(Fabricante fabricante) {
+        this.fabricante = fabricante;
     }
 }

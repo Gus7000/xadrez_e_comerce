@@ -18,9 +18,6 @@ public record JogoCompletoRequestDTO(
     @NotNull(message = "O estoque é obrigatório")
     @Positive(message = "O estoque deve ser positivo")
     Integer estoqueDisponivel,
-    @NotNull(message = "O fabricante é obrigatório")
-    @Positive(message = "O id do fabricante deve ser positivo")
-    Long fabricanteId,
     @NotNull(message = "O kit de peças é obrigatório")
     Long kitPecaId,
     @NotNull(message = "O tabuleiro é obrigatório")

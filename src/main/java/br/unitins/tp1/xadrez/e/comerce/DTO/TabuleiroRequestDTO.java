@@ -11,6 +11,9 @@ public record TabuleiroRequestDTO(
     String tamanho,
     @NotNull(message = "O material é obrigatório")
     @Positive(message = "O id do material deve ser positivo")
-    Long materialId
+    Long materialId,
+    @NotNull(message = "O fabricante é obrigatório")
+    @Positive(message = "O id do fabricante deve ser positivo")
+    Long fabricanteId
 ) {
 }

@@ -9,8 +9,6 @@ public record JogoCompletoResponseDTO(
     double preco,
     String descricao,
     int estoqueDisponivel,
-    Long fabricanteId,
-    String fabricanteNome,
     Long kitPecaId,
     List<ItemKitResponseDTO> itens,
     Long tabuleiroId,

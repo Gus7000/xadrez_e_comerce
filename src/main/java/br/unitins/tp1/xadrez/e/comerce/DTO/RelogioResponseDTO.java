@@ -8,6 +8,7 @@ public record RelogioResponseDTO(
     Long id,
     String modelo,
     TipoRelogio tipo,
+    Long fabricanteId,
     LocalDateTime dataCadastro
 ) {
 }

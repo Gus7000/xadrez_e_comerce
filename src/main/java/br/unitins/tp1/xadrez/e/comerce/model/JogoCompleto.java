@@ -24,10 +24,6 @@ public class JogoCompleto extends DefaultEntity {
     private Tabuleiro tabuleiro;
 
     @ManyToOne
-    @JoinColumn(name = "id_fabricante")
-    private Fabricante fabricante;
-
-    @ManyToOne
     @JoinColumn(name = "id_relogio")
     private Relogio relogio;
 
@@ -66,12 +62,6 @@ public class JogoCompleto extends DefaultEntity {
     }
     public void setTabuleiro(Tabuleiro tabuleiro) {
         this.tabuleiro = tabuleiro;
-    }
-    public Fabricante getFabricante() {
-        return fabricante;
-    }
-    public void setFabricante(Fabricante fabricante) {
-        this.fabricante = fabricante;
     }
     public Relogio getRelogio() {
         return relogio;

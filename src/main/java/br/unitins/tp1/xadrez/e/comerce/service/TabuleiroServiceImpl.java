@@ -56,6 +56,7 @@ public class TabuleiroServiceImpl implements TabuleiroService {
 
         entidade.setTamanho(tabuleiro.getTamanho());
         entidade.setMaterial(tabuleiro.getMaterial());
+        entidade.setFabricante(tabuleiro.getFabricante());
     }
 
     @Override

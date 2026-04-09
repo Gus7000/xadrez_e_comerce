@@ -60,6 +60,7 @@ public class RelogioServiceImpl implements RelogioService {
 
         existente.setModelo(relogio.getModelo());
         existente.setTipo(relogio.getTipo());
+        existente.setFabricante(relogio.getFabricante());
     }
 
     @Override

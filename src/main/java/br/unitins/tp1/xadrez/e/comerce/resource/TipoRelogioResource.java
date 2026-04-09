@@ -9,12 +9,12 @@ import jakarta.ws.rs.core.Response;
 public class TipoRelogioResource {
     
     @GET
-    public Response buscarTodos(){
+    public Response findAll(){
         return Response.ok(TipoRelogio.values()).build();
     }
     @GET
     @Path("/{id}")
-    public Response buscarPeloId(Long id){
+    public Response findById(Long id){
         return Response.ok(TipoRelogio.valueOf(id)).build();
     }
 }

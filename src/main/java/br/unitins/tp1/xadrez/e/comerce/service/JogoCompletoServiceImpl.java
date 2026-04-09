@@ -57,7 +57,6 @@ public class JogoCompletoServiceImpl implements JogoCompletoService {
         entidade.setNome(jogoCompleto.getNome());
         entidade.setPreco(jogoCompleto.getPreco());
         entidade.setDescricao(jogoCompleto.getDescricao());
-        entidade.setFabricante(jogoCompleto.getFabricante());
         entidade.setKitPeca(jogoCompleto.getKitPeca());
         entidade.setTabuleiro(jogoCompleto.getTabuleiro());
     }
