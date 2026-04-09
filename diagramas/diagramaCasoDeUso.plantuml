@@ -13,8 +13,8 @@ rectangle SistemaAdministrativoXadrez {
     usecase "Gerenciar Materiais" as UC6
     usecase "Gerenciar Fabricantes" as UC7
 
-    usecase "Montar Kit de Peças" as UC8
-    usecase "Montar Jogo Completo" as UC9
+    usecase "Definir Estoque do Jogo Completo" as UC10
+    usecase "Vincular Relógio ao Jogo Completo" as UC11
 }
 
 Administrador --> UC1
@@ -24,12 +24,12 @@ Administrador --> UC4
 Administrador --> UC5
 Administrador --> UC6
 Administrador --> UC7
-Administrador --> UC8
-Administrador --> UC9
+Administrador --> UC10
+Administrador --> UC11
 
 ' Relações
 
-UC2 .> UC8 : <<include>>
-UC5 .> UC9 : <<include>>
+UC5 .> UC10 : <<include>>
+UC11 .> UC5 : <<extend>>
 
 @enduml

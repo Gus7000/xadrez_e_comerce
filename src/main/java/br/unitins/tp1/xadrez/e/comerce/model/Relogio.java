@@ -1,12 +1,11 @@
 package br.unitins.tp1.xadrez.e.comerce.model;
 
-
 import br.unitins.tp1.xadrez.e.comerce.converter.TipoRelogioConverter;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 
 @Entity
-public class Relogio extends Produto {
+public class Relogio extends DefaultEntity {
     
     private String modelo;
     @Convert(converter = TipoRelogioConverter.class)
@@ -25,6 +24,4 @@ public class Relogio extends Produto {
     public void setTipo(TipoRelogio tipo) {
         this.tipo = tipo;
     }
-   
-    
 }

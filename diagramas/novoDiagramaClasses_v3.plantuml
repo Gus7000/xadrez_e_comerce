@@ -1,0 +1,100 @@
+@startuml DiagramaClassesV3
+
+class DefaultEntity{
+    -id: Long
+    -dataCadastro: Date
+    -dataAtualizacao: Date
+}
+
+abstract class ComponenteFisico {
+    -material: Material
+}
+
+enum CorPeca {
+    PRETO
+    BRANCO
+}
+
+class Material {
+    -tipo: String
+}
+
+class Peca {
+    -cor: CorPeca
+    -tipo: TipoPeca
+}
+
+enum TipoPeca {
+    REI
+    RAINHA
+    TORRE
+    BISPO
+    CAVALO
+    PEAO
+}
+
+class Tabuleiro {
+    -tamanho: String
+}
+
+class Relogio {
+    -modelo: String
+    -tipo: TipoRelogio
+}
+
+enum TipoRelogio {
+    ANALOGICO
+    DIGITAL
+}
+
+class JogoCompleto {
+    -nome: String
+    -preco: double
+    -descricao: String
+    -kitPeca: KitPeca
+    -estoqueDisponivel: int
+}
+
+class KitPeca {
+    -itemKits: List<ItemKit>
+}
+
+class Fabricante {
+    -nome: String
+    -cnpj: String
+    -telefone: String
+}
+
+class ItemKit {
+    -quantidade: int
+}
+
+'---------------- HERANCA ----------------
+
+DefaultEntity <|-- ComponenteFisico
+DefaultEntity <|-- Material
+DefaultEntity <|-- Relogio
+DefaultEntity <|-- JogoCompleto
+DefaultEntity <|-- KitPeca
+DefaultEntity <|-- Fabricante
+DefaultEntity <|-- ItemKit
+
+ComponenteFisico <|-- Peca
+ComponenteFisico <|-- Tabuleiro
+
+'---------------- COMPOSICAO ----------------
+
+KitPeca "1" *-- "1..*" ItemKit
+ItemKit "*" --> "1" Peca
+
+'---------------- AGREGACAO ----------------
+
+JogoCompleto "*" o-- "1" Tabuleiro
+JogoCompleto "*" o-- "1" KitPeca
+
+'---------------- ASSOCIACAO ----------------
+
+JogoCompleto "*" --> "1" Fabricante
+JogoCompleto "*" --> "0..1" Relogio
+
+@enduml

@@ -8,13 +8,14 @@ public record JogoCompletoResponseDTO(
     String nome,
     double preco,
     String descricao,
+    int estoqueDisponivel,
     Long fabricanteId,
     String fabricanteNome,
     Long kitPecaId,
     List<ItemKitResponseDTO> itens,
     Long tabuleiroId,
-    String tamanhTabuleiro,
-    String corTabuleiro,
+    String tabuleiroTamanho,
+    Long relogioId,
     LocalDateTime dataCadastro
 ) {
 }

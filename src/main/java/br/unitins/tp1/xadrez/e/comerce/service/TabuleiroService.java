@@ -11,8 +11,6 @@ public interface TabuleiroService {
 
     List<Tabuleiro> findByTamanho(String tamanho);
 
-    List<Tabuleiro> findByCor(Long corId);
-
     List<Tabuleiro> findByMaterial(Long materialId);
 
     Tabuleiro create(Tabuleiro tabuleiro);

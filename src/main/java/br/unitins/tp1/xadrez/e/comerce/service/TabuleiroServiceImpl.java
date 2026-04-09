@@ -36,11 +36,6 @@ public class TabuleiroServiceImpl implements TabuleiroService {
     }
 
     @Override
-    public List<Tabuleiro> findByCor(Long corId) {
-        return repository.findByCor(corId).list();
-    }
-
-    @Override
     public List<Tabuleiro> findByMaterial(Long materialId) {
         return repository.findByMaterial(materialId).list();
     }
@@ -59,12 +54,7 @@ public class TabuleiroServiceImpl implements TabuleiroService {
             throw new NotFoundException("Tabuleiro não encontrado");
         }
 
-        entidade.setNome(tabuleiro.getNome());
-        entidade.setPreco(tabuleiro.getPreco());
-        entidade.setDescricao(tabuleiro.getDescricao());
-        entidade.setFabricante(tabuleiro.getFabricante());
         entidade.setTamanho(tabuleiro.getTamanho());
-        entidade.setCor(tabuleiro.getCor());
         entidade.setMaterial(tabuleiro.getMaterial());
     }
 

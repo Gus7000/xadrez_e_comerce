@@ -6,7 +6,6 @@ import br.unitins.tp1.xadrez.e.comerce.DTO.RelogioRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.RelogioResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.mapper.RelogioMapper;
 import br.unitins.tp1.xadrez.e.comerce.model.Relogio;
-import br.unitins.tp1.xadrez.e.comerce.repository.FabricanteRepository;
 import br.unitins.tp1.xadrez.e.comerce.service.RelogioServiceImpl;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -30,9 +29,6 @@ public class RelogioResource {
     @Inject
     RelogioServiceImpl service;
 
-    @Inject
-    FabricanteRepository fabricanteRepository;
-
     @GET
     public Response buscarTodos() {
         List<RelogioResponseDTO> lista = service.findAll()
@@ -46,8 +42,7 @@ public class RelogioResource {
     @POST
     @Transactional
     public Response create(@Valid RelogioRequestDTO dto) {
-        var fabricante = fabricanteRepository.findById(dto.fabricanteId());
-        Relogio relogio = service.create(RelogioMapper.toEntity(dto, fabricante));
+        Relogio relogio = service.create(RelogioMapper.toEntity(dto));
 
         return Response.status(201)
                 .entity(RelogioMapper.toResponseDTO(relogio))
@@ -87,9 +82,8 @@ public class RelogioResource {
     @PUT
     @Path("/{id}")
     @Transactional
-    public Response atualizar(@PathParam("id") Long id,@Valid RelogioRequestDTO dto) {
-        var fabricante = fabricanteRepository.findById(dto.fabricanteId());
-        service.update(id, RelogioMapper.toEntity(dto, fabricante));
+    public Response atualizar(@PathParam("id") Long id, @Valid RelogioRequestDTO dto) {
+        service.update(id, RelogioMapper.toEntity(dto));
 
         return Response.noContent().build();
     }

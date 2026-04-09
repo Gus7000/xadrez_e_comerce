@@ -12,10 +12,6 @@ public class TabuleiroRepository implements PanacheRepository<Tabuleiro> {
         return find("UPPER(tamanho) LIKE UPPER(?1)", "%" + tamanho + "%");
     }
 
-    public PanacheQuery<Tabuleiro> findByCor(Long corId) {
-        return find("cor", corId);
-    }
-
     public PanacheQuery<Tabuleiro> findByMaterial(Long materialId) {
         return find("material.id", materialId);
     }

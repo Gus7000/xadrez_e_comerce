@@ -25,7 +25,7 @@ class Peca {
     -tipo: TipoPeca
 }
 class KitPeca {
-    -pecas[]: Peca
+    -itemKits: List<ItemKit>
 }
 enum TipoPeca {
     REI

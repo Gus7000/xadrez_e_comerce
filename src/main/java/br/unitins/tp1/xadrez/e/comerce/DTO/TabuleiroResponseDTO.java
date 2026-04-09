@@ -4,14 +4,7 @@ import java.time.LocalDateTime;
 
 public record TabuleiroResponseDTO(
     Long id,
-    String nome,
-    double preco,
-    String descricao,
-    Long fabricanteId,
-    String fabricanteNome,
     String tamanho,
-    String cor,
-    Long corId,
     Long materialId,
     String materialTipo,
     LocalDateTime dataCadastro

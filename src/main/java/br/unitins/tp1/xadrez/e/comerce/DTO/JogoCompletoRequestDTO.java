@@ -15,6 +15,9 @@ public record JogoCompletoRequestDTO(
     @NotBlank(message = "A descrição não pode estar em branco")
     @Size(max = 255, message = "A descrição deve ter no máximo 255 caracteres")
     String descricao,
+    @NotNull(message = "O estoque é obrigatório")
+    @Positive(message = "O estoque deve ser positivo")
+    Integer estoqueDisponivel,
     @NotNull(message = "O fabricante é obrigatório")
     @Positive(message = "O id do fabricante deve ser positivo")
     Long fabricanteId,

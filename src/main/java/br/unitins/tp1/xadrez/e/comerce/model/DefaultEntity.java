@@ -2,11 +2,13 @@ package br.unitins.tp1.xadrez.e.comerce.model;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 
 @MappedSuperclass
 public class DefaultEntity {
@@ -14,11 +16,20 @@ public class DefaultEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "data_cadastro")
     private LocalDateTime dataCadastro;
+    @Column(name = "data_atualizacao")
+    private LocalDateTime dataAtualizacao;
 
     @PrePersist
     private void preencherDataCadastro() {
         setDataCadastro(LocalDateTime.now());
+        setDataAtualizacao(LocalDateTime.now());
+    }
+
+    @PreUpdate
+    private void atualizarDataAtualizacao() {
+        setDataAtualizacao(LocalDateTime.now());
     }
 
     public Long getId() {
@@ -35,6 +46,14 @@ public class DefaultEntity {
 
     public void setDataCadastro(LocalDateTime dataCadastro) {
         this.dataCadastro = dataCadastro;
+    }
+
+    public LocalDateTime getDataAtualizacao() {
+        return dataAtualizacao;
+    }
+
+    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
+        this.dataAtualizacao = dataAtualizacao;
     }
     
 }

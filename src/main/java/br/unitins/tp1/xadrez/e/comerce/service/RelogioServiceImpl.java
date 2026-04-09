@@ -57,10 +57,7 @@ public class RelogioServiceImpl implements RelogioService {
             throw new NotFoundException("Relógio não encontrado");
         }
 
-        existente.setNome(relogio.getNome());
-        existente.setPreco(relogio.getPreco());
-        existente.setDescricao(relogio.getDescricao());
-        existente.setFabricante(relogio.getFabricante());
+
         existente.setModelo(relogio.getModelo());
         existente.setTipo(relogio.getTipo());
     }
