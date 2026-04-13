@@ -38,7 +38,7 @@ public class RelogioServiceImpl implements RelogioService {
 
     @Override
     public List<Relogio> findByTipo(Long idTipo) {
-        return repository.findByTipoRelogio(idTipo).list();
+        return repository.findAll().list();
     }
 
     @Override
@@ -57,9 +57,8 @@ public class RelogioServiceImpl implements RelogioService {
             throw new NotFoundException("Relógio não encontrado");
         }
 
-
         existente.setModelo(relogio.getModelo());
-        existente.setTipo(relogio.getTipo());
+        existente.setDimensoes(relogio.getDimensoes());
         existente.setFabricante(relogio.getFabricante());
     }
 

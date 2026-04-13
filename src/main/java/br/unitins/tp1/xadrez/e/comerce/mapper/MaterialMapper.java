@@ -9,7 +9,7 @@ public class MaterialMapper {
         if (dto == null)
             return null;
         Material material = new Material();
-        material.setTipo(dto.tipo());
+        material.setNome(dto.nome());
         return material;
     }
 
@@ -18,7 +18,7 @@ public class MaterialMapper {
             return null;
         return new MaterialResponseDTO(
             material.getId(),
-            material.getTipo()
+            material.getNome()
         );
     }
 }

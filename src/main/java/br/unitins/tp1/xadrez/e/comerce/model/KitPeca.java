@@ -7,8 +7,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "kit_peca")
 public class KitPeca extends DefaultEntity {
    @OneToMany(mappedBy = "kit", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemKit> itens;

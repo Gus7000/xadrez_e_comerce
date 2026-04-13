@@ -9,7 +9,9 @@ public record PecaResponseDTO(
     String tipo,
     Long tipoId,
     Long materialId,
-    String materialTipo,
+    String materialNome,
+    double diametroCm,
+    double alturaCm,
     LocalDateTime dataCadastro
 ) {
 }

@@ -15,6 +15,8 @@ public class PecaMapper {
         peca.setCor(CorPeca.valueOf(dto.corId()));
         peca.setTipo(TipoPeca.valueOf(dto.tipoId()));
         peca.setMaterial(material);
+        peca.setDiametroCm(dto.diametroCm());
+        peca.setAlturaCm(dto.alturaCm());
         return peca;
     }
 
@@ -28,7 +30,9 @@ public class PecaMapper {
             peca.getTipo().getNome(),
             peca.getTipo().getId(),
             peca.getMaterial().getId(),
-            peca.getMaterial().getTipo(),
+            peca.getMaterial().getNome(),
+            peca.getDiametroCm(),
+            peca.getAlturaCm(),
             peca.getDataCadastro()
         );
     }

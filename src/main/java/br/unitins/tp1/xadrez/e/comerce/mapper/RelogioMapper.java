@@ -1,31 +1,35 @@
 package br.unitins.tp1.xadrez.e.comerce.mapper;
 
-import br.unitins.tp1.xadrez.e.comerce.DTO.RelogioRequestDTO;
+import br.unitins.tp1.xadrez.e.comerce.DTO.RelogioAnalogicoResponseDTO;
+import br.unitins.tp1.xadrez.e.comerce.DTO.RelogioDigitalResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.RelogioResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.model.Relogio;
-import br.unitins.tp1.xadrez.e.comerce.model.TipoRelogio;
-import br.unitins.tp1.xadrez.e.comerce.repository.FabricanteRepository;
+import br.unitins.tp1.xadrez.e.comerce.model.RelogioAnalogico;
+import br.unitins.tp1.xadrez.e.comerce.model.RelogioDigital;
 
 public class RelogioMapper {
-    public static Relogio toEntity(RelogioRequestDTO dto, FabricanteRepository fabricanteRepository){
-        if (dto == null)
-            return null;
-        Relogio relogio = new Relogio();
-        relogio.setModelo(dto.modelo());
-        relogio.setTipo(TipoRelogio.valueOf(dto.idTipoRelogio()));
-        relogio.setFabricante(fabricanteRepository.findById(dto.fabricanteId()));
-
-        return relogio;
-    }
-    public static RelogioResponseDTO toResponseDTO(Relogio relogio){
+    
+    public static RelogioResponseDTO toResponseDTO(Relogio relogio) {
         if (relogio == null)
             return null;
+
+        Boolean isDigital = relogio instanceof RelogioDigital;
+        
+        RelogioDigitalResponseDTO relogioDigitalDTO = isDigital 
+            ? RelogioDigitalMapper.toResponseDTO((RelogioDigital) relogio) 
+            : null;
+        
+        RelogioAnalogicoResponseDTO relogioAnalogicoDTO = !isDigital 
+            ? RelogioAnalogicoMapper.toResponseDTO((RelogioAnalogico) relogio) 
+            : null;
 
         return new RelogioResponseDTO(
             relogio.getId(),
             relogio.getModelo(),
-            relogio.getTipo(),
+            relogio.getDimensoes(),
             relogio.getFabricante() != null ? relogio.getFabricante().getId() : null,
+            relogioDigitalDTO,
+            relogioAnalogicoDTO,
             relogio.getDataCadastro()
         );
     }

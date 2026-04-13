@@ -1,37 +1,42 @@
 package br.unitins.tp1.xadrez.e.comerce.model;
 
-import br.unitins.tp1.xadrez.e.comerce.converter.TipoRelogioConverter;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Relogio extends DefaultEntity {
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Relogio extends DefaultEntity {
     
     private String modelo;
-    @Convert(converter = TipoRelogioConverter.class)
-    private TipoRelogio tipo;
+    private String dimensoes;
+    
     @ManyToOne
     @JoinColumn(name = "id_fabricante")
     private Fabricante fabricante;
 
-    
     public String getModelo() {
         return modelo;
     }
+
     public void setModelo(String modelo) {
         this.modelo = modelo;
     }
-    public TipoRelogio getTipo() {
-        return tipo;
+
+    public String getDimensoes() {
+        return dimensoes;
     }
-    public void setTipo(TipoRelogio tipo) {
-        this.tipo = tipo;
+
+    public void setDimensoes(String dimensoes) {
+        this.dimensoes = dimensoes;
     }
+
     public Fabricante getFabricante() {
         return fabricante;
     }
+
     public void setFabricante(Fabricante fabricante) {
         this.fabricante = fabricante;
     }

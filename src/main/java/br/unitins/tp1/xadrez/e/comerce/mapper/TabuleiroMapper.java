@@ -24,7 +24,7 @@ public class TabuleiroMapper {
             tabuleiro.getId(),
             tabuleiro.getTamanho(),
             tabuleiro.getMaterial().getId(),
-            tabuleiro.getMaterial().getTipo(),
+            tabuleiro.getMaterial().getNome(),
             tabuleiro.getFabricante() != null ? tabuleiro.getFabricante().getId() : null,
             tabuleiro.getDataCadastro()
         );

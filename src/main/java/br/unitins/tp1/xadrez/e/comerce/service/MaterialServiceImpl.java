@@ -33,7 +33,7 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public List<Material> findByTipo(String tipo) {
-        return repository.findByTipo(tipo).list();
+        return repository.findByNome(tipo).list();
     }
 
     @Override
@@ -52,7 +52,7 @@ public class MaterialServiceImpl implements MaterialService {
             throw new NotFoundException("Material não encontrado");
         }
 
-        existing.setTipo(material.getTipo());
+        existing.setNome(material.getNome());
 
     }
 

@@ -5,6 +5,7 @@ import java.util.List;
 import br.unitins.tp1.xadrez.e.comerce.DTO.RelogioRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.RelogioResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.mapper.RelogioMapper;
+import br.unitins.tp1.xadrez.e.comerce.mapper.RelogioDigitalMapper;
 import br.unitins.tp1.xadrez.e.comerce.model.Relogio;
 import br.unitins.tp1.xadrez.e.comerce.repository.FabricanteRepository;
 import br.unitins.tp1.xadrez.e.comerce.service.RelogioServiceImpl;
@@ -46,7 +47,8 @@ public class RelogioResource {
     @POST
     @Transactional
     public Response create(@Valid RelogioRequestDTO dto) {
-        Relogio relogio = service.create(RelogioMapper.toEntity(dto, fabricanteRepository));
+        // Use RelogioDigitalMapper ou RelogioAnalicoMapper para criar instâncias específicas
+        Relogio relogio = service.create(RelogioDigitalMapper.toEntity(dto, fabricanteRepository));
 
         return Response.status(201)
                 .entity(RelogioMapper.toResponseDTO(relogio))
@@ -87,7 +89,8 @@ public class RelogioResource {
     @Path("/{id}")
     @Transactional
     public Response update(@PathParam("id") Long id, @Valid RelogioRequestDTO dto) {
-        service.update(id, RelogioMapper.toEntity(dto, fabricanteRepository));
+        // Use RelogioDigitalMapper ou RelogioAnalicoMapper como apropriado
+        service.update(id, RelogioDigitalMapper.toEntity(dto, fabricanteRepository));
 
         return Response.noContent().build();
     }

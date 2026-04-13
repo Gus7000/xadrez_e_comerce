@@ -6,7 +6,7 @@ public record TabuleiroResponseDTO(
     Long id,
     String tamanho,
     Long materialId,
-    String materialTipo,
+    String materialNome,
     Long fabricanteId,
     LocalDateTime dataCadastro
 ) {

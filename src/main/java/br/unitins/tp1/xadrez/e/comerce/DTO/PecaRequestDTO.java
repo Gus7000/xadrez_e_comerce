@@ -12,6 +12,12 @@ public record PecaRequestDTO(
     Long tipoId,
     @NotNull(message = "O material é obrigatório")
     @Positive(message = "O id do material deve ser positivo")
-    Long materialId
+    Long materialId,
+    @NotNull(message = "O diâmetro não pode ser nulo")
+    @Positive(message = "O diâmetro deve ser positivo")
+    double diametroCm,
+    @NotNull(message = "A altura não pode ser nula")
+    @Positive(message = "A altura deve ser positiva")
+    double alturaCm
 ) {
 }

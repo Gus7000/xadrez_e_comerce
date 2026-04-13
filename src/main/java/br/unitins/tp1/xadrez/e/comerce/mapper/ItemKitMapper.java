@@ -11,7 +11,7 @@ public class ItemKitMapper {
             itemKit.getId(),
             itemKit.getPeca().getId(),
             itemKit.getPeca().getTipo().getNome(),
-            itemKit.getPeca().getMaterial().getTipo(),
+            itemKit.getPeca().getMaterial().getNome(),
             itemKit.getPeca().getCor().getNome(),
             itemKit.getQuantidade()
         );
