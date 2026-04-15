@@ -1,8 +1,11 @@
 package br.unitins.tp1.xadrez.e.comerce.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import br.unitins.tp1.xadrez.e.comerce.model.Relogio;
+import br.unitins.tp1.xadrez.e.comerce.model.RelogioAnalogico;
+import br.unitins.tp1.xadrez.e.comerce.model.RelogioDigital;
 import br.unitins.tp1.xadrez.e.comerce.repository.RelogioRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -38,7 +41,38 @@ public class RelogioServiceImpl implements RelogioService {
 
     @Override
     public List<Relogio> findByTipo(Long idTipo) {
-        return repository.findAll().list();
+        if (idTipo == null) {
+            throw new IllegalArgumentException("ID do tipo não pode ser nulo");
+        }
+        
+        List<Relogio> todos = repository.findAll().list();
+        
+        if (idTipo == 1) {
+            return todos.stream()
+                    .filter(r -> r instanceof RelogioDigital)
+                    .collect(Collectors.toList());
+        } else if (idTipo == 2) {
+            return todos.stream()
+                    .filter(r -> r instanceof RelogioAnalogico)
+                    .collect(Collectors.toList());
+        }
+        
+        throw new IllegalArgumentException("Tipo de relógio inválido. Use 1 para Digital ou 2 para Analógico");
+    }
+
+    public List<Relogio> findByTipo(String tipo) {
+        List<Relogio> todos = repository.findAll().list();
+        
+        if ("digital".equalsIgnoreCase(tipo)) {
+            return todos.stream()
+                    .filter(r -> r instanceof RelogioDigital)
+                    .collect(Collectors.toList());
+        } else if ("analogico".equalsIgnoreCase(tipo)) {
+            return todos.stream()
+                    .filter(r -> r instanceof RelogioAnalogico)
+                    .collect(Collectors.toList());
+        }
+        return todos;
     }
 
     @Override

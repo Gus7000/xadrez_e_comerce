@@ -6,7 +6,7 @@ import java.util.List;
 public record KitPecaResponseDTO(
     Long id,
     List<ItemKitResponseDTO> itens,
-    Long fabricanteId,
+    FabricanteResponseDTO fabricante,
     LocalDateTime dataCadastro
 ) {
 }

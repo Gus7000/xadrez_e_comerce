@@ -1,5 +1,6 @@
 package br.unitins.tp1.xadrez.e.comerce.mapper;
 
+import br.unitins.tp1.xadrez.e.comerce.DTO.FabricanteResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.RelogioAnalogicoResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.RelogioDigitalResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.RelogioResponseDTO;
@@ -23,11 +24,15 @@ public class RelogioMapper {
             ? RelogioAnalogicoMapper.toResponseDTO((RelogioAnalogico) relogio) 
             : null;
 
+        FabricanteResponseDTO fabricanteDTO = relogio.getFabricante() != null 
+            ? FabricanteMapper.toResponseDTO(relogio.getFabricante())
+            : null;
+
         return new RelogioResponseDTO(
             relogio.getId(),
             relogio.getModelo(),
             relogio.getDimensoes(),
-            relogio.getFabricante() != null ? relogio.getFabricante().getId() : null,
+            fabricanteDTO,
             relogioDigitalDTO,
             relogioAnalogicoDTO,
             relogio.getDataCadastro()

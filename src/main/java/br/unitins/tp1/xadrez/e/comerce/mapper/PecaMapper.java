@@ -1,5 +1,6 @@
 package br.unitins.tp1.xadrez.e.comerce.mapper;
 
+import br.unitins.tp1.xadrez.e.comerce.DTO.MaterialResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.PecaRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.PecaResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.model.CorPeca;
@@ -23,14 +24,16 @@ public class PecaMapper {
     public static PecaResponseDTO toResponseDTO(Peca peca) {
         if (peca == null)
             return null;
+        
+        MaterialResponseDTO materialDTO = peca.getMaterial() != null 
+            ? MaterialMapper.toResponseDTO(peca.getMaterial())
+            : null;
+        
         return new PecaResponseDTO(
             peca.getId(),
             peca.getCor().getNome(),
-            peca.getCor().getId(),
             peca.getTipo().getNome(),
-            peca.getTipo().getId(),
-            peca.getMaterial().getId(),
-            peca.getMaterial().getNome(),
+            materialDTO,
             peca.getDiametroCm(),
             peca.getAlturaCm(),
             peca.getDataCadastro()

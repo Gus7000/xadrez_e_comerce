@@ -11,7 +11,7 @@ public record RelogioAnalogicoResponseDTO(
     Boolean temBandeira,
     Boolean necessitaPilha,
     Mecanismo mecanismo,
-    Long fabricanteId,
+    FabricanteResponseDTO fabricante,
     LocalDateTime dataCadastro
 ) {
 }

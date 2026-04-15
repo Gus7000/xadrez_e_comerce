@@ -1,6 +1,7 @@
 package br.unitins.tp1.xadrez.e.comerce.DTO;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 public record RelogioDigitalResponseDTO(
     Long id,
@@ -9,8 +10,8 @@ public record RelogioDigitalResponseDTO(
     Integer incremento,
     Boolean displayDuplo,
     Boolean temBuzzer,
-    String modoTempo,
-    Long fabricanteId,
+    Set<String> modoTempo,
+    FabricanteResponseDTO fabricante,
     LocalDateTime dataCadastro
 ) {
 }

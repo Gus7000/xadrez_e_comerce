@@ -6,7 +6,7 @@ public record RelogioResponseDTO(
     Long id,
     String modelo,
     String dimensoes,
-    Long fabricanteId,
+    FabricanteResponseDTO fabricante,
     RelogioDigitalResponseDTO relogioDigital,
     RelogioAnalogicoResponseDTO relogioAnalogico,
     LocalDateTime dataCadastro

@@ -68,8 +68,8 @@ public class RelogioResource {
 
     @GET
     @Path("/find/tipo/{tipo}")
-    public Response findByTipo(@PathParam("tipo") Long idTipo) {
-        List<RelogioResponseDTO> lista = service.findByTipo(idTipo)
+    public Response findByTipo(@PathParam("tipo") Long tipo) {
+        List<RelogioResponseDTO> lista = service.findByTipo(tipo)
                 .stream()
                 .map(RelogioMapper::toResponseDTO)
                 .toList();

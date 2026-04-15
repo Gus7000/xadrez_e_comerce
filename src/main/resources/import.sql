@@ -82,16 +82,25 @@ insert into item_kit (kit_id, peca_id, quantidade, data_cadastro) values (2, 32,
 insert into relogio (id, modelo, dimensoes, id_fabricante, data_cadastro)
 values (1, 'R2D2', '10x8x3', 1, '2026-04-09 08:50:00');
 
-insert into relogio_digital (id, incremento, display_duplo, tem_buzzer, modo_tempo)
-values (1, 1, true, true, 'FISCHER');
+insert into relogio_digital (id, incremento, display_duplo, tem_buzzer)
+values (1, 1, true, true);
+
+insert into relogio_digital_modo_tempo (relogio_digital_id, modo_tempo)
+values (1, 'SIMPLES');
 
 
 -- RELÓGIO 2 (Digital)
 insert into relogio (id, modelo, dimensoes, id_fabricante, data_cadastro)
 values (2, 'R2D3', '12x9x4', 2, '2026-04-09 08:51:00');
 
-insert into relogio_digital (id, incremento, display_duplo, tem_buzzer, modo_tempo)
-values (2, 2, true, false, 'DELAY');
+insert into relogio_digital (id, incremento, display_duplo, tem_buzzer)
+values (2, 2, true, false);
+
+insert into relogio_digital_modo_tempo (relogio_digital_id, modo_tempo)
+values (2, 'DELAY');
+
+insert into relogio_digital_modo_tempo (relogio_digital_id, modo_tempo)
+values (2, 'FISCHER');
 -- Relógios Analógicos
 
 -- RELÓGIO 3 (Analógico)

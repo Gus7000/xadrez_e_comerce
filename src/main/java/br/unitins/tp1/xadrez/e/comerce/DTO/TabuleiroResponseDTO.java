@@ -5,9 +5,8 @@ import java.time.LocalDateTime;
 public record TabuleiroResponseDTO(
     Long id,
     String tamanho,
-    Long materialId,
-    String materialNome,
-    Long fabricanteId,
+    MaterialResponseDTO material,
+    FabricanteResponseDTO fabricante,
     LocalDateTime dataCadastro
 ) {
 }

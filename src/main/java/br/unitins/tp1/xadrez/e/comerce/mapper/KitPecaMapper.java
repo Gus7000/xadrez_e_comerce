@@ -2,6 +2,7 @@ package br.unitins.tp1.xadrez.e.comerce.mapper;
 
 import java.util.stream.Collectors;
 
+import br.unitins.tp1.xadrez.e.comerce.DTO.FabricanteResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.KitPecaRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.KitPecaResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.model.ItemKit;
@@ -30,10 +31,15 @@ public class KitPecaMapper {
     public static KitPecaResponseDTO toResponseDTO(KitPeca kitPeca) {
         if (kitPeca == null)
             return null;
+        
+        FabricanteResponseDTO fabricanteDTO = kitPeca.getFabricante() != null 
+            ? FabricanteMapper.toResponseDTO(kitPeca.getFabricante())
+            : null;
+        
         return new KitPecaResponseDTO(
             kitPeca.getId(),
             kitPeca.getItens().stream().map(ItemKitMapper::toResponseDTO).collect(Collectors.toList()),
-            kitPeca.getFabricante() != null ? kitPeca.getFabricante().getId() : null,
+            fabricanteDTO,
             kitPeca.getDataCadastro()
         );
     }

@@ -1,9 +1,10 @@
 package br.unitins.tp1.xadrez.e.comerce.mapper;
 
-import java.util.stream.Collectors;
-
 import br.unitins.tp1.xadrez.e.comerce.DTO.JogoXadrezRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.JogoXadrezResponseDTO;
+import br.unitins.tp1.xadrez.e.comerce.DTO.KitPecaResponseDTO;
+import br.unitins.tp1.xadrez.e.comerce.DTO.RelogioResponseDTO;
+import br.unitins.tp1.xadrez.e.comerce.DTO.TabuleiroResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.model.JogoXadrez;
 import br.unitins.tp1.xadrez.e.comerce.model.KitPeca;
 import br.unitins.tp1.xadrez.e.comerce.model.Tabuleiro;
@@ -28,17 +29,19 @@ public class JogoXadrezMapper {
         if (jogoXadrez.getKitPeca() == null || jogoXadrez.getTabuleiro() == null)
             return null;
 
+        KitPecaResponseDTO kitPecaDTO = KitPecaMapper.toResponseDTO(jogoXadrez.getKitPeca());
+        TabuleiroResponseDTO tabuleiroDTO = TabuleiroMapper.toResponseDTO(jogoXadrez.getTabuleiro());
+        RelogioResponseDTO relogioDTO = jogoXadrez.getRelogio() != null ? RelogioMapper.toResponseDTO(jogoXadrez.getRelogio()) : null;
+
         return new JogoXadrezResponseDTO(
             jogoXadrez.getId(),
             jogoXadrez.getNome(),
             jogoXadrez.getPreco(),
             jogoXadrez.getDescricao(),
             jogoXadrez.getEstoqueDisponivel(),
-            jogoXadrez.getKitPeca().getId(),
-            jogoXadrez.getKitPeca().getItens().stream().map(ItemKitMapper::toResponseDTO).collect(Collectors.toList()),
-            jogoXadrez.getTabuleiro().getId(),
-            jogoXadrez.getTabuleiro().getTamanho(),
-            jogoXadrez.getRelogio() != null ? jogoXadrez.getRelogio().getId() : null,
+            kitPecaDTO,
+            tabuleiroDTO,
+            relogioDTO,
             jogoXadrez.getDataCadastro()
         );
     }

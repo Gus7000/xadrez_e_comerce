@@ -48,7 +48,12 @@ class RelogioDigital {
     -incremento: int
     -displayDuplo: boolean
     -temBuzzer: boolean
-    -modoTempo: String
+}
+enum ModoTempo{
+    FISCHER
+    DELAY
+    BRONSTEIN
+    SIMPLES
 }
 
 class RelogioAnalogico {
@@ -104,7 +109,8 @@ Tabuleiro "*" --> "1" Material
 Peca "*" --> "1" Material
 Peca "*" --> "1" TipoPeca
 Peca "*" --> "1" CorPeca
-RelogioAnalogico "*" --> "1" Mecanismo
+RelogioDigital "*" --up> "*" ModoTempo
+RelogioAnalogico "*" --up> "1" Mecanismo
 KitPeca "*" o--> "1" Fabricante
 Tabuleiro "*" o--> "1" Fabricante
 

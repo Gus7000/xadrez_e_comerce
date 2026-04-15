@@ -5,11 +5,8 @@ import java.time.LocalDateTime;
 public record PecaResponseDTO(
     Long id,
     String cor,
-    Long corId,
     String tipo,
-    Long tipoId,
-    Long materialId,
-    String materialNome,
+    MaterialResponseDTO material,
     double diametroCm,
     double alturaCm,
     LocalDateTime dataCadastro
