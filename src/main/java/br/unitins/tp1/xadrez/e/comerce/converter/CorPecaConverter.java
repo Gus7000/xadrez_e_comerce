@@ -14,7 +14,7 @@ public class CorPecaConverter implements AttributeConverter<CorPeca, Long>{
 
     @Override
     public CorPeca convertToEntityAttribute(Long id) {
-        return CorPeca.valueOf(id);
+        return id == null ? null : CorPeca.valueOf(id);
     }
     
 }

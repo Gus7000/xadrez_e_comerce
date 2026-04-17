@@ -2,6 +2,7 @@ package br.unitins.tp1.xadrez.e.comerce.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+import jakarta.ws.rs.NotFoundException;
 
 @JsonFormat(shape = Shape.OBJECT)
 public enum Mecanismo {
@@ -29,6 +30,6 @@ public enum Mecanismo {
             if (mecanismo.getId().equals(id))
                 return mecanismo;
         }
-        throw new IllegalArgumentException("Mecanismo inválido: " + id);
+        throw new NotFoundException("Mecanismo inválido: " + id);
     }
 }

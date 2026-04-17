@@ -2,6 +2,7 @@ package br.unitins.tp1.xadrez.e.comerce.service;
 
 import java.util.List;
 
+import br.unitins.tp1.xadrez.e.comerce.model.ItemKit;
 import br.unitins.tp1.xadrez.e.comerce.model.KitPeca;
 import br.unitins.tp1.xadrez.e.comerce.repository.KitPecaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -44,8 +45,14 @@ public class KitPecaServiceImpl implements KitPecaService {
             throw new NotFoundException("Kit de Peças não encontrado");
         }
 
-        entidade.setItens(kitPeca.getItens());
         entidade.setFabricante(kitPeca.getFabricante());
+        
+        // Limpar itens antigos e adicionar novos referenciando a entidade persistida
+        entidade.getItens().clear();
+        for (ItemKit item : kitPeca.getItens()) {
+            item.setKit(entidade);
+            entidade.getItens().add(item);
+        }
     }
 
     @Override

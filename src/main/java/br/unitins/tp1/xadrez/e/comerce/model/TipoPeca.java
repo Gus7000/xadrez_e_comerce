@@ -2,6 +2,7 @@ package br.unitins.tp1.xadrez.e.comerce.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+import jakarta.ws.rs.NotFoundException;
 
 @JsonFormat(shape = Shape.OBJECT)
 public enum TipoPeca {
@@ -33,7 +34,7 @@ public enum TipoPeca {
             if(tipo.getId().equals(id))
                 return tipo;
         }
-        throw new IllegalArgumentException("TipoRelogio inválido: " + id);
+        throw new NotFoundException("TipoPeca inválido: " + id);
     }
 
 }

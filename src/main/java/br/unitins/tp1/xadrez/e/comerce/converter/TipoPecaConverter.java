@@ -14,7 +14,7 @@ public class TipoPecaConverter implements AttributeConverter<TipoPeca, Long>{
 
     @Override
     public TipoPeca convertToEntityAttribute(Long id) {
-        return TipoPeca.valueOf(id);
+        return id == null ? null : TipoPeca.valueOf(id);
     }
     
 }

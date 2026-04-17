@@ -2,7 +2,9 @@ package br.unitins.tp1.xadrez.e.comerce.service;
 
 import java.util.List;
 
+import br.unitins.tp1.xadrez.e.comerce.model.CorPeca;
 import br.unitins.tp1.xadrez.e.comerce.model.Peca;
+import br.unitins.tp1.xadrez.e.comerce.model.TipoPeca;
 import br.unitins.tp1.xadrez.e.comerce.repository.PecaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -32,12 +34,14 @@ public class PecaServiceImpl implements PecaService {
 
     @Override
     public List<Peca> findByCor(Long corId) {
-        return repository.findByCor(corId).list();
+        CorPeca cor = CorPeca.valueOf(corId);
+    return repository.findByCor(cor).list();
     }
 
     @Override
     public List<Peca> findByTipo(Long tipoId) {
-        return repository.findByTipo(tipoId).list();
+        TipoPeca tipo = TipoPeca.valueOf(tipoId);
+    return repository.findByTipo(tipo).list();
     }
 
     @Override

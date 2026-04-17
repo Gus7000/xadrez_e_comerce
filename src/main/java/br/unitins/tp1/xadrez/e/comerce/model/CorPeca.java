@@ -2,6 +2,7 @@ package br.unitins.tp1.xadrez.e.comerce.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+import jakarta.ws.rs.NotFoundException;
 
 @JsonFormat(shape = Shape.OBJECT)
 public enum CorPeca {
@@ -29,6 +30,6 @@ public enum CorPeca {
             if(cor.getId().equals(id))
                 return cor;
         }
-        throw new IllegalArgumentException("CorPeca inválido: " + id);
+        throw new NotFoundException("CorPeca inválido: " + id);
     }
 }

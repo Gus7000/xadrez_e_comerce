@@ -47,6 +47,11 @@ public class RelogioResource {
     @POST
     @Transactional
     public Response create(@Valid RelogioRequestDTO dto) {
+        var fabricante = fabricanteRepository.findById(dto.fabricanteId());
+        if (fabricante == null) {
+            throw new jakarta.ws.rs.NotFoundException("Fabricante não encontrado");
+        }
+        
         // Use RelogioDigitalMapper ou RelogioAnalicoMapper para criar instâncias específicas
         Relogio relogio = service.create(RelogioDigitalMapper.toEntity(dto, fabricanteRepository));
 
@@ -89,6 +94,11 @@ public class RelogioResource {
     @Path("/{id}")
     @Transactional
     public Response update(@PathParam("id") Long id, @Valid RelogioRequestDTO dto) {
+        var fabricante = fabricanteRepository.findById(dto.fabricanteId());
+        if (fabricante == null) {
+            throw new jakarta.ws.rs.NotFoundException("Fabricante não encontrado");
+        }
+        
         // Use RelogioDigitalMapper ou RelogioAnalicoMapper como apropriado
         service.update(id, RelogioDigitalMapper.toEntity(dto, fabricanteRepository));
 

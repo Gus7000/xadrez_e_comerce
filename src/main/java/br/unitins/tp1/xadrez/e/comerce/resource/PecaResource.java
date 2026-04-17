@@ -71,6 +71,10 @@ public class PecaResource {
     @Transactional
     public Response create(@Valid PecaRequestDTO dto) {
         var material = materialRepository.findById(dto.materialId());
+        if (material == null) {
+            throw new jakarta.ws.rs.NotFoundException("Material não encontrado");
+        }
+        
         Peca peca = PecaMapper.toEntity(dto, material);
         Peca criada = service.create(peca);
         
@@ -82,6 +86,10 @@ public class PecaResource {
     @Transactional
     public Response update(@PathParam("id") Long id, @Valid PecaRequestDTO dto) {
         var material = materialRepository.findById(dto.materialId());
+        if (material == null) {
+            throw new jakarta.ws.rs.NotFoundException("Material não encontrado");
+        }
+        
         Peca peca = PecaMapper.toEntity(dto, material);
         service.update(id, peca);
         

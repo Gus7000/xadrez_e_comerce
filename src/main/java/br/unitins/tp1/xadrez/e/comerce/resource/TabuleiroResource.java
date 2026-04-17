@@ -68,6 +68,15 @@ public class TabuleiroResource {
     @Transactional
     public Response create(@Valid TabuleiroRequestDTO dto) {
         var material = materialRepository.findById(dto.materialId());
+        var fabricante = fabricanteRepository.findById(dto.fabricanteId());
+        
+        if (material == null) {
+            throw new jakarta.ws.rs.NotFoundException("Material não encontrado");
+        }
+        if (fabricante == null) {
+            throw new jakarta.ws.rs.NotFoundException("Fabricante não encontrado");
+        }
+        
         Tabuleiro tabuleiro = TabuleiroMapper.toEntity(dto, material, fabricanteRepository);
         Tabuleiro criado = service.create(tabuleiro);
         return Response.status(201).entity(TabuleiroMapper.toResponseDTO(criado)).build();
@@ -78,6 +87,15 @@ public class TabuleiroResource {
     @Transactional
     public Response update(@PathParam("id") Long id, @Valid TabuleiroRequestDTO dto) {
         var material = materialRepository.findById(dto.materialId());
+        var fabricante = fabricanteRepository.findById(dto.fabricanteId());
+        
+        if (material == null) {
+            throw new jakarta.ws.rs.NotFoundException("Material não encontrado");
+        }
+        if (fabricante == null) {
+            throw new jakarta.ws.rs.NotFoundException("Fabricante não encontrado");
+        }
+        
         Tabuleiro tabuleiro = TabuleiroMapper.toEntity(dto, material, fabricanteRepository);
         service.update(id, tabuleiro);
         return Response.noContent().build();
