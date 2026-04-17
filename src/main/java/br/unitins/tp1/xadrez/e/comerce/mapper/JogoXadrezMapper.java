@@ -7,10 +7,11 @@ import br.unitins.tp1.xadrez.e.comerce.DTO.RelogioResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.TabuleiroResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.model.JogoXadrez;
 import br.unitins.tp1.xadrez.e.comerce.model.KitPeca;
+import br.unitins.tp1.xadrez.e.comerce.model.Relogio;
 import br.unitins.tp1.xadrez.e.comerce.model.Tabuleiro;
 
 public class JogoXadrezMapper {
-    public static JogoXadrez toEntity(JogoXadrezRequestDTO dto, KitPeca kitPeca, Tabuleiro tabuleiro) {
+    public static JogoXadrez toEntity(JogoXadrezRequestDTO dto, KitPeca kitPeca, Tabuleiro tabuleiro, Relogio relogio) {
         if (dto == null)
             return null;
         JogoXadrez jogoXadrez = new JogoXadrez();
@@ -20,6 +21,7 @@ public class JogoXadrezMapper {
         jogoXadrez.setEstoqueDisponivel(dto.estoqueDisponivel());
         jogoXadrez.setKitPeca(kitPeca);
         jogoXadrez.setTabuleiro(tabuleiro);
+        jogoXadrez.setRelogio(relogio);
         return jogoXadrez;
     }
 

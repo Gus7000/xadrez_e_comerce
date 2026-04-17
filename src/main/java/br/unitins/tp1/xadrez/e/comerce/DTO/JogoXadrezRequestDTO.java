@@ -21,6 +21,7 @@ public record JogoXadrezRequestDTO(
     @NotNull(message = "O kit de peças é obrigatório")
     Long kitPecaId,
     @NotNull(message = "O tabuleiro é obrigatório")
-    Long tabuleiroId
+    Long tabuleiroId,
+    Long relogioId
 ) {
 }
