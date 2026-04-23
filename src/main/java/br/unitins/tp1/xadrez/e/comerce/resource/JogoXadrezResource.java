@@ -6,10 +6,7 @@ import br.unitins.tp1.xadrez.e.comerce.DTO.JogoXadrezRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.JogoXadrezResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.mapper.JogoXadrezMapper;
 import br.unitins.tp1.xadrez.e.comerce.model.JogoXadrez;
-import br.unitins.tp1.xadrez.e.comerce.repository.KitPecaRepository;
-import br.unitins.tp1.xadrez.e.comerce.repository.RelogioRepository;
-import br.unitins.tp1.xadrez.e.comerce.repository.TabuleiroRepository;
-import br.unitins.tp1.xadrez.e.comerce.service.JogoXadrezServiceImpl;
+import br.unitins.tp1.xadrez.e.comerce.service.JogoXadrezService;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -30,16 +27,7 @@ import jakarta.ws.rs.core.Response;
 public class JogoXadrezResource {
 
     @Inject
-    JogoXadrezServiceImpl service;
-
-    @Inject
-    KitPecaRepository kitPecaRepository;
-
-    @Inject
-    TabuleiroRepository tabuleiroRepository;
-
-    @Inject
-    RelogioRepository relogioRepository;
+    JogoXadrezService service;
 
     @GET
     public Response findAll() {
@@ -71,19 +59,7 @@ public class JogoXadrezResource {
     @POST
     @Transactional
     public Response create(@Valid JogoXadrezRequestDTO dto) {
-        var kitPeca = kitPecaRepository.findById(dto.kitPecaId());
-        var tabuleiro = tabuleiroRepository.findById(dto.tabuleiroId());
-        var relogio = dto.relogioId() != null ? relogioRepository.findById(dto.relogioId()) : null;
-        
-        if (kitPeca == null) {
-            throw new jakarta.ws.rs.NotFoundException("Kit de Peças não encontrado");
-        }
-        if (tabuleiro == null) {
-            throw new jakarta.ws.rs.NotFoundException("Tabuleiro não encontrado");
-        }
-        
-        JogoXadrez jogoXadrez = JogoXadrezMapper.toEntity(dto, kitPeca, tabuleiro, relogio);
-        JogoXadrez criado = service.create(jogoXadrez);
+        JogoXadrez criado = service.create(dto);
 
         return Response.status(201).entity(JogoXadrezMapper.toResponseDTO(criado)).build();
     }
@@ -92,19 +68,7 @@ public class JogoXadrezResource {
     @Path("/{id}")
     @Transactional
     public Response update(@PathParam("id") Long id, @Valid JogoXadrezRequestDTO dto) {
-        var kitPeca = kitPecaRepository.findById(dto.kitPecaId());
-        var tabuleiro = tabuleiroRepository.findById(dto.tabuleiroId());
-        var relogio = dto.relogioId() != null ? relogioRepository.findById(dto.relogioId()) : null;
-        
-        if (kitPeca == null) {
-            throw new jakarta.ws.rs.NotFoundException("Kit de Peças não encontrado");
-        }
-        if (tabuleiro == null) {
-            throw new jakarta.ws.rs.NotFoundException("Tabuleiro não encontrado");
-        }
-        
-        JogoXadrez jogoXadrez = JogoXadrezMapper.toEntity(dto, kitPeca, tabuleiro, relogio);
-        service.update(id, jogoXadrez);
+        service.update(id, dto);
         
         return Response.noContent().build();
     }

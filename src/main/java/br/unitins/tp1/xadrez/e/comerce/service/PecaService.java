@@ -2,6 +2,7 @@ package br.unitins.tp1.xadrez.e.comerce.service;
 
 import java.util.List;
 
+import br.unitins.tp1.xadrez.e.comerce.DTO.PecaRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.model.Peca;
 
 public interface PecaService {
@@ -15,9 +16,9 @@ public interface PecaService {
 
     List<Peca> findByMaterial(Long materialId);
 
-    Peca create(Peca peca);
+    Peca create(PecaRequestDTO dto);
 
-    void update(Long id, Peca peca);
+    void update(Long id, PecaRequestDTO dto);
 
     void delete(Long id);
 }

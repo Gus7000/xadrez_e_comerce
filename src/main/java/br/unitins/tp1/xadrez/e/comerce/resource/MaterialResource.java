@@ -6,7 +6,7 @@ import br.unitins.tp1.xadrez.e.comerce.DTO.MaterialRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.MaterialResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.mapper.MaterialMapper;
 import br.unitins.tp1.xadrez.e.comerce.model.Material;
-import br.unitins.tp1.xadrez.e.comerce.service.MaterialServiceImpl;
+import br.unitins.tp1.xadrez.e.comerce.service.MaterialService;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -27,7 +27,7 @@ import jakarta.ws.rs.core.Response;
 public class MaterialResource {
 
     @Inject
-    MaterialServiceImpl service;
+    MaterialService service;
 
     @GET
     public Response findAll() {

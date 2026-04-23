@@ -2,9 +2,11 @@ package br.unitins.tp1.xadrez.e.comerce.service;
 
 import java.util.List;
 
+import br.unitins.tp1.xadrez.e.comerce.DTO.PecaRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.model.CorPeca;
 import br.unitins.tp1.xadrez.e.comerce.model.Peca;
 import br.unitins.tp1.xadrez.e.comerce.model.TipoPeca;
+import br.unitins.tp1.xadrez.e.comerce.repository.MaterialRepository;
 import br.unitins.tp1.xadrez.e.comerce.repository.PecaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -15,6 +17,9 @@ public class PecaServiceImpl implements PecaService {
 
     @Inject
     PecaRepository repository;
+
+    @Inject
+    MaterialRepository materialRepository;
 
     @Override
     public List<Peca> findAll() {
@@ -50,22 +55,41 @@ public class PecaServiceImpl implements PecaService {
     }
 
     @Override
-    public Peca create(Peca peca) {
+    public Peca create(PecaRequestDTO dto) {
+        var material = materialRepository.findById(dto.materialId());
+        if (material == null) {
+            throw new NotFoundException("Material não encontrado");
+        }
+
+        Peca peca = new Peca();
+        peca.setCor(CorPeca.valueOf(dto.corId()));
+        peca.setTipo(TipoPeca.valueOf(dto.tipoId()));
+        peca.setMaterial(material);
+        peca.setDiametroCm(dto.diametroCm());
+        peca.setAlturaCm(dto.alturaCm());
+
         repository.persist(peca);
         return peca;
     }
 
     @Override
-    public void update(Long id, Peca peca) {
+    public void update(Long id, PecaRequestDTO dto) {
         Peca entidade = repository.findById(id);
 
         if (entidade == null) {
             throw new NotFoundException("Peça não encontrada");
         }
 
-        entidade.setCor(peca.getCor());
-        entidade.setTipo(peca.getTipo());
-        entidade.setMaterial(peca.getMaterial());
+        var material = materialRepository.findById(dto.materialId());
+        if (material == null) {
+            throw new NotFoundException("Material não encontrado");
+        }
+
+        entidade.setCor(CorPeca.valueOf(dto.corId()));
+        entidade.setTipo(TipoPeca.valueOf(dto.tipoId()));
+        entidade.setMaterial(material);
+        entidade.setDiametroCm(dto.diametroCm());
+        entidade.setAlturaCm(dto.alturaCm());
     }
 
     @Override

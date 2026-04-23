@@ -6,9 +6,7 @@ import br.unitins.tp1.xadrez.e.comerce.DTO.KitPecaRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.KitPecaResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.mapper.KitPecaMapper;
 import br.unitins.tp1.xadrez.e.comerce.model.KitPeca;
-import br.unitins.tp1.xadrez.e.comerce.repository.FabricanteRepository;
-import br.unitins.tp1.xadrez.e.comerce.repository.PecaRepository;
-import br.unitins.tp1.xadrez.e.comerce.service.KitPecaServiceImpl;
+import br.unitins.tp1.xadrez.e.comerce.service.KitPecaService;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -29,13 +27,7 @@ import jakarta.ws.rs.core.Response;
 public class KitPecaResource {
 
     @Inject
-    KitPecaServiceImpl service;
-
-    @Inject
-    PecaRepository pecaRepository;
-
-    @Inject
-    FabricanteRepository fabricanteRepository;
+    KitPecaService service;
 
     @GET
     public Response findAll() {
@@ -53,20 +45,7 @@ public class KitPecaResource {
     @POST
     @Transactional
     public Response create(@Valid KitPecaRequestDTO dto) {
-        var fabricante = fabricanteRepository.findById(dto.fabricanteId());
-        if (fabricante == null) {
-            throw new jakarta.ws.rs.NotFoundException("Fabricante não encontrado");
-        }
-        
-        for (var itemDto : dto.itens()) {
-            var peca = pecaRepository.findById(itemDto.pecaId());
-            if (peca == null) {
-                throw new jakarta.ws.rs.NotFoundException("Peça com ID " + itemDto.pecaId() + " não encontrada");
-            }
-        }
-        
-        KitPeca kitPeca = KitPecaMapper.toEntity(dto, pecaRepository, fabricanteRepository);
-        KitPeca criado = service.create(kitPeca);
+        KitPeca criado = service.create(dto);
         return Response.status(201).entity(KitPecaMapper.toResponseDTO(criado)).build();
     }
 
@@ -74,20 +53,7 @@ public class KitPecaResource {
     @Path("/{id}")
     @Transactional
     public Response update(@PathParam("id") Long id, @Valid KitPecaRequestDTO dto) {
-        var fabricante = fabricanteRepository.findById(dto.fabricanteId());
-        if (fabricante == null) {
-            throw new jakarta.ws.rs.NotFoundException("Fabricante não encontrado");
-        }
-        
-        for (var itemDto : dto.itens()) {
-            var peca = pecaRepository.findById(itemDto.pecaId());
-            if (peca == null) {
-                throw new jakarta.ws.rs.NotFoundException("Peça com ID " + itemDto.pecaId() + " não encontrada");
-            }
-        }
-        
-        KitPeca kitPeca = KitPecaMapper.toEntity(dto, pecaRepository, fabricanteRepository);
-        service.update(id, kitPeca);
+        service.update(id, dto);
         return Response.noContent().build();
     }
 

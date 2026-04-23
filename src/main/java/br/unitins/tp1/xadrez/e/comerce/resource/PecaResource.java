@@ -6,8 +6,7 @@ import br.unitins.tp1.xadrez.e.comerce.DTO.PecaRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.PecaResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.mapper.PecaMapper;
 import br.unitins.tp1.xadrez.e.comerce.model.Peca;
-import br.unitins.tp1.xadrez.e.comerce.repository.MaterialRepository;
-import br.unitins.tp1.xadrez.e.comerce.service.PecaServiceImpl;
+import br.unitins.tp1.xadrez.e.comerce.service.PecaService;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -28,10 +27,7 @@ import jakarta.ws.rs.core.Response;
 public class PecaResource {
 
     @Inject
-    PecaServiceImpl service;
-
-    @Inject
-    MaterialRepository materialRepository;
+    PecaService service;
 
     @GET
     public Response findAll() {
@@ -70,13 +66,7 @@ public class PecaResource {
     @POST
     @Transactional
     public Response create(@Valid PecaRequestDTO dto) {
-        var material = materialRepository.findById(dto.materialId());
-        if (material == null) {
-            throw new jakarta.ws.rs.NotFoundException("Material não encontrado");
-        }
-        
-        Peca peca = PecaMapper.toEntity(dto, material);
-        Peca criada = service.create(peca);
+        Peca criada = service.create(dto);
         
         return Response.status(201).entity(PecaMapper.toResponseDTO(criada)).build();
     }
@@ -85,13 +75,7 @@ public class PecaResource {
     @Path("/{id}")
     @Transactional
     public Response update(@PathParam("id") Long id, @Valid PecaRequestDTO dto) {
-        var material = materialRepository.findById(dto.materialId());
-        if (material == null) {
-            throw new jakarta.ws.rs.NotFoundException("Material não encontrado");
-        }
-        
-        Peca peca = PecaMapper.toEntity(dto, material);
-        service.update(id, peca);
+        service.update(id, dto);
         
         return Response.noContent().build();
     }

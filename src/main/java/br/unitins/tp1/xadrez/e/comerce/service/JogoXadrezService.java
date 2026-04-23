@@ -2,6 +2,7 @@ package br.unitins.tp1.xadrez.e.comerce.service;
 
 import java.util.List;
 
+import br.unitins.tp1.xadrez.e.comerce.DTO.JogoXadrezRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.model.JogoXadrez;
 
 public interface JogoXadrezService {
@@ -13,9 +14,9 @@ public interface JogoXadrezService {
 
     List<JogoXadrez> findByTabuleiro(Long tabuleiroId);
 
-    JogoXadrez create(JogoXadrez jogoXadrez);
+    JogoXadrez create(JogoXadrezRequestDTO dto);
 
-    void update(Long id, JogoXadrez jogoXadrez);
+    void update(Long id, JogoXadrezRequestDTO dto);
 
     void delete(Long id);
 }

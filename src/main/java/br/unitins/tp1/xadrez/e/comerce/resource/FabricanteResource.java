@@ -6,7 +6,7 @@ import br.unitins.tp1.xadrez.e.comerce.DTO.FabricanteRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.FabricanteResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.mapper.FabricanteMapper;
 import br.unitins.tp1.xadrez.e.comerce.model.Fabricante;
-import br.unitins.tp1.xadrez.e.comerce.service.FabricanteServiceImpl;
+import br.unitins.tp1.xadrez.e.comerce.service.FabricanteService;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -27,7 +27,7 @@ import jakarta.ws.rs.core.Response;
 public class FabricanteResource {
 
     @Inject
-    FabricanteServiceImpl service;
+    FabricanteService service;
 
     @GET
     public Response findAll() {

@@ -2,6 +2,7 @@ package br.unitins.tp1.xadrez.e.comerce.service;
 
 import java.util.List;
 
+import br.unitins.tp1.xadrez.e.comerce.DTO.TabuleiroRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.model.Tabuleiro;
 
 public interface TabuleiroService {
@@ -13,9 +14,9 @@ public interface TabuleiroService {
 
     List<Tabuleiro> findByMaterial(Long materialId);
 
-    Tabuleiro create(Tabuleiro tabuleiro);
+    Tabuleiro create(TabuleiroRequestDTO dto);
 
-    void update(Long id, Tabuleiro tabuleiro);
+    void update(Long id, TabuleiroRequestDTO dto);
 
     void delete(Long id);
 }

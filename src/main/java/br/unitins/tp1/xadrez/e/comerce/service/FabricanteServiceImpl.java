@@ -9,15 +9,17 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
 
 @ApplicationScoped
-public class FabricanteServiceImpl {
+public class FabricanteServiceImpl implements FabricanteService {
 
     @Inject
     FabricanteRepository repository;
 
+    @Override
     public List<Fabricante> findAll() {
         return repository.listAll();
     }
 
+    @Override
     public Fabricante findById(Long id) {
         Fabricante fabricante = repository.findById(id);
 
@@ -28,10 +30,12 @@ public class FabricanteServiceImpl {
         return fabricante;
     }
 
+    @Override
     public List<Fabricante> findByNome(String nome) {
         return repository.findByNome(nome).list();
     }
 
+    @Override
     public Fabricante findByCnpj(String cnpj) {
         Fabricante fabricante = repository.findByCnpj(cnpj);
 
@@ -42,11 +46,13 @@ public class FabricanteServiceImpl {
         return fabricante;
     }
 
+    @Override
     public Fabricante create(Fabricante fabricante) {
         repository.persist(fabricante);
         return fabricante;
     }
 
+    @Override
     public void update(Long id, Fabricante fabricante) {
         Fabricante entidade = repository.findById(id);
 
@@ -59,6 +65,7 @@ public class FabricanteServiceImpl {
         entidade.setTelefone(fabricante.getTelefone());
     }
 
+    @Override
     public void delete(Long id) {
         Fabricante entidade = repository.findById(id);
 

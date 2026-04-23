@@ -3,9 +3,11 @@ package br.unitins.tp1.xadrez.e.comerce.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import br.unitins.tp1.xadrez.e.comerce.DTO.RelogioRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.model.Relogio;
 import br.unitins.tp1.xadrez.e.comerce.model.RelogioAnalogico;
 import br.unitins.tp1.xadrez.e.comerce.model.RelogioDigital;
+import br.unitins.tp1.xadrez.e.comerce.repository.FabricanteRepository;
 import br.unitins.tp1.xadrez.e.comerce.repository.RelogioRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -17,6 +19,9 @@ public class RelogioServiceImpl implements RelogioService {
 
     @Inject 
     RelogioRepository repository;
+
+    @Inject
+    FabricanteRepository fabricanteRepository;
 
     @Override
     public List<Relogio> findAll() {
@@ -77,23 +82,38 @@ public class RelogioServiceImpl implements RelogioService {
 
     @Override
     @Transactional
-    public Relogio create(Relogio relogio) {
+    public Relogio create(RelogioRequestDTO dto) {
+        var fabricante = fabricanteRepository.findById(dto.fabricanteId());
+        if (fabricante == null) {
+            throw new NotFoundException("Fabricante não encontrado");
+        }
+
+        RelogioDigital relogio = new RelogioDigital();
+        relogio.setModelo(dto.modelo());
+        relogio.setDimensoes(dto.dimensoes());
+        relogio.setFabricante(fabricante);
+
         repository.persist(relogio);
         return relogio; 
     }
 
     @Override
     @Transactional
-    public void update(Long id, Relogio relogio) {
+    public void update(Long id, RelogioRequestDTO dto) {
         Relogio existente = repository.findById(id);
 
         if (existente == null) {
             throw new NotFoundException("Relógio não encontrado");
         }
 
-        existente.setModelo(relogio.getModelo());
-        existente.setDimensoes(relogio.getDimensoes());
-        existente.setFabricante(relogio.getFabricante());
+        var fabricante = fabricanteRepository.findById(dto.fabricanteId());
+        if (fabricante == null) {
+            throw new NotFoundException("Fabricante não encontrado");
+        }
+
+        existente.setModelo(dto.modelo());
+        existente.setDimensoes(dto.dimensoes());
+        existente.setFabricante(fabricante);
     }
 
     @Override
