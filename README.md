@@ -81,3 +81,34 @@ Create your first JPA entity
 Easily start your REST Web Services
 
 [Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+
+## Atualizacoes do projeto
+
+### Endpoints principais da API
+
+- `/fabricante`
+- `/material`
+- `/peca`
+- `/kit-peca`
+- `/tabuleiro`
+- `/jogo-xadrez`
+- `/relogio`
+
+### Endpoints de consulta de enums
+
+- `/cor`
+- `/tipo-peca`
+- `/mecanismo`
+- `/modo-tempo`
+
+### Informacoes de ambiente
+
+- Banco em desenvolvimento: PostgreSQL configurado em `src/main/resources/application.properties`
+- Banco em testes: H2 em memoria configurado em `src/test/resources/application.properties`
+
+### Padrao de erros da API
+
+- O projeto usa Problem Details for HTTP APIs com `application/problem+json`
+- Validacao de Bean Validation retorna status `422`
+- Recurso nao encontrado retorna status `404`
+- Detalhes completos em `RFC7807.md`
