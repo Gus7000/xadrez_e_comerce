@@ -31,10 +31,7 @@ public class ConstraintViolationExceptionMapper implements ExceptionMapper<Const
                 .distinct()
                 .collect(Collectors.toList());
 
-        String detail = exception.getConstraintViolations().stream()
-                .map(violation -> fieldFromPath(violation.getPropertyPath().toString()) + ": " + violation.getMessage())
-                .distinct()
-                .collect(Collectors.joining("; "));
+        String detail = "Um ou mais campos não passaram na validação.";
 
         String instancePath = uriInfo.getRequestUri().getPath();
         if (!instancePath.startsWith("/")) {

@@ -9,10 +9,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class JogoXadrezRepository implements PanacheRepository<JogoXadrez> {
 
     public PanacheQuery<JogoXadrez> findByKitPeca(Long kitPecaId) {
-        return find("kitPeca.id", kitPecaId);
+        return find("kitPeca.id = ?1 order by id", kitPecaId);
     }
 
     public PanacheQuery<JogoXadrez> findByTabuleiro(Long tabuleiroId) {
-        return find("tabuleiro.id", tabuleiroId);
+        return find("tabuleiro.id = ?1 order by id", tabuleiroId);
     }
 }

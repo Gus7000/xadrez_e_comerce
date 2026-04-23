@@ -3,6 +3,7 @@ package br.unitins.tp1.xadrez.e.comerce.resource;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.ArgumentMatchers.any;
@@ -79,10 +80,12 @@ class PecaResourceTest {
                 .body("type", notNullValue())
                 .body("title", is("Validation Error"))
                 .body("status", is(422))
-                .body("detail", containsString("diametroCm"))
+                .body("detail", equalTo("Um ou mais campos não passaram na validação."))
                 .body("instance", is("/peca"))
                 .body("timestamp", notNullValue())
-                .body("errors", notNullValue());
+                .body("errors.size()", greaterThanOrEqualTo(1))
+                .body("errors[0].field", notNullValue())
+                .body("errors[0].message", notNullValue());
     }
 
     @Test

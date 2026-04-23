@@ -8,6 +8,7 @@ import br.unitins.tp1.xadrez.e.comerce.model.Peca;
 import br.unitins.tp1.xadrez.e.comerce.model.TipoPeca;
 import br.unitins.tp1.xadrez.e.comerce.repository.MaterialRepository;
 import br.unitins.tp1.xadrez.e.comerce.repository.PecaRepository;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
@@ -23,7 +24,7 @@ public class PecaServiceImpl implements PecaService {
 
     @Override
     public List<Peca> findAll() {
-        return repository.listAll();
+        return repository.listAll(Sort.by("id"));
     }
 
     @Override

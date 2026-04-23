@@ -9,10 +9,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class TabuleiroRepository implements PanacheRepository<Tabuleiro> {
 
     public PanacheQuery<Tabuleiro> findByTamanho(String tamanho) {
-        return find("UPPER(tamanho) LIKE UPPER(?1)", "%" + tamanho + "%");
+        return find("UPPER(tamanho) LIKE UPPER(?1) order by id", "%" + tamanho + "%");
     }
 
     public PanacheQuery<Tabuleiro> findByMaterial(Long materialId) {
-        return find("material.id", materialId);
+        return find("material.id = ?1 order by id", materialId);
     }
 }

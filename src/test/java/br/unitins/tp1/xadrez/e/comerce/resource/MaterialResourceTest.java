@@ -4,6 +4,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.ArgumentMatchers.any;
@@ -69,10 +70,12 @@ class MaterialResourceTest {
                 .body("type", notNullValue())
                 .body("title", is("Validation Error"))
                 .body("status", is(422))
-                .body("detail", containsString("nome"))
+                .body("detail", equalTo("Um ou mais campos não passaram na validação."))
                 .body("instance", is("/material"))
                 .body("timestamp", notNullValue())
-                .body("errors", notNullValue());
+                .body("errors.size()", greaterThanOrEqualTo(1))
+                .body("errors[0].field", notNullValue())
+                .body("errors[0].message", notNullValue());
     }
 
     @Test
@@ -88,10 +91,12 @@ class MaterialResourceTest {
                 .body("type", notNullValue())
                 .body("title", is("Validation Error"))
                 .body("status", is(422))
-                .body("detail", containsString("nome"))
+                .body("detail", equalTo("Um ou mais campos não passaram na validação."))
                 .body("instance", is("/material"))
                 .body("timestamp", notNullValue())
-                .body("errors", notNullValue());
+                .body("errors.size()", greaterThanOrEqualTo(1))
+                .body("errors[0].field", notNullValue())
+                .body("errors[0].message", notNullValue());
     }
 
     @Test
@@ -107,10 +112,12 @@ class MaterialResourceTest {
                 .body("type", notNullValue())
                 .body("title", is("Validation Error"))
                 .body("status", is(422))
-                .body("detail", containsString("nome"))
+                .body("detail", equalTo("Um ou mais campos não passaram na validação."))
                 .body("instance", is("/material"))
                 .body("timestamp", notNullValue())
-                .body("errors", notNullValue());
+                .body("errors.size()", greaterThanOrEqualTo(1))
+                .body("errors[0].field", notNullValue())
+                .body("errors[0].message", notNullValue());
     }
 
     @Test
@@ -201,10 +208,12 @@ class MaterialResourceTest {
                 .body("type", notNullValue())
                 .body("title", is("Validation Error"))
                 .body("status", is(422))
-                .body("detail", containsString("nome"))
+                .body("detail", equalTo("Um ou mais campos não passaram na validação."))
                 .body("instance", is("/material/1"))
                 .body("timestamp", notNullValue())
-                .body("errors", notNullValue());
+                .body("errors.size()", greaterThanOrEqualTo(1))
+                .body("errors[0].field", notNullValue())
+                .body("errors[0].message", notNullValue());
     }
 
             @Test

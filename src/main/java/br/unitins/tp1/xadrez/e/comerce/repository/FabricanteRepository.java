@@ -9,7 +9,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class FabricanteRepository implements PanacheRepository<Fabricante> {
 
     public PanacheQuery<Fabricante> findByNome(String nome) {
-        return find("UPPER(nome) LIKE UPPER(?1)", "%" + nome + "%");
+        return find("UPPER(nome) LIKE UPPER(?1) order by id", "%" + nome + "%");
     }
 
     public Fabricante findByCnpj(String cnpj) {

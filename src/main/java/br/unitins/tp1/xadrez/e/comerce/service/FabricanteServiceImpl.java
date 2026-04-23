@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.unitins.tp1.xadrez.e.comerce.model.Fabricante;
 import br.unitins.tp1.xadrez.e.comerce.repository.FabricanteRepository;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
@@ -16,7 +17,7 @@ public class FabricanteServiceImpl implements FabricanteService {
 
     @Override
     public List<Fabricante> findAll() {
-        return repository.listAll();
+        return repository.listAll(Sort.by("id"));
     }
 
     @Override

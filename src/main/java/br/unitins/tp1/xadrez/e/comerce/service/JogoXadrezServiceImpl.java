@@ -12,6 +12,7 @@ import br.unitins.tp1.xadrez.e.comerce.repository.JogoXadrezRepository;
 import br.unitins.tp1.xadrez.e.comerce.repository.RelogioRepository;
 import br.unitins.tp1.xadrez.e.comerce.repository.TabuleiroRepository;
 import br.unitins.tp1.xadrez.e.comerce.mapper.JogoXadrezMapper;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
@@ -33,7 +34,7 @@ public class JogoXadrezServiceImpl implements JogoXadrezService {
 
     @Override
     public List<JogoXadrez> findAll() {
-        return repository.listAll();
+        return repository.listAll(Sort.by("id"));
     }
 
     @Override

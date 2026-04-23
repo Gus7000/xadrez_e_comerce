@@ -7,6 +7,7 @@ import br.unitins.tp1.xadrez.e.comerce.model.Tabuleiro;
 import br.unitins.tp1.xadrez.e.comerce.repository.FabricanteRepository;
 import br.unitins.tp1.xadrez.e.comerce.repository.MaterialRepository;
 import br.unitins.tp1.xadrez.e.comerce.repository.TabuleiroRepository;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
@@ -25,7 +26,7 @@ public class TabuleiroServiceImpl implements TabuleiroService {
 
     @Override
     public List<Tabuleiro> findAll() {
-        return repository.listAll();
+        return repository.listAll(Sort.by("id"));
     }
 
     @Override

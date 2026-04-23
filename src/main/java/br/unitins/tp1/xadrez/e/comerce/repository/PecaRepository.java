@@ -11,14 +11,14 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class PecaRepository implements PanacheRepository<Peca> {
 
     public PanacheQuery<Peca> findByCor(CorPeca cor) {
-        return find("cor", cor);
+        return find("cor = ?1 order by id", cor);
     }
 
     public PanacheQuery<Peca> findByTipo(TipoPeca tipo) {
-        return find("tipo", tipo);
+        return find("tipo = ?1 order by id", tipo);
     }
 
     public PanacheQuery<Peca> findByMaterial(Long materialId) {
-        return find("material.id", materialId);
+        return find("material.id = ?1 order by id", materialId);
     }
 }

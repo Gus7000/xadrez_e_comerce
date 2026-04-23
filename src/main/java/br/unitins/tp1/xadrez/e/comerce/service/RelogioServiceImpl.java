@@ -9,6 +9,7 @@ import br.unitins.tp1.xadrez.e.comerce.model.RelogioAnalogico;
 import br.unitins.tp1.xadrez.e.comerce.model.RelogioDigital;
 import br.unitins.tp1.xadrez.e.comerce.repository.FabricanteRepository;
 import br.unitins.tp1.xadrez.e.comerce.repository.RelogioRepository;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -25,7 +26,7 @@ public class RelogioServiceImpl implements RelogioService {
 
     @Override
     public List<Relogio> findAll() {
-        return repository.findAll().list();
+        return repository.listAll(Sort.by("id"));
     }
 
     @Override
@@ -50,7 +51,7 @@ public class RelogioServiceImpl implements RelogioService {
             throw new IllegalArgumentException("ID do tipo não pode ser nulo");
         }
         
-        List<Relogio> todos = repository.findAll().list();
+        List<Relogio> todos = repository.listAll(Sort.by("id"));
         
         if (idTipo == 1) {
             return todos.stream()
@@ -66,7 +67,7 @@ public class RelogioServiceImpl implements RelogioService {
     }
 
     public List<Relogio> findByTipo(String tipo) {
-        List<Relogio> todos = repository.findAll().list();
+        List<Relogio> todos = repository.listAll(Sort.by("id"));
         
         if ("digital".equalsIgnoreCase(tipo)) {
             return todos.stream()

@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.unitins.tp1.xadrez.e.comerce.model.Material;
 import br.unitins.tp1.xadrez.e.comerce.repository.MaterialRepository;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -17,7 +18,7 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public List<Material> findAll() {
-        return repository.findAll().list();
+        return repository.listAll(Sort.by("id"));
     }
 
     @Override
