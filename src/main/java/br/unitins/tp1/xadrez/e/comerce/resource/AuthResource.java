@@ -2,6 +2,7 @@ package br.unitins.tp1.xadrez.e.comerce.resource;
 
 import br.unitins.tp1.xadrez.e.comerce.DTO.AuthRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.AuthResponseDTO;
+import br.unitins.tp1.xadrez.e.comerce.DTO.UsuarioRegisterDTO;
 import br.unitins.tp1.xadrez.e.comerce.service.AuthService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -25,5 +26,12 @@ public class AuthResource {
     public Response login(@Valid AuthRequestDTO dto) {
         AuthResponseDTO response = authService.login(dto);
         return Response.ok(response).build();
+    }
+
+    @POST
+    @Path("/register")
+    public Response register(@Valid UsuarioRegisterDTO dto) {
+        AuthResponseDTO response = authService.register(dto);
+        return Response.status(201).entity(response).build();
     }
 }

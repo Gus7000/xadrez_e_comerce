@@ -11,6 +11,8 @@ public interface UsuarioService {
 
     Usuario findById(Long id);
 
+    Usuario findByLogin(String login);
+
     Usuario create(UsuarioRequestDTO dto);
 
     void update(Long id, UsuarioRequestDTO dto);

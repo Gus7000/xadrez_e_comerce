@@ -12,11 +12,13 @@ import org.junit.jupiter.api.Test;
 
 import br.unitins.tp1.xadrez.e.comerce.DTO.AuthRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.AuthResponseDTO;
+import br.unitins.tp1.xadrez.e.comerce.DTO.UsuarioRegisterDTO;
 import br.unitins.tp1.xadrez.e.comerce.model.Perfil;
 import br.unitins.tp1.xadrez.e.comerce.service.AuthService;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
+import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.NotAuthorizedException;
 
 @QuarkusTest
@@ -45,6 +47,20 @@ class AuthResourceTest {
                 .body("login", equalTo("admin"))
                 .body("token", notNullValue())
                 .body("perfil", equalTo("ADMIN"));
+    }
+
+    @Test
+    void shouldFailRegisterWhenLoginAlreadyExists() {
+        when(authService.register(any(UsuarioRegisterDTO.class)))
+                .thenThrow(new WebApplicationException("Login já cadastrado", 409));
+
+        given()
+                .contentType(ContentType.JSON)
+                .body("{\"login\":\"cliente\",\"senha\":\"123456\"}")
+                .when()
+                .post("/auth/register")
+                .then()
+                .statusCode(409);
     }
 
     @Test

@@ -9,6 +9,8 @@ import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Response;
 
 @ApplicationScoped
 public class UsuarioServiceImpl implements UsuarioService {
@@ -36,7 +38,20 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
+    public Usuario findByLogin(String login) {
+        Usuario usuario = repository.findByLogin(login);
+
+        if (usuario == null) {
+            throw new NotFoundException("Usuário não encontrado");
+        }
+
+        return usuario;
+    }
+
+    @Override
     public Usuario create(UsuarioRequestDTO dto) {
+        validarLoginDisponivel(dto.login(), null);
+
         Usuario usuario = new Usuario();
         usuario.setLogin(dto.login());
         usuario.setSenhaHash(hashService.hash(dto.senha()));
@@ -54,6 +69,8 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new NotFoundException("Usuário não encontrado");
         }
 
+        validarLoginDisponivel(dto.login(), id);
+
         usuario.setLogin(dto.login());
         usuario.setSenhaHash(hashService.hash(dto.senha()));
         usuario.setPerfil(dto.perfil());
@@ -68,5 +85,13 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
 
         repository.delete(usuario);
+    }
+
+    private void validarLoginDisponivel(String login, Long idIgnorado) {
+        Usuario usuarioExistente = repository.findByLogin(login);
+
+        if (usuarioExistente != null && (idIgnorado == null || !usuarioExistente.getId().equals(idIgnorado))) {
+            throw new WebApplicationException("Login já cadastrado", Response.Status.CONFLICT);
+        }
     }
 }

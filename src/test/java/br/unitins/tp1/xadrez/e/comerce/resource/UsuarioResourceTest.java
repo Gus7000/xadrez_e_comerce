@@ -13,8 +13,8 @@ import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.List;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,7 +47,7 @@ class UsuarioResourceTest {
 
         given()
                 .when()
-                .get("/usuario")
+                .get("/admin/usuarios")
                 .then()
                 .statusCode(200)
                 .body("size()", is(2))
@@ -61,7 +61,7 @@ class UsuarioResourceTest {
 
         given()
                 .when()
-                .get("/usuario/1")
+                .get("/admin/usuarios/1")
                 .then()
                 .statusCode(200)
                 .body("id", equalTo(1))
@@ -77,7 +77,7 @@ class UsuarioResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"login\":\"admin\",\"senha\":\"123456\",\"perfil\":\"ADMIN\"}")
                 .when()
-                .post("/usuario")
+                .post("/admin/usuarios")
                 .then()
                 .statusCode(201)
                 .body("id", equalTo(1))
@@ -92,14 +92,14 @@ class UsuarioResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"login\":\"admin\"}")
                 .when()
-                .post("/usuario")
+                .post("/admin/usuarios")
                 .then()
                 .statusCode(422)
                 .body("type", notNullValue())
                 .body("title", is("Validation Error"))
                 .body("status", is(422))
                 .body("detail", is("Um ou mais campos não passaram na validação."))
-                .body("instance", is("/usuario"))
+                .body("instance", is("/admin/usuarios"))
                 .body("errors.size()", greaterThanOrEqualTo(1));
     }
 
@@ -111,7 +111,7 @@ class UsuarioResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"login\":\"admin2\",\"senha\":\"123456\",\"perfil\":\"CLIENTE\"}")
                 .when()
-                .put("/usuario/1")
+                .put("/admin/usuarios/1")
                 .then()
                 .statusCode(204);
 
@@ -127,13 +127,13 @@ class UsuarioResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"login\":\"admin2\",\"senha\":\"123456\",\"perfil\":\"CLIENTE\"}")
                 .when()
-                .put("/usuario/999")
+                .put("/admin/usuarios/999")
                 .then()
                 .statusCode(404)
                 .body("title", is("Not Found"))
                 .body("status", is(404))
                 .body("detail", is("Usuário não encontrado"))
-                .body("instance", is("/usuario/999"));
+                .body("instance", is("/admin/usuarios/999"));
     }
 
     @Test
@@ -142,7 +142,7 @@ class UsuarioResourceTest {
 
         given()
                 .when()
-                .delete("/usuario/1")
+                .delete("/admin/usuarios/1")
                 .then()
                 .statusCode(204);
 
@@ -156,13 +156,13 @@ class UsuarioResourceTest {
 
         given()
                 .when()
-                .delete("/usuario/999")
+                .delete("/admin/usuarios/999")
                 .then()
                 .statusCode(404)
                 .body("title", is("Not Found"))
                 .body("status", is(404))
                 .body("detail", is("Usuário não encontrado"))
-                .body("instance", is("/usuario/999"));
+                .body("instance", is("/admin/usuarios/999"));
     }
 
     private Usuario buildUsuario(Long id, String login) {
