@@ -2,11 +2,11 @@ package br.unitins.tp1.xadrez.e.comerce.resource;
 
 import java.util.List;
 
-import br.unitins.tp1.xadrez.e.comerce.DTO.KitPecaRequestDTO;
-import br.unitins.tp1.xadrez.e.comerce.DTO.KitPecaResponseDTO;
-import br.unitins.tp1.xadrez.e.comerce.mapper.KitPecaMapper;
-import br.unitins.tp1.xadrez.e.comerce.model.KitPeca;
-import br.unitins.tp1.xadrez.e.comerce.service.KitPecaService;
+import br.unitins.tp1.xadrez.e.comerce.DTO.UsuarioRequestDTO;
+import br.unitins.tp1.xadrez.e.comerce.DTO.UsuarioResponseDTO;
+import br.unitins.tp1.xadrez.e.comerce.mapper.UsuarioMapper;
+import br.unitins.tp1.xadrez.e.comerce.model.Usuario;
+import br.unitins.tp1.xadrez.e.comerce.service.UsuarioService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -22,40 +22,39 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/kit-peca")
+@Path("/usuario")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class KitPecaResource {
+@RolesAllowed("ADMIN")
+public class UsuarioResource {
 
     @Inject
-    KitPecaService service;
+    UsuarioService service;
 
     @GET
     public Response findAll() {
-        List<KitPecaResponseDTO> lista = service.findAll().stream().map(KitPecaMapper::toResponseDTO).toList();
+        List<UsuarioResponseDTO> lista = service.findAll().stream().map(UsuarioMapper::toResponseDTO).toList();
         return Response.ok(lista).build();
     }
 
     @GET
     @Path("/{id}")
     public Response findById(@PathParam("id") Long id) {
-        KitPeca kitPeca = service.findById(id);
-        return Response.ok(KitPecaMapper.toResponseDTO(kitPeca)).build();
+        Usuario usuario = service.findById(id);
+        return Response.ok(UsuarioMapper.toResponseDTO(usuario)).build();
     }
 
     @POST
     @Transactional
-    @RolesAllowed("ADMIN")
-    public Response create(@Valid KitPecaRequestDTO dto) {
-        KitPeca criado = service.create(dto);
-        return Response.status(201).entity(KitPecaMapper.toResponseDTO(criado)).build();
+    public Response create(@Valid UsuarioRequestDTO dto) {
+        Usuario usuario = service.create(dto);
+        return Response.status(201).entity(UsuarioMapper.toResponseDTO(usuario)).build();
     }
 
     @PUT
     @Path("/{id}")
     @Transactional
-    @RolesAllowed("ADMIN")
-    public Response update(@PathParam("id") Long id, @Valid KitPecaRequestDTO dto) {
+    public Response update(@PathParam("id") Long id, @Valid UsuarioRequestDTO dto) {
         service.update(id, dto);
         return Response.noContent().build();
     }
@@ -63,7 +62,6 @@ public class KitPecaResource {
     @DELETE
     @Path("/{id}")
     @Transactional
-    @RolesAllowed("ADMIN")
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.noContent().build();

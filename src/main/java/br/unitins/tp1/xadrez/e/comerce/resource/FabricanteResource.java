@@ -7,6 +7,7 @@ import br.unitins.tp1.xadrez.e.comerce.DTO.FabricanteResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.mapper.FabricanteMapper;
 import br.unitins.tp1.xadrez.e.comerce.model.Fabricante;
 import br.unitins.tp1.xadrez.e.comerce.service.FabricanteService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -58,6 +59,7 @@ public class FabricanteResource {
 
     @POST
     @Transactional
+    @RolesAllowed("ADMIN")
     public Response create(@Valid FabricanteRequestDTO dto) {
         Fabricante fabricante = FabricanteMapper.toEntity(dto);
         Fabricante created = service.create(fabricante);
@@ -67,6 +69,7 @@ public class FabricanteResource {
     @PUT
     @Path("/{id}")
     @Transactional
+    @RolesAllowed("ADMIN")
     public Response update(@PathParam("id") Long id, @Valid FabricanteRequestDTO dto) {
         Fabricante fabricante = FabricanteMapper.toEntity(dto);
         service.update(id, fabricante);
@@ -76,6 +79,7 @@ public class FabricanteResource {
     @DELETE
     @Path("/{id}")
     @Transactional
+    @RolesAllowed("ADMIN")
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.noContent().build();

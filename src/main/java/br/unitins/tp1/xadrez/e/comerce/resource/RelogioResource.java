@@ -7,6 +7,7 @@ import br.unitins.tp1.xadrez.e.comerce.DTO.RelogioResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.mapper.RelogioMapper;
 import br.unitins.tp1.xadrez.e.comerce.model.Relogio;
 import br.unitins.tp1.xadrez.e.comerce.service.RelogioService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -41,6 +42,7 @@ public class RelogioResource {
 
     @POST
     @Transactional
+    @RolesAllowed("ADMIN")
     public Response create(@Valid RelogioRequestDTO dto) {
         Relogio relogio = service.create(dto);
 
@@ -82,6 +84,7 @@ public class RelogioResource {
     @PUT
     @Path("/{id}")
     @Transactional
+    @RolesAllowed("ADMIN")
     public Response update(@PathParam("id") Long id, @Valid RelogioRequestDTO dto) {
         service.update(id, dto);
 
@@ -91,6 +94,7 @@ public class RelogioResource {
     @DELETE
     @Path("/{id}")
     @Transactional
+    @RolesAllowed("ADMIN")
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
 

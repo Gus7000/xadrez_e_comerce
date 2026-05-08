@@ -122,3 +122,7 @@ values (4, true, true, 2); -- QUARTZ
 insert into jogo_xadrez (nome, preco, descricao, estoque_disponivel, id_kit_peca, id_tabuleiro, id_relogio, data_cadastro) values ('Jogo Clássico Madeira', 449.90, 'Jogo completo com kit clássico e tabuleiro de madeira', 12, 1, 1, 1, '2026-04-09 09:00:00');
 insert into jogo_xadrez (nome, preco, descricao, estoque_disponivel, id_kit_peca, id_tabuleiro, id_relogio, data_cadastro) values ('Jogo Premium Mármore', 899.90, 'Jogo completo premium para coleção e torneio', 4, 2, 3, 3, '2026-04-09 09:01:00');
 insert into jogo_xadrez (nome, preco, descricao, estoque_disponivel, id_kit_peca, id_tabuleiro, data_cadastro) values ('Jogo Básico', 299.90, 'Jogo simples sem relógio incluso', 20, 1, 2, '2026-04-09 09:02:00');
+
+-- Usuarios
+insert into usuario (login, senha_hash, perfil, data_cadastro) values ('admin', '$2a$10$RQR2kuvM/IVZZZJudQykCO8ldWgZuXeTr/yAAhZ/1XVy8AG6./VNy', 'ADMIN', '2026-04-09 09:10:00');
+insert into usuario (login, senha_hash, perfil, data_cadastro) values ('cliente', '$2a$10$3oHeQh4DQzXDLSrs.Vu.1Ofit/H9.wbMqlnsFaMbIvohtcr4ctq8q', 'CLIENTE', '2026-04-09 09:11:00');

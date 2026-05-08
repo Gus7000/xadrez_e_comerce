@@ -7,6 +7,7 @@ import br.unitins.tp1.xadrez.e.comerce.DTO.PecaResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.mapper.PecaMapper;
 import br.unitins.tp1.xadrez.e.comerce.model.Peca;
 import br.unitins.tp1.xadrez.e.comerce.service.PecaService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -65,6 +66,7 @@ public class PecaResource {
 
     @POST
     @Transactional
+    @RolesAllowed("ADMIN")
     public Response create(@Valid PecaRequestDTO dto) {
         Peca criada = service.create(dto);
         
@@ -74,6 +76,7 @@ public class PecaResource {
     @PUT
     @Path("/{id}")
     @Transactional
+    @RolesAllowed("ADMIN")
     public Response update(@PathParam("id") Long id, @Valid PecaRequestDTO dto) {
         service.update(id, dto);
         
@@ -83,6 +86,7 @@ public class PecaResource {
     @DELETE
     @Path("/{id}")
     @Transactional
+    @RolesAllowed("ADMIN")
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.noContent().build();

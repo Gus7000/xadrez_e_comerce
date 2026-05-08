@@ -7,6 +7,7 @@ import br.unitins.tp1.xadrez.e.comerce.DTO.TabuleiroResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.mapper.TabuleiroMapper;
 import br.unitins.tp1.xadrez.e.comerce.model.Tabuleiro;
 import br.unitins.tp1.xadrez.e.comerce.service.TabuleiroService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -58,6 +59,7 @@ public class TabuleiroResource {
 
     @POST
     @Transactional
+    @RolesAllowed("ADMIN")
     public Response create(@Valid TabuleiroRequestDTO dto) {
         Tabuleiro criado = service.create(dto);
         return Response.status(201).entity(TabuleiroMapper.toResponseDTO(criado)).build();
@@ -66,6 +68,7 @@ public class TabuleiroResource {
     @PUT
     @Path("/{id}")
     @Transactional
+    @RolesAllowed("ADMIN")
     public Response update(@PathParam("id") Long id, @Valid TabuleiroRequestDTO dto) {
         service.update(id, dto);
         return Response.noContent().build();
@@ -74,6 +77,7 @@ public class TabuleiroResource {
     @DELETE
     @Path("/{id}")
     @Transactional
+    @RolesAllowed("ADMIN")
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.noContent().build();

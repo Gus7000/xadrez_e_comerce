@@ -7,6 +7,7 @@ import br.unitins.tp1.xadrez.e.comerce.DTO.MaterialResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.mapper.MaterialMapper;
 import br.unitins.tp1.xadrez.e.comerce.model.Material;
 import br.unitins.tp1.xadrez.e.comerce.service.MaterialService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -51,6 +52,7 @@ public class MaterialResource {
 
     @POST
     @Transactional
+    @RolesAllowed("ADMIN")
     public Response create(@Valid MaterialRequestDTO dto) {
         Material material = MaterialMapper.toEntity(dto);
         Material created = service.create(material);
@@ -62,6 +64,7 @@ public class MaterialResource {
     @PUT
     @Path("/{id}")
     @Transactional
+    @RolesAllowed("ADMIN")
     public Response update(@PathParam("id") Long id,@Valid MaterialRequestDTO dto) {
         Material material = MaterialMapper.toEntity(dto);
         service.update(id, material);
@@ -71,6 +74,7 @@ public class MaterialResource {
     @DELETE
     @Path("/{id}")
     @Transactional
+    @RolesAllowed("ADMIN")
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.noContent().build();

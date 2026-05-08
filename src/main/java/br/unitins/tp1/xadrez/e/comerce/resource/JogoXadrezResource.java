@@ -7,6 +7,7 @@ import br.unitins.tp1.xadrez.e.comerce.DTO.JogoXadrezResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.mapper.JogoXadrezMapper;
 import br.unitins.tp1.xadrez.e.comerce.model.JogoXadrez;
 import br.unitins.tp1.xadrez.e.comerce.service.JogoXadrezService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -58,6 +59,7 @@ public class JogoXadrezResource {
 
     @POST
     @Transactional
+    @RolesAllowed("ADMIN")
     public Response create(@Valid JogoXadrezRequestDTO dto) {
         JogoXadrez criado = service.create(dto);
 
@@ -67,6 +69,7 @@ public class JogoXadrezResource {
     @PUT
     @Path("/{id}")
     @Transactional
+    @RolesAllowed("ADMIN")
     public Response update(@PathParam("id") Long id, @Valid JogoXadrezRequestDTO dto) {
         service.update(id, dto);
         
@@ -76,6 +79,7 @@ public class JogoXadrezResource {
     @DELETE
     @Path("/{id}")
     @Transactional
+    @RolesAllowed("ADMIN")
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.noContent().build();
