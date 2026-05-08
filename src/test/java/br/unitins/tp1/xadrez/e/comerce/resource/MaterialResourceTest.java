@@ -24,10 +24,12 @@ import br.unitins.tp1.xadrez.e.comerce.model.Material;
 import br.unitins.tp1.xadrez.e.comerce.service.MaterialService;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
 import jakarta.ws.rs.NotFoundException;
 
 @QuarkusTest
+@TestSecurity(user = "admin", roles = {"ADMIN"})
 class MaterialResourceTest {
 
     @InjectMock

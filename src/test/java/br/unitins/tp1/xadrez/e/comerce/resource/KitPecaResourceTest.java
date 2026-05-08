@@ -30,9 +30,11 @@ import br.unitins.tp1.xadrez.e.comerce.DTO.KitPecaRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.service.KitPecaService;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
 
 @QuarkusTest
+@TestSecurity(user = "admin", roles = {"ADMIN"})
 class KitPecaResourceTest {
 
     @InjectMock

@@ -26,9 +26,11 @@ import br.unitins.tp1.xadrez.e.comerce.model.RelogioDigital;
 import br.unitins.tp1.xadrez.e.comerce.service.RelogioService;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
 
 @QuarkusTest
+@TestSecurity(user = "admin", roles = {"ADMIN"})
 class RelogioResourceTest {
 
     @InjectMock
