@@ -5,6 +5,7 @@ import br.unitins.tp1.xadrez.e.comerce.DTO.AuthResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.UsuarioRegisterDTO;
 import br.unitins.tp1.xadrez.e.comerce.service.AuthService;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
@@ -23,6 +24,7 @@ public class AuthResource {
 
     @POST
     @Path("/login")
+    @Transactional
     public Response login(@Valid AuthRequestDTO dto) {
         AuthResponseDTO response = authService.login(dto);
         return Response.ok(response).build();
@@ -30,6 +32,7 @@ public class AuthResource {
 
     @POST
     @Path("/register")
+    @Transactional
     public Response register(@Valid UsuarioRegisterDTO dto) {
         AuthResponseDTO response = authService.register(dto);
         return Response.status(201).entity(response).build();

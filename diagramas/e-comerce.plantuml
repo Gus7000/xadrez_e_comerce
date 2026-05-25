@@ -1,0 +1,170 @@
+@startuml EComerce
+
+class DefaultEntity {
+  - id: Long
+  - dataCadastro: Date
+  - dataAtualizacao: Date
+}
+
+class Usuario {
+  - email: String
+  - senha: String
+  - nome: String
+  - telefone: String
+  - cpf: String
+  - cadastroCompleto: boolean
+}
+enum Perfil {
+  ADMIN
+  CLIENTE
+  }
+
+class Endereco {
+  - rua: String
+  - numero: String
+  - complemento: String
+  - cep: String
+  - cidade: String
+  - estado: String
+  - pais: String
+}
+
+
+class ListaDesejos {
+}
+
+
+
+
+class Pedido {
+  - status: PedidoStatus
+  - subtotal: BigDecimal
+  - desconto: BigDecimal
+  - frete: BigDecimal
+  - taxas: BigDecimal
+  - valorTotal: BigDecimal
+}
+
+enum PedidoStatus {
+  AGUARDANDO_PAGAMENTO
+  PAGO
+  ENVIADO_PARA_ENTREGA
+  ENTREGUE
+  CANCELADO
+}
+
+class EnderecoPedido {
+  - rua: String
+  - numero: String
+  - complemento: String
+  - cep: String
+  - cidade: String
+  - estado: String
+  - pais: String
+}
+
+
+enum MetodoPagamento {
+  PIX
+  CARTAO_CREDITO
+  CARTAO_DEBITO
+  BOLETO
+}
+
+enum PagamentoStatus {
+  PENDENTE
+  AUTORIZADO
+  RECUSADO
+  ESTORNADO
+}
+
+class Pagamento {
+  - metodo: MetodoPagamento
+  - status: PagamentoStatus
+  - identificadorTransacao: String
+  - valor: BigDecimal
+}
+
+class PedidoItem {
+  - quantidade: int
+  - precoUnitario: BigDecimal
+}
+
+class JogoXadrez{
+    -nome: String
+  -preco: BigDecimal
+    -descricao: String
+    <<adminOnly>>
+    -estoqueDisponivel: int
+  -custoProducao: BigDecimal
+}
+
+abstract class CupomDesconto {
+  - codigo: String
+  - dataValidade: Date
+  - ativo: boolean
+  - usoMaximo: Integer
+  - usosRealizados: Integer
+  - porUsuario: boolean
+  - expiraEm: Date
+}
+
+class CupomDescontoPercentual {
+  - percentualDesconto: double
+}
+
+class CupomDescontoFixo {
+  - valorDesconto: BigDecimal
+}
+
+CupomDescontoPercentual --|> CupomDesconto
+CupomDescontoFixo --|> CupomDesconto
+
+
+
+Usuario "1" o--> "*" Endereco
+Usuario "1" *--> "1" ListaDesejos
+Usuario "1" o--> "*" Pedido
+Usuario "1" --> "1" Perfil
+
+ListaDesejos "*" o--> "*" JogoXadrez
+
+Pedido "1" *--> "*" PedidoItem
+PedidoItem "*" o--> "1" JogoXadrez
+Pedido "1" *--> "1" EnderecoPedido
+Pedido "1" *--> "1" Pagamento
+Pedido "0..1" --> "1" CupomDesconto
+
+
+
+Pedido "1"--> "1" PedidoStatus
+Pagamento "1"--> "1"MetodoPagamento
+Pagamento "1"--> "1"PagamentoStatus
+
+note bottom of DefaultEntity
+  Todas as classes herdam
+  de DefaultEntity
+end note
+
+note top of Usuario
+  O login é por email e senha.
+  cadastroCompleto indica se o cliente já pode comprar.
+end note
+
+note bottom of EnderecoPedido
+  Value object embutido no pedido.
+  Ele guarda a cópia do endereço no momento da compra.
+  Se o usuário apagar o endereço salvo, o pedido não é afetado.
+end note
+
+note bottom of JogoXadrez
+  O catálogo de produtos fica no diagrama de classes.
+  Este diagrama mostra apenas interação do usuário com a compra.
+end note
+
+note bottom of CupomDesconto
+  O desconto é aplicado no pedido, não no produto.
+  Use subclasses para representar tipos diferentes de cupom.
+end note
+
+@enduml

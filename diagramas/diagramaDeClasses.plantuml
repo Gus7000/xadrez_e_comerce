@@ -37,11 +37,17 @@ enum TipoPeca {
 
 class Tabuleiro {
     -tamanho: String
+    <<adminOnly>>
+    -estoqueDisponivel: int
+    -custoProducao: BigDecimal
 }
 
 abstract class Relogio {
     -modelo: String
     -dimensoes: String
+    <<adminOnly>>
+    -estoqueDisponivel: int
+    -custoProducao: BigDecimal
 }
 
 class RelogioDigital {
@@ -67,16 +73,25 @@ enum Mecanismo{
 
 class JogoXadrez{
     -nome: String
-    -preco: double
+    -preco: BigDecimal
     -descricao: String
+    <<adminOnly>>
     -estoqueDisponivel: int
+    -custoProducao: BigDecimal
 }
 
 class KitPeca {
+    -nome: String
+    -preco: BigDecimal
+    -estoqueDisponivel: int
+    <<adminOnly>>
+    -estoqueDisponivel: int
+    -custoProducao: BigDecimal
 }
 
 class Fabricante {
     -nome: String
+    <<adminOnly>>
     -cnpj: String
     -telefone: String
 }
