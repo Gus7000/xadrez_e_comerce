@@ -1,6 +1,8 @@
 package br.unitins.tp1.xadrez.e.comerce.mapper;
 
 import br.unitins.tp1.xadrez.e.comerce.DTO.FabricanteResponseDTO;
+import br.unitins.tp1.xadrez.e.comerce.DTO.FabricanteClienteResponseDTO;
+import br.unitins.tp1.xadrez.e.comerce.DTO.RelogioDigitalClienteResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.RelogioDigitalResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.RelogioRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.model.RelogioDigital;
@@ -38,6 +40,28 @@ public class RelogioDigitalMapper {
                 : null,
             fabricanteDTO,
             relogio.getDataCadastro()
+        );
+    }
+
+    public static RelogioDigitalClienteResponseDTO toClienteResponseDTO(RelogioDigital relogio) {
+        if (relogio == null)
+            return null;
+
+        FabricanteClienteResponseDTO fabricanteDTO = relogio.getFabricante() != null
+            ? FabricanteMapper.toClienteResponseDTO(relogio.getFabricante())
+            : null;
+
+        return new RelogioDigitalClienteResponseDTO(
+            relogio.getId(),
+            relogio.getModelo(),
+            relogio.getDimensoes(),
+            relogio.getIncremenento(),
+            relogio.getDisplayDuplo(),
+            relogio.getTemBuzzer(),
+            relogio.getModoTempo() != null
+                ? relogio.getModoTempo().stream().map(m -> m.getNome()).collect(Collectors.toSet())
+                : null,
+            fabricanteDTO
         );
     }
 }

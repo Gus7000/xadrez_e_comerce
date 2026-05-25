@@ -1,7 +1,9 @@
 package br.unitins.tp1.xadrez.e.comerce.mapper;
 
+import br.unitins.tp1.xadrez.e.comerce.DTO.FabricanteClienteResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.FabricanteResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.MaterialResponseDTO;
+import br.unitins.tp1.xadrez.e.comerce.DTO.TabuleiroClienteResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.TabuleiroRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.TabuleiroResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.model.Material;
@@ -37,6 +39,26 @@ public class TabuleiroMapper {
             materialDTO,
             fabricanteDTO,
             tabuleiro.getDataCadastro()
+        );
+    }
+
+    public static TabuleiroClienteResponseDTO toClienteResponseDTO(Tabuleiro tabuleiro) {
+        if (tabuleiro == null)
+            return null;
+
+        MaterialResponseDTO materialDTO = tabuleiro.getMaterial() != null
+            ? MaterialMapper.toResponseDTO(tabuleiro.getMaterial())
+            : null;
+
+        FabricanteClienteResponseDTO fabricanteDTO = tabuleiro.getFabricante() != null
+            ? FabricanteMapper.toClienteResponseDTO(tabuleiro.getFabricante())
+            : null;
+
+        return new TabuleiroClienteResponseDTO(
+            tabuleiro.getId(),
+            tabuleiro.getTamanho(),
+            materialDTO,
+            fabricanteDTO
         );
     }
 }

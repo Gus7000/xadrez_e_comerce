@@ -1,6 +1,7 @@
 package br.unitins.tp1.xadrez.e.comerce.mapper;
 
 import br.unitins.tp1.xadrez.e.comerce.DTO.MaterialResponseDTO;
+import br.unitins.tp1.xadrez.e.comerce.DTO.PecaClienteResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.PecaRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.PecaResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.model.CorPeca;
@@ -37,6 +38,24 @@ public class PecaMapper {
             peca.getDiametroCm(),
             peca.getAlturaCm(),
             peca.getDataCadastro()
+        );
+    }
+
+    public static PecaClienteResponseDTO toClienteResponseDTO(Peca peca) {
+        if (peca == null)
+            return null;
+
+        MaterialResponseDTO materialDTO = peca.getMaterial() != null
+            ? MaterialMapper.toResponseDTO(peca.getMaterial())
+            : null;
+
+        return new PecaClienteResponseDTO(
+            peca.getId(),
+            peca.getCor().getNome(),
+            peca.getTipo().getNome(),
+            materialDTO,
+            peca.getDiametroCm(),
+            peca.getAlturaCm()
         );
     }
 }

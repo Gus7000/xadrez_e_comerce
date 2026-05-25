@@ -83,7 +83,6 @@ class JogoXadrez{
 class KitPeca {
     -nome: String
     -preco: BigDecimal
-    -estoqueDisponivel: int
     <<adminOnly>>
     -estoqueDisponivel: int
     -custoProducao: BigDecimal

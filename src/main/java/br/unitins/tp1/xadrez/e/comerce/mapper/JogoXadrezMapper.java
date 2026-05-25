@@ -1,9 +1,13 @@
 package br.unitins.tp1.xadrez.e.comerce.mapper;
 
+import br.unitins.tp1.xadrez.e.comerce.DTO.JogoXadrezClienteResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.JogoXadrezRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.JogoXadrezResponseDTO;
+import br.unitins.tp1.xadrez.e.comerce.DTO.KitPecaClienteResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.KitPecaResponseDTO;
+import br.unitins.tp1.xadrez.e.comerce.DTO.RelogioClienteResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.RelogioResponseDTO;
+import br.unitins.tp1.xadrez.e.comerce.DTO.TabuleiroClienteResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.TabuleiroResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.model.JogoXadrez;
 import br.unitins.tp1.xadrez.e.comerce.model.KitPeca;
@@ -45,6 +49,27 @@ public class JogoXadrezMapper {
             tabuleiroDTO,
             relogioDTO,
             jogoXadrez.getDataCadastro()
+        );
+    }
+
+    public static JogoXadrezClienteResponseDTO toClienteResponseDTO(JogoXadrez jogoXadrez) {
+        if (jogoXadrez == null)
+            return null;
+        if (jogoXadrez.getKitPeca() == null || jogoXadrez.getTabuleiro() == null)
+            return null;
+
+        KitPecaClienteResponseDTO kitPecaDTO = KitPecaMapper.toClienteResponseDTO(jogoXadrez.getKitPeca());
+        TabuleiroClienteResponseDTO tabuleiroDTO = TabuleiroMapper.toClienteResponseDTO(jogoXadrez.getTabuleiro());
+        RelogioClienteResponseDTO relogioDTO = jogoXadrez.getRelogio() != null ? RelogioMapper.toClienteResponseDTO(jogoXadrez.getRelogio()) : null;
+
+        return new JogoXadrezClienteResponseDTO(
+            jogoXadrez.getId(),
+            jogoXadrez.getNome(),
+            jogoXadrez.getPreco(),
+            jogoXadrez.getDescricao(),
+            kitPecaDTO,
+            tabuleiroDTO,
+            relogioDTO
         );
     }
 }

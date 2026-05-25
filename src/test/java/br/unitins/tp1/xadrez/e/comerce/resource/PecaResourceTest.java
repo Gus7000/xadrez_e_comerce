@@ -48,7 +48,7 @@ class PecaResourceTest {
 
         given()
                 .when()
-                .get("/peca")
+                .get("/admin/peca")
                 .then()
                 .statusCode(200)
                 .body("size()", is(2));
@@ -63,7 +63,7 @@ class PecaResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"corId\":1,\"tipoId\":1,\"materialId\":1,\"diametroCm\":3.2,\"alturaCm\":4.1}")
                 .when()
-                .post("/peca")
+                .post("/admin/peca")
                 .then()
                 .statusCode(201)
                 .body("id", equalTo(1));
@@ -75,7 +75,7 @@ class PecaResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"corId\":1,\"tipoId\":1,\"materialId\":1,\"diametroCm\":-1,\"alturaCm\":4.1}")
                 .when()
-                .post("/peca")
+                .post("/admin/peca")
                 .then()
                 .statusCode(422)
                 .contentType("application/problem+json")
@@ -83,7 +83,7 @@ class PecaResourceTest {
                 .body("title", is("Validation Error"))
                 .body("status", is(422))
                 .body("detail", equalTo("Um ou mais campos não passaram na validação."))
-                .body("instance", is("/peca"))
+                .body("instance", is("/admin/peca"))
                 .body("timestamp", notNullValue())
                 .body("errors.size()", greaterThanOrEqualTo(1))
                 .body("errors[0].field", notNullValue())
@@ -99,7 +99,7 @@ class PecaResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"corId\":1,\"tipoId\":1,\"materialId\":99,\"diametroCm\":3.2,\"alturaCm\":4.1}")
                 .when()
-                .post("/peca")
+                .post("/admin/peca")
                 .then()
                 .statusCode(404)
                 .contentType("application/problem+json")
@@ -107,7 +107,7 @@ class PecaResourceTest {
                 .body("title", is("Not Found"))
                 .body("status", is(404))
                 .body("detail", containsString("Material não encontrado"))
-                .body("instance", is("/peca"))
+                .body("instance", is("/admin/peca"))
                 .body("timestamp", notNullValue());
     }
 
@@ -119,7 +119,7 @@ class PecaResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"corId\":1,\"tipoId\":1,\"materialId\":1,\"diametroCm\":3.2,\"alturaCm\":4.1}")
                 .when()
-                .put("/peca/1")
+                .put("/admin/peca/1")
                 .then()
                 .statusCode(204);
 
@@ -135,7 +135,7 @@ class PecaResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"corId\":1,\"tipoId\":1,\"materialId\":99,\"diametroCm\":3.2,\"alturaCm\":4.1}")
                 .when()
-                .put("/peca/1")
+                .put("/admin/peca/1")
                 .then()
                 .statusCode(404)
                 .contentType("application/problem+json")
@@ -143,7 +143,7 @@ class PecaResourceTest {
                 .body("title", is("Not Found"))
                 .body("status", is(404))
                 .body("detail", containsString("Material não encontrado"))
-                .body("instance", is("/peca/1"))
+                .body("instance", is("/admin/peca/1"))
                 .body("timestamp", notNullValue());
     }
 
@@ -153,7 +153,7 @@ class PecaResourceTest {
 
         given()
                 .when()
-                .delete("/peca/1")
+                .delete("/admin/peca/1")
                 .then()
                 .statusCode(204);
 

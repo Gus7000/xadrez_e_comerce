@@ -22,9 +22,10 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/peca")
+@Path("/admin/peca")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@RolesAllowed("ADMIN")
 public class PecaResource {
 
     @Inject
@@ -66,27 +67,22 @@ public class PecaResource {
 
     @POST
     @Transactional
-    @RolesAllowed("ADMIN")
     public Response create(@Valid PecaRequestDTO dto) {
         Peca criada = service.create(dto);
-        
         return Response.status(201).entity(PecaMapper.toResponseDTO(criada)).build();
     }
 
     @PUT
     @Path("/{id}")
     @Transactional
-    @RolesAllowed("ADMIN")
     public Response update(@PathParam("id") Long id, @Valid PecaRequestDTO dto) {
         service.update(id, dto);
-        
         return Response.noContent().build();
     }
 
     @DELETE
     @Path("/{id}")
     @Transactional
-    @RolesAllowed("ADMIN")
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.noContent().build();

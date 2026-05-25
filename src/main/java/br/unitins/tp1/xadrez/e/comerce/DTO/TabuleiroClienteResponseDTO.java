@@ -1,0 +1,9 @@
+package br.unitins.tp1.xadrez.e.comerce.DTO;
+
+public record TabuleiroClienteResponseDTO(
+    Long id,
+    String tamanho,
+    MaterialResponseDTO material,
+    FabricanteClienteResponseDTO fabricante
+) {
+}

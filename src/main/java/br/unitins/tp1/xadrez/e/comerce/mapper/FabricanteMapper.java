@@ -1,5 +1,6 @@
 package br.unitins.tp1.xadrez.e.comerce.mapper;
 
+import br.unitins.tp1.xadrez.e.comerce.DTO.FabricanteClienteResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.FabricanteRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.FabricanteResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.model.Fabricante;
@@ -23,6 +24,15 @@ public class FabricanteMapper {
             fabricante.getNome(),
             fabricante.getCnpj(),
             fabricante.getTelefone()
+        );
+    }
+
+    public static FabricanteClienteResponseDTO toClienteResponseDTO(Fabricante fabricante) {
+        if (fabricante == null)
+            return null;
+        return new FabricanteClienteResponseDTO(
+            fabricante.getId(),
+            fabricante.getNome()
         );
     }
 }

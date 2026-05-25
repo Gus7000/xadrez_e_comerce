@@ -51,7 +51,7 @@ class KitPecaResourceTest {
 
         given()
                 .when()
-                .get("/kit-peca")
+                .get("/admin/kit-peca")
                 .then()
                 .statusCode(200)
                 .body("size()", is(2));
@@ -65,7 +65,7 @@ class KitPecaResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"itens\":[{\"pecaId\":1,\"quantidade\":16}],\"fabricanteId\":1}")
                 .when()
-                .post("/kit-peca")
+                .post("/admin/kit-peca")
                 .then()
                 .statusCode(201)
                 .body("id", equalTo(1));
@@ -77,7 +77,7 @@ class KitPecaResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"itens\":null,\"fabricanteId\":1}")
                 .when()
-                .post("/kit-peca")
+                .post("/admin/kit-peca")
                 .then()
                 .statusCode(422)
                 .contentType("application/problem+json")
@@ -85,7 +85,7 @@ class KitPecaResourceTest {
                 .body("title", is("Validation Error"))
                 .body("status", is(422))
                 .body("detail", equalTo("Um ou mais campos não passaram na validação."))
-                .body("instance", is("/kit-peca"))
+                .body("instance", is("/admin/kit-peca"))
                 .body("timestamp", notNullValue())
                 .body("errors.size()", greaterThanOrEqualTo(1))
                 .body("errors[0].field", notNullValue())
@@ -101,7 +101,7 @@ class KitPecaResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"itens\":[{\"pecaId\":1,\"quantidade\":16}],\"fabricanteId\":99}")
                 .when()
-                .post("/kit-peca")
+                .post("/admin/kit-peca")
                 .then()
                 .statusCode(404)
                 .contentType("application/problem+json")
@@ -109,7 +109,7 @@ class KitPecaResourceTest {
                 .body("title", is("Not Found"))
                 .body("status", is(404))
                 .body("detail", containsString("Fabricante não encontrado"))
-                .body("instance", is("/kit-peca"))
+                .body("instance", is("/admin/kit-peca"))
                 .body("timestamp", notNullValue());
     }
 
@@ -122,7 +122,7 @@ class KitPecaResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"itens\":[{\"pecaId\":99,\"quantidade\":16}],\"fabricanteId\":1}")
                 .when()
-                .post("/kit-peca")
+                .post("/admin/kit-peca")
                 .then()
                 .statusCode(404)
                 .contentType("application/problem+json")
@@ -130,7 +130,7 @@ class KitPecaResourceTest {
                 .body("title", is("Not Found"))
                 .body("status", is(404))
                 .body("detail", containsString("não encontrada"))
-                .body("instance", is("/kit-peca"))
+                .body("instance", is("/admin/kit-peca"))
                 .body("timestamp", notNullValue());
     }
 
@@ -142,7 +142,7 @@ class KitPecaResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"itens\":[{\"pecaId\":1,\"quantidade\":16}],\"fabricanteId\":1}")
                 .when()
-                .put("/kit-peca/1")
+                .put("/admin/kit-peca/1")
                 .then()
                 .statusCode(204);
 
@@ -158,7 +158,7 @@ class KitPecaResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"itens\":[{\"pecaId\":99,\"quantidade\":16}],\"fabricanteId\":1}")
                 .when()
-                .put("/kit-peca/1")
+                .put("/admin/kit-peca/1")
                 .then()
                 .statusCode(404)
                 .contentType("application/problem+json")
@@ -166,7 +166,7 @@ class KitPecaResourceTest {
                 .body("title", is("Not Found"))
                 .body("status", is(404))
                 .body("detail", containsString("não encontrada"))
-                .body("instance", is("/kit-peca/1"))
+                .body("instance", is("/admin/kit-peca/1"))
                 .body("timestamp", notNullValue());
     }
 
@@ -176,7 +176,7 @@ class KitPecaResourceTest {
 
         given()
                 .when()
-                .delete("/kit-peca/1")
+                .delete("/admin/kit-peca/1")
                 .then()
                 .statusCode(204);
 

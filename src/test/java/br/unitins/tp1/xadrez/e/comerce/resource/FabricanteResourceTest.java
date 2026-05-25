@@ -53,7 +53,7 @@ class FabricanteResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"nome\":\"Unitins Chess\",\"cnpj\":\"04252011000110\",\"telefone\":\"(63) 99999-9999\"}")
                 .when()
-                .post("/fabricante")
+                .post("/admin/fabricante")
                 .then()
                 .statusCode(201)
                 .body("id", equalTo(1))
@@ -66,7 +66,7 @@ class FabricanteResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"nome\":\"\",\"cnpj\":\"04252011000110\",\"telefone\":\"(63) 99999-9999\"}")
                 .when()
-                .post("/fabricante")
+                .post("/admin/fabricante")
                 .then()
                 .statusCode(422)
                 .contentType("application/problem+json")
@@ -74,7 +74,7 @@ class FabricanteResourceTest {
                 .body("title", is("Validation Error"))
                 .body("status", is(422))
                 .body("detail", equalTo("Um ou mais campos não passaram na validação."))
-                .body("instance", is("/fabricante"))
+                .body("instance", is("/admin/fabricante"))
                 .body("timestamp", notNullValue())
                 .body("errors.size()", greaterThanOrEqualTo(1))
                 .body("errors[0].field", notNullValue())
@@ -99,7 +99,7 @@ class FabricanteResourceTest {
 
         given()
                 .when()
-                .get("/fabricante")
+                .get("/admin/fabricante")
                 .then()
                 .statusCode(200)
                 .body("size()", is(2))
@@ -119,7 +119,7 @@ class FabricanteResourceTest {
 
         given()
                 .when()
-                .get("/fabricante/11")
+                .get("/admin/fabricante/11")
                 .then()
                 .statusCode(200)
                 .body("id", equalTo(11))
@@ -138,7 +138,7 @@ class FabricanteResourceTest {
 
         given()
                 .when()
-                .get("/fabricante/find/nome/Unitins")
+                .get("/admin/fabricante/find/nome/Unitins")
                 .then()
                 .statusCode(200)
                 .body("size()", is(1))
@@ -159,7 +159,7 @@ class FabricanteResourceTest {
 
         given()
                 .when()
-                .get("/fabricante/find/cnpj/04252011000110")
+                .get("/admin/fabricante/find/cnpj/04252011000110")
                 .then()
                 .statusCode(200)
                 .body("id", equalTo(21))
@@ -174,7 +174,7 @@ class FabricanteResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"nome\":\"Novo Nome\",\"cnpj\":\"04252011000110\",\"telefone\":\"(63) 99999-9999\"}")
                 .when()
-                .put("/fabricante/1")
+                .put("/admin/fabricante/1")
                 .then()
                 .statusCode(204);
 
@@ -187,7 +187,7 @@ class FabricanteResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"nome\":\"Novo Nome\",\"cnpj\":\"04252011000110\",\"telefone\":\"63999999999\"}")
                 .when()
-                .put("/fabricante/1")
+                .put("/admin/fabricante/1")
                 .then()
                 .statusCode(422)
                 .contentType("application/problem+json")
@@ -195,7 +195,7 @@ class FabricanteResourceTest {
                 .body("title", is("Validation Error"))
                 .body("status", is(422))
                 .body("detail", equalTo("Um ou mais campos não passaram na validação."))
-                .body("instance", is("/fabricante/1"))
+                .body("instance", is("/admin/fabricante/1"))
                 .body("timestamp", notNullValue())
                 .body("errors.size()", greaterThanOrEqualTo(1))
                 .body("errors[0].field", notNullValue())
@@ -211,7 +211,7 @@ class FabricanteResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"nome\":\"Novo Nome\",\"cnpj\":\"04252011000110\",\"telefone\":\"(63) 99999-9999\"}")
                 .when()
-                .put("/fabricante/999")
+                .put("/admin/fabricante/999")
                 .then()
                 .statusCode(404)
                 .contentType("application/problem+json")
@@ -219,7 +219,7 @@ class FabricanteResourceTest {
                 .body("title", is("Not Found"))
                 .body("status", is(404))
                 .body("detail", containsString("Fabricante não encontrado"))
-                .body("instance", is("/fabricante/999"))
+                .body("instance", is("/admin/fabricante/999"))
                 .body("timestamp", notNullValue());
             }
 
@@ -229,7 +229,7 @@ class FabricanteResourceTest {
 
         given()
                 .when()
-                .delete("/fabricante/1")
+                .delete("/admin/fabricante/1")
                 .then()
                 .statusCode(204);
 
@@ -243,7 +243,7 @@ class FabricanteResourceTest {
 
         given()
                 .when()
-                .delete("/fabricante/999")
+                .delete("/admin/fabricante/999")
                 .then()
                 .statusCode(404)
                 .contentType("application/problem+json")
@@ -251,7 +251,7 @@ class FabricanteResourceTest {
                 .body("title", is("Not Found"))
                 .body("status", is(404))
                 .body("detail", containsString("Fabricante não encontrado"))
-                .body("instance", is("/fabricante/999"))
+                .body("instance", is("/admin/fabricante/999"))
                 .body("timestamp", notNullValue());
     }
 }

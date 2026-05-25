@@ -47,7 +47,7 @@ class RelogioResourceTest {
 
         given()
                 .when()
-                .get("/relogio")
+                .get("/admin/relogio")
                 .then()
                 .statusCode(200)
                 .body("size()", is(2));
@@ -63,7 +63,7 @@ class RelogioResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"modelo\":\"Clock X\",\"dimensoes\":\"20x20\",\"fabricanteId\":1}")
                 .when()
-                .post("/relogio")
+                .post("/admin/relogio")
                 .then()
                 .statusCode(201)
                 .body("id", equalTo(1));
@@ -75,14 +75,14 @@ class RelogioResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"modelo\":\"\",\"dimensoes\":\"20x20\",\"fabricanteId\":1}")
                 .when()
-                .post("/relogio")
+                .post("/admin/relogio")
                 .then()
                 .statusCode(422)
                 .body("type", notNullValue())
                 .body("title", is("Validation Error"))
                 .body("status", is(422))
                 .body("detail", equalTo("Um ou mais campos não passaram na validação."))
-                .body("instance", is("/relogio"))
+                .body("instance", is("/admin/relogio"))
                 .body("timestamp", notNullValue())
                 .body("errors.size()", greaterThanOrEqualTo(1))
                 .body("errors[0].field", notNullValue())
@@ -98,7 +98,7 @@ class RelogioResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"modelo\":\"Clock X\",\"dimensoes\":\"20x20\",\"fabricanteId\":99}")
                 .when()
-                .post("/relogio")
+                .post("/admin/relogio")
                 .then()
                 .statusCode(404)
                 .contentType("application/problem+json")
@@ -106,7 +106,7 @@ class RelogioResourceTest {
                 .body("title", is("Not Found"))
                 .body("status", is(404))
                 .body("detail", containsString("Fabricante não encontrado"))
-                .body("instance", is("/relogio"))
+                .body("instance", is("/admin/relogio"))
                 .body("timestamp", notNullValue());
     }
 
@@ -118,7 +118,7 @@ class RelogioResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"modelo\":\"Clock X\",\"dimensoes\":\"20x20\",\"fabricanteId\":1}")
                 .when()
-                .put("/relogio/1")
+                .put("/admin/relogio/1")
                 .then()
                 .statusCode(204);
 
@@ -134,7 +134,7 @@ class RelogioResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"modelo\":\"Clock X\",\"dimensoes\":\"20x20\",\"fabricanteId\":99}")
                 .when()
-                .put("/relogio/1")
+                .put("/admin/relogio/1")
                 .then()
                 .statusCode(404)
                 .contentType("application/problem+json")
@@ -142,7 +142,7 @@ class RelogioResourceTest {
                 .body("title", is("Not Found"))
                 .body("status", is(404))
                 .body("detail", containsString("Fabricante não encontrado"))
-                .body("instance", is("/relogio/1"))
+                .body("instance", is("/admin/relogio/1"))
                 .body("timestamp", notNullValue());
     }
 
@@ -152,7 +152,7 @@ class RelogioResourceTest {
 
         given()
                 .when()
-                .delete("/relogio/1")
+                .delete("/admin/relogio/1")
                 .then()
                 .statusCode(204);
 
@@ -165,7 +165,7 @@ class RelogioResourceTest {
 
         given()
                 .when()
-                .get("/relogio/find/tipo/1")
+                .get("/admin/relogio/find/tipo/1")
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
@@ -178,7 +178,7 @@ class RelogioResourceTest {
 
         given()
                 .when()
-                .get("/relogio/find/tipo/99")
+                .get("/admin/relogio/find/tipo/99")
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
@@ -191,7 +191,7 @@ class RelogioResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"modelo\":\"\",\"dimensoes\":\"20x20\",\"fabricanteId\":1}")
                 .when()
-                .post("/relogio")
+                .post("/admin/relogio")
                 .then()
                 .statusCode(422)
                 .contentType("application/problem+json")
@@ -199,7 +199,7 @@ class RelogioResourceTest {
                 .body("title", is("Validation Error"))
                 .body("status", is(422))
                 .body("detail", equalTo("Um ou mais campos não passaram na validação."))
-                .body("instance", is("/relogio"))
+                .body("instance", is("/admin/relogio"))
                 .body("timestamp", notNullValue())
                 .body("errors.size()", greaterThanOrEqualTo(1))
                 .body("errors[0].field", notNullValue())
