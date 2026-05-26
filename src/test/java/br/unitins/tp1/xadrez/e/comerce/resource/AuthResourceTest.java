@@ -34,17 +34,17 @@ class AuthResourceTest {
 
     @Test
     void shouldLoginSuccessfully() {
-        AuthResponseDTO response = new AuthResponseDTO("admin", "token-jwt", Perfil.ADMIN);
+        AuthResponseDTO response = new AuthResponseDTO("admin@mail.com", "token-jwt", Perfil.ADMIN);
         when(authService.login(any(AuthRequestDTO.class))).thenReturn(response);
 
         given()
                 .contentType(ContentType.JSON)
-                .body("{\"login\":\"admin\",\"senha\":\"123456\"}")
+                .body("{\"email\":\"admin@mail.com\",\"senha\":\"12345678\"}")
                 .when()
                 .post("/auth/login")
                 .then()
                 .statusCode(200)
-                .body("login", equalTo("admin"))
+            .body("email", equalTo("admin@mail.com"))
                 .body("token", notNullValue())
                 .body("perfil", equalTo("ADMIN"));
     }
@@ -52,22 +52,22 @@ class AuthResourceTest {
     @Test
     void shouldFailRegisterWhenLoginAlreadyExists() {
         when(authService.register(any(UsuarioRegisterDTO.class)))
-                .thenThrow(new WebApplicationException("Login já cadastrado", 409));
+            .thenThrow(new WebApplicationException("Email já cadastrado", 409));
 
         given()
-                .contentType(ContentType.JSON)
-                .body("{\"login\":\"cliente\",\"senha\":\"123456\"}")
-                .when()
-                .post("/auth/register")
-                .then()
-                .statusCode(409);
+            .contentType(ContentType.JSON)
+                .body("{\"email\":\"cliente@mail.com\",\"senha\":\"12345678\"}")
+            .when()
+            .post("/auth/register")
+            .then()
+            .statusCode(409);
     }
 
     @Test
     void shouldFailLoginWithMissingFields() {
         given()
                 .contentType(ContentType.JSON)
-                .body("{\"login\":\"admin\"}")
+                .body("{\"email\":\"admin\"}")
                 .when()
                 .post("/auth/login")
                 .then()
@@ -81,7 +81,7 @@ class AuthResourceTest {
 
         given()
                 .contentType(ContentType.JSON)
-                .body("{\"login\":\"admin\",\"senha\":\"senha-errada\"}")
+            .body("{\"email\":\"admin@mail.com\",\"senha\":\"senha-errada\"}")
                 .when()
                 .post("/auth/login")
                 .then()

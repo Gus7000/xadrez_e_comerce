@@ -9,7 +9,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
 
 @QuarkusTest
-@TestSecurity(user = "cliente", roles = {"CLIENTE"})
+@TestSecurity(user = "cliente@mail.com", roles = {"CLIENTE"})
 class MeResourceTest {
 
     @Test
@@ -19,7 +19,7 @@ class MeResourceTest {
                 .get("/me")
                 .then()
                 .statusCode(200)
-                .body("login", is("cliente"))
+                .body("email", is("cliente@mail.com"))
                 .body("perfil", is("CLIENTE"));
     }
 }

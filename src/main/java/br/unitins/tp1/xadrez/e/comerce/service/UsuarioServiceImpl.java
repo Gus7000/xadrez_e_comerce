@@ -50,10 +50,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Usuario create(UsuarioRequestDTO dto) {
-        validarLoginDisponivel(dto.login(), null);
+        validarLoginDisponivel(dto.email(), null);
 
         Usuario usuario = new Usuario();
-        usuario.setLogin(dto.login());
+        usuario.setEmail(dto.email());
         usuario.setSenhaHash(hashService.hash(dto.senha()));
         usuario.setPerfil(dto.perfil());
 
@@ -69,9 +69,9 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new NotFoundException("Usuário não encontrado");
         }
 
-        validarLoginDisponivel(dto.login(), id);
+        validarLoginDisponivel(dto.email(), id);
 
-        usuario.setLogin(dto.login());
+        usuario.setEmail(dto.email());
         usuario.setSenhaHash(hashService.hash(dto.senha()));
         usuario.setPerfil(dto.perfil());
     }
@@ -87,11 +87,11 @@ public class UsuarioServiceImpl implements UsuarioService {
         repository.delete(usuario);
     }
 
-    private void validarLoginDisponivel(String login, Long idIgnorado) {
-        Usuario usuarioExistente = repository.findByLogin(login);
+    private void validarLoginDisponivel(String email, Long idIgnorado) {
+        Usuario usuarioExistente = repository.findByLogin(email);
 
         if (usuarioExistente != null && (idIgnorado == null || !usuarioExistente.getId().equals(idIgnorado))) {
-            throw new WebApplicationException("Login já cadastrado", Response.Status.CONFLICT);
+            throw new WebApplicationException("Email já cadastrado", Response.Status.CONFLICT);
         }
     }
 }

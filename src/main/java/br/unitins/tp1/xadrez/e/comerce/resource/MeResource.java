@@ -20,9 +20,9 @@ public class MeResource {
 
     @GET
     public Response me() {
-        String login = securityIdentity.getPrincipal().getName();
+        String email = securityIdentity.getPrincipal().getName();
         String perfil = securityIdentity.getRoles().contains("ADMIN") ? "ADMIN" : "CLIENTE";
-        MeResponseDTO response = new MeResponseDTO(login, perfil);
+        MeResponseDTO response = new MeResponseDTO(email, perfil);
 
         return Response.ok(response).build();
     }

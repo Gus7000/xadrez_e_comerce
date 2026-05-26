@@ -8,6 +8,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class UsuarioRepository implements PanacheRepository<Usuario> {
 
     public Usuario findByLogin(String login) {
-        return find("login", login).firstResult();
+        return find("email", login).firstResult();
     }
 }

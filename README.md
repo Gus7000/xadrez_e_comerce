@@ -86,13 +86,45 @@ Easily start your REST Web Services
 
 ### Endpoints principais da API
 
-- `/fabricante`
-- `/material`
-- `/peca`
-- `/kit-peca`
-- `/tabuleiro`
-- `/jogo-xadrez`
-- `/relogio`
+Admin (requisição com role ADMIN):
+- `/admin/fabricante`
+- `/admin/material`
+- `/admin/peca`
+- `/admin/kit-peca`
+- `/admin/tabuleiro`
+- `/admin/jogo-xadrez`
+- `/admin/relogio`
+- `/admin/usuarios`
+- `/admin/endereco`
+- `/admin/pedido`
+- `/admin/lista-desejos`
+- `/admin/pagamento`
+- `/admin/cupom`
+
+Cliente (visões públicas / catálogo):
+- `/cliente/fabricante`
+- `/cliente/kit-peca`
+- `/cliente/jogo-xadrez`
+- `/cliente/tabuleiro`
+- `/cliente/relogio`
+- `/cliente/peca`
+
+Endpoints "me" (usuário autenticado):
+- `/me/pedidos`
+- `/me/lista-desejos`
+- `/me/pagamentos`
+- `/me` (dados do usuário autenticado)
+
+Autenticação:
+- `/auth/login`
+- `/auth/register`
+
+Endpoints de enums / consulta rápida:
+- `/cor`
+- `/tipo-peca`
+- `/mecanismo`
+- `/modo-tempo`
+
 
 ### Endpoints de consulta de enums
 

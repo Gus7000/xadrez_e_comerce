@@ -22,7 +22,7 @@ public class JwtService {
 
     public String gerarToken(Usuario usuario) {
         return Jwt.claims()
-                .subject(usuario.getLogin())
+                .subject(usuario.getEmail())
                 .issuer(ISSUER)
                 .groups(Set.of(usuario.getPerfil().name()))
                 .claim("perfil", usuario.getPerfil().name())

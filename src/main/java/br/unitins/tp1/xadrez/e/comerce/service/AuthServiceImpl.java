@@ -28,21 +28,21 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponseDTO login(AuthRequestDTO dto) {
-        Usuario usuario = usuarioRepository.findByLogin(dto.login());
+        Usuario usuario = usuarioRepository.findByLogin(dto.email());
 
         if (usuario == null || !hashService.verify(dto.senha(), usuario.getSenhaHash())) {
             throw new NotAuthorizedException("Login ou senha inválidos");
         }
 
         String token = jwtService.gerarToken(usuario);
-        return new AuthResponseDTO(usuario.getLogin(), token, usuario.getPerfil());
+        return new AuthResponseDTO(usuario.getEmail(), token, usuario.getPerfil());
     }
 
     @Override
     public AuthResponseDTO register(UsuarioRegisterDTO dto) {
-        Usuario usuario = usuarioService.create(new UsuarioRequestDTO(dto.login(), dto.senha(), Perfil.CLIENTE));
+        Usuario usuario = usuarioService.create(new UsuarioRequestDTO(dto.email(), dto.senha(), Perfil.CLIENTE));
 
         String token = jwtService.gerarToken(usuario);
-        return new AuthResponseDTO(usuario.getLogin(), token, usuario.getPerfil());
+        return new AuthResponseDTO(usuario.getEmail(), token, usuario.getPerfil());
     }
 }

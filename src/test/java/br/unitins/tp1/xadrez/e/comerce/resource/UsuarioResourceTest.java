@@ -30,7 +30,7 @@ import io.restassured.http.ContentType;
 import jakarta.ws.rs.NotFoundException;
 
 @QuarkusTest
-@TestSecurity(user = "admin", roles = {"ADMIN"})
+@TestSecurity(user = "admin@mail.com", roles = {"ADMIN"})
 class UsuarioResourceTest {
 
     @InjectMock
@@ -43,7 +43,7 @@ class UsuarioResourceTest {
 
     @Test
     void shouldReturnAllUsuarios() {
-        when(usuarioService.findAll()).thenReturn(List.of(buildUsuario(1L, "admin"), buildUsuario(2L, "cliente")));
+        when(usuarioService.findAll()).thenReturn(List.of(buildUsuario(1L, "admin@mail.com"), buildUsuario(2L, "cliente@mail.com")));
 
         given()
                 .when()
@@ -51,13 +51,13 @@ class UsuarioResourceTest {
                 .then()
                 .statusCode(200)
                 .body("size()", is(2))
-                .body("[0].login", is("admin"))
-                .body("[1].login", is("cliente"));
+                .body("[0].email", is("admin@mail.com"))
+                .body("[1].email", is("cliente@mail.com"));
     }
 
     @Test
     void shouldReturnUsuarioById() {
-        when(usuarioService.findById(1L)).thenReturn(buildUsuario(1L, "admin"));
+        when(usuarioService.findById(1L)).thenReturn(buildUsuario(1L, "admin@mail.com"));
 
         given()
                 .when()
@@ -65,23 +65,23 @@ class UsuarioResourceTest {
                 .then()
                 .statusCode(200)
                 .body("id", equalTo(1))
-                .body("login", is("admin"))
+                .body("email", is("admin@mail.com"))
                 .body("perfil", is("ADMIN"));
     }
 
     @Test
     void shouldCreateUsuarioSuccessfully() {
-        when(usuarioService.create(any(UsuarioRequestDTO.class))).thenReturn(buildUsuario(1L, "admin"));
+        when(usuarioService.create(any(UsuarioRequestDTO.class))).thenReturn(buildUsuario(1L, "admin@mail.com"));
 
         given()
-                .contentType(ContentType.JSON)
-                .body("{\"login\":\"admin\",\"senha\":\"123456\",\"perfil\":\"ADMIN\"}")
+            .contentType(ContentType.JSON)
+                .body("{\"email\":\"admin@mail.com\",\"senha\":\"12345678\",\"perfil\":\"ADMIN\"}")
                 .when()
                 .post("/admin/usuarios")
                 .then()
                 .statusCode(201)
                 .body("id", equalTo(1))
-                .body("login", is("admin"))
+            .body("email", is("admin@mail.com"))
                 .body("perfil", is("ADMIN"))
                 .body("dataCadastro", notNullValue());
     }
@@ -90,7 +90,7 @@ class UsuarioResourceTest {
     void shouldFailCreateUsuarioWithMissingFields() {
         given()
                 .contentType(ContentType.JSON)
-                .body("{\"login\":\"admin\"}")
+                .body("{\"email\":\"admin\"}")
                 .when()
                 .post("/admin/usuarios")
                 .then()
@@ -109,7 +109,7 @@ class UsuarioResourceTest {
 
         given()
                 .contentType(ContentType.JSON)
-                .body("{\"login\":\"admin2\",\"senha\":\"123456\",\"perfil\":\"CLIENTE\"}")
+                .body("{\"email\":\"admin2@mail.com\",\"senha\":\"12345678\",\"perfil\":\"CLIENTE\"}")
                 .when()
                 .put("/admin/usuarios/1")
                 .then()
@@ -125,7 +125,7 @@ class UsuarioResourceTest {
 
         given()
                 .contentType(ContentType.JSON)
-                .body("{\"login\":\"admin2\",\"senha\":\"123456\",\"perfil\":\"CLIENTE\"}")
+            .body("{\"email\":\"admin2@mail.com\",\"senha\":\"12345678\",\"perfil\":\"CLIENTE\"}")
                 .when()
                 .put("/admin/usuarios/999")
                 .then()
@@ -169,9 +169,10 @@ class UsuarioResourceTest {
         Usuario usuario = new Usuario();
         usuario.setId(id);
         usuario.setLogin(login);
+        usuario.setEmail(login);
         usuario.setSenhaHash("hash");
         usuario.setDataCadastro(LocalDateTime.of(2026, 5, 8, 10, 0));
-        usuario.setPerfil("admin".equals(login) ? Perfil.ADMIN : Perfil.CLIENTE);
+        usuario.setPerfil(login.startsWith("admin") ? Perfil.ADMIN : Perfil.CLIENTE);
         return usuario;
     }
 }

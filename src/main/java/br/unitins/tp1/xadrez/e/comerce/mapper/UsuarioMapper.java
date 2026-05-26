@@ -8,7 +8,7 @@ public class UsuarioMapper {
     public static UsuarioResponseDTO toResponseDTO(Usuario usuario) {
         return new UsuarioResponseDTO(
                 usuario.getId(),
-                usuario.getLogin(),
+                usuario.getEmail(),
                 usuario.getPerfil(),
                 usuario.getDataCadastro());
     }
