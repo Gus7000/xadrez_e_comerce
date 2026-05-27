@@ -30,7 +30,7 @@ public class Usuario extends DefaultEntity {
     private String cpf;
 
     @Column(name = "cadastro_completo")
-    private boolean cadastroCompleto;
+    private boolean cadastroCompleto = false;
 
     public String getLogin() {
         return email;
