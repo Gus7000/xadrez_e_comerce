@@ -47,7 +47,7 @@ class TabuleiroResourceTest {
 
         given()
                 .when()
-                .get("/admin/tabuleiros")
+            .get("/admin/tabuleiro")
                 .then()
                 .statusCode(200)
                 .body("size()", is(2));
@@ -62,7 +62,7 @@ class TabuleiroResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"tamanho\":\"8x8\",\"materialId\":1,\"fabricanteId\":1}")
                 .when()
-                .post("/admin/tabuleiros")
+            .post("/admin/tabuleiro")
                 .then()
                 .statusCode(201)
                 .body("id", equalTo(1));
@@ -74,7 +74,7 @@ class TabuleiroResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"tamanho\":\"\",\"materialId\":1,\"fabricanteId\":1}")
                 .when()
-                .post("/admin/tabuleiros")
+            .post("/admin/tabuleiro")
                 .then()
                 .statusCode(422)
                 .contentType("application/problem+json")
@@ -82,7 +82,7 @@ class TabuleiroResourceTest {
                 .body("title", is("Validation Error"))
                 .body("status", is(422))
                 .body("detail", equalTo("Um ou mais campos não passaram na validação."))
-                .body("instance", is("/admin/tabuleiros"))
+            .body("instance", is("/admin/tabuleiro"))
                 .body("timestamp", notNullValue())
                 .body("errors.size()", greaterThanOrEqualTo(1))
                 .body("errors[0].field", notNullValue())
@@ -98,7 +98,7 @@ class TabuleiroResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"tamanho\":\"8x8\",\"materialId\":99,\"fabricanteId\":1}")
                 .when()
-                .post("/admin/tabuleiros")
+            .post("/admin/tabuleiro")
                 .then()
                 .statusCode(404)
                 .contentType("application/problem+json")
@@ -106,7 +106,7 @@ class TabuleiroResourceTest {
                 .body("title", is("Not Found"))
                 .body("status", is(404))
                 .body("detail", containsString("Material não encontrado"))
-                .body("instance", is("/admin/tabuleiros"))
+            .body("instance", is("/admin/tabuleiro"))
                 .body("timestamp", notNullValue());
     }
 
@@ -118,7 +118,7 @@ class TabuleiroResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"tamanho\":\"8x8\",\"materialId\":1,\"fabricanteId\":1}")
                 .when()
-                .put("/admin/tabuleiros/1")
+            .put("/admin/tabuleiro/1")
                 .then()
                 .statusCode(204);
 
@@ -134,7 +134,7 @@ class TabuleiroResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"tamanho\":\"8x8\",\"materialId\":1,\"fabricanteId\":99}")
                 .when()
-                .put("/admin/tabuleiros/1")
+            .put("/admin/tabuleiro/1")
                 .then()
                 .statusCode(404)
                 .contentType("application/problem+json")
@@ -142,7 +142,7 @@ class TabuleiroResourceTest {
                 .body("title", is("Not Found"))
                 .body("status", is(404))
                 .body("detail", containsString("Fabricante não encontrado"))
-                .body("instance", is("/admin/tabuleiros/1"))
+            .body("instance", is("/admin/tabuleiro/1"))
                 .body("timestamp", notNullValue());
     }
 
@@ -152,7 +152,7 @@ class TabuleiroResourceTest {
 
         given()
                 .when()
-                .delete("/admin/tabuleiros/1")
+            .delete("/admin/tabuleiro/1")
                 .then()
                 .statusCode(204);
 

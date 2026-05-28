@@ -173,7 +173,7 @@ class MaterialResourceTest {
 
         given()
                 .when()
-                .get("/materiais?tipo=madeira")
+            .get("/material/find/tipo/madeira")
                 .then()
                 .statusCode(200)
                 .body("size()", is(1))

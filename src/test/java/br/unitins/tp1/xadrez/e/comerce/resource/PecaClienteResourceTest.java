@@ -38,7 +38,7 @@ class PecaClienteResourceTest {
 
         given()
                 .when()
-                .get("/pecas")
+            .get("/cliente/peca")
                 .then()
                 .statusCode(200)
                 .body("size()", is(1))
@@ -52,7 +52,7 @@ class PecaClienteResourceTest {
 
         given()
                 .when()
-                .get("/pecas/1")
+            .get("/cliente/peca/1")
                 .then()
                 .statusCode(200)
                 .body("id", equalTo(1))

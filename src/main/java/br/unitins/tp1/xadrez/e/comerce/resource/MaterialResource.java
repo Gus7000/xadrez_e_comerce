@@ -13,11 +13,10 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/materiais")
+@Path("/material")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class MaterialResource {
@@ -26,12 +25,20 @@ public class MaterialResource {
     MaterialService service;
 
     @GET
-    public Response findAll(@QueryParam("tipo") String tipo) {
-        List<Material> materiais = (tipo != null && !tipo.isBlank())
-                ? service.findByTipo(tipo)
-                : service.findAll();
-
+    public Response findAll() {
+        List<Material> materiais = service.findAll();
         List<MaterialResponseDTO> lista = materiais.stream().map(MaterialMapper::toResponseDTO).toList();
+        return Response.ok(lista).build();
+    }
+
+    @GET
+    @Path("/find/tipo/{tipo}")
+    public Response findByTipo(@PathParam("tipo") String tipo) {
+        List<MaterialResponseDTO> lista = service.findByTipo(tipo)
+                .stream()
+                .map(MaterialMapper::toResponseDTO)
+                .toList();
+
         return Response.ok(lista).build();
     }
 

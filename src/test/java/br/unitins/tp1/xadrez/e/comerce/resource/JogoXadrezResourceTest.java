@@ -53,7 +53,7 @@ class JogoXadrezResourceTest {
 
         given()
                 .when()
-                .get("/admin/jogos-xadrez")
+            .get("/admin/jogo-xadrez")
                 .then()
                 .statusCode(200)
                 .body("size()", is(2));
@@ -68,7 +68,7 @@ class JogoXadrezResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"nome\":\"Jogo Premium\",\"preco\":199.9,\"descricao\":\"Conjunto completo\",\"estoqueDisponivel\":10,\"kitPecaId\":1,\"tabuleiroId\":1}")
                 .when()
-                .post("/admin/jogos-xadrez")
+            .post("/admin/jogo-xadrez")
                 .then()
                 .statusCode(201)
                 .body("id", equalTo(1));
@@ -80,7 +80,7 @@ class JogoXadrezResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"nome\":\"\",\"preco\":199.9,\"descricao\":\"Conjunto completo\",\"estoqueDisponivel\":10,\"kitPecaId\":1,\"tabuleiroId\":1}")
                 .when()
-                .post("/admin/jogos-xadrez")
+            .post("/admin/jogo-xadrez")
                 .then()
                 .statusCode(422)
                 .contentType("application/problem+json")
@@ -88,7 +88,7 @@ class JogoXadrezResourceTest {
                 .body("title", is("Validation Error"))
                 .body("status", is(422))
                 .body("detail", equalTo("Um ou mais campos não passaram na validação."))
-                .body("instance", is("/admin/jogos-xadrez"))
+            .body("instance", is("/admin/jogo-xadrez"))
                 .body("timestamp", notNullValue())
                 .body("errors.size()", greaterThanOrEqualTo(1))
                 .body("errors[0].field", notNullValue())
@@ -104,7 +104,7 @@ class JogoXadrezResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"nome\":\"Jogo Premium\",\"preco\":199.9,\"descricao\":\"Conjunto completo\",\"estoqueDisponivel\":10,\"kitPecaId\":99,\"tabuleiroId\":1}")
                 .when()
-                .post("/admin/jogos-xadrez")
+            .post("/admin/jogo-xadrez")
                 .then()
                 .statusCode(404)
                 .contentType("application/problem+json")
@@ -112,7 +112,7 @@ class JogoXadrezResourceTest {
                 .body("title", is("Not Found"))
                 .body("status", is(404))
                 .body("detail", containsString("Kit de Peças não encontrado"))
-                .body("instance", is("/admin/jogos-xadrez"))
+            .body("instance", is("/admin/jogo-xadrez"))
                 .body("timestamp", notNullValue());
     }
 
@@ -124,7 +124,7 @@ class JogoXadrezResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"nome\":\"Jogo Premium\",\"preco\":199.9,\"descricao\":\"Conjunto completo\",\"estoqueDisponivel\":10,\"kitPecaId\":1,\"tabuleiroId\":1}")
                 .when()
-                .put("/admin/jogos-xadrez/1")
+            .put("/admin/jogo-xadrez/1")
                 .then()
                 .statusCode(204);
 
@@ -140,7 +140,7 @@ class JogoXadrezResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"nome\":\"Jogo Premium\",\"preco\":199.9,\"descricao\":\"Conjunto completo\",\"estoqueDisponivel\":10,\"kitPecaId\":1,\"tabuleiroId\":99}")
                 .when()
-                .put("/admin/jogos-xadrez/1")
+            .put("/admin/jogo-xadrez/1")
                 .then()
                 .statusCode(404)
                 .contentType("application/problem+json")
@@ -148,7 +148,7 @@ class JogoXadrezResourceTest {
                 .body("title", is("Not Found"))
                 .body("status", is(404))
                 .body("detail", containsString("Tabuleiro não encontrado"))
-                .body("instance", is("/admin/jogos-xadrez/1"))
+            .body("instance", is("/admin/jogo-xadrez/1"))
                 .body("timestamp", notNullValue());
     }
 
@@ -158,7 +158,7 @@ class JogoXadrezResourceTest {
 
         given()
                 .when()
-                .delete("/admin/jogos-xadrez/1")
+            .delete("/admin/jogo-xadrez/1")
                 .then()
                 .statusCode(204);
 

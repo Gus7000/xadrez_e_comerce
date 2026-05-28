@@ -17,13 +17,12 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
-@Path("/admin/materiais")
+@Path("/admin/material")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @RolesAllowed("ADMIN")
@@ -33,12 +32,20 @@ public class MaterialAdminResource {
     MaterialService service;
 
     @GET
-    public Response findAll(@QueryParam("tipo") String tipo) {
-        List<Material> materiais = (tipo != null && !tipo.isBlank())
-                ? service.findByTipo(tipo)
-                : service.findAll();
-
+    public Response findAll() {
+        List<Material> materiais = service.findAll();
         List<MaterialAdminResponseDTO> lista = materiais.stream().map(MaterialMapper::toAdminResponseDTO).toList();
+        return Response.ok(lista).build();
+    }
+
+    @GET
+    @Path("/find/tipo/{tipo}")
+    public Response findByTipo(@PathParam("tipo") String tipo) {
+        List<MaterialAdminResponseDTO> lista = service.findByTipo(tipo)
+                .stream()
+                .map(MaterialMapper::toAdminResponseDTO)
+                .toList();
+
         return Response.ok(lista).build();
     }
 

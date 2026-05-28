@@ -19,11 +19,10 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/admin/tabuleiros")
+@Path("/admin/tabuleiro")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @RolesAllowed("ADMIN")
@@ -33,18 +32,31 @@ public class TabuleiroResource {
     TabuleiroService service;
 
     @GET
-    public Response findAll(@QueryParam("tamanho") String tamanho, @QueryParam("materialId") Long materialId) {
-        List<Tabuleiro> tabuleiros;
-
-        if (tamanho != null && !tamanho.isBlank()) {
-            tabuleiros = service.findByTamanho(tamanho);
-        } else if (materialId != null) {
-            tabuleiros = service.findByMaterial(materialId);
-        } else {
-            tabuleiros = service.findAll();
-        }
-
+    public Response findAll() {
+        List<Tabuleiro> tabuleiros = service.findAll();
         List<TabuleiroResponseDTO> lista = tabuleiros.stream().map(TabuleiroMapper::toResponseDTO).toList();
+        return Response.ok(lista).build();
+    }
+
+    @GET
+    @Path("/find/tamanho/{tamanho}")
+    public Response findByTamanho(@PathParam("tamanho") String tamanho) {
+        List<TabuleiroResponseDTO> lista = service.findByTamanho(tamanho)
+                .stream()
+                .map(TabuleiroMapper::toResponseDTO)
+                .toList();
+
+        return Response.ok(lista).build();
+    }
+
+    @GET
+    @Path("/find/material/{materialId}")
+    public Response findByMaterial(@PathParam("materialId") Long materialId) {
+        List<TabuleiroResponseDTO> lista = service.findByMaterial(materialId)
+                .stream()
+                .map(TabuleiroMapper::toResponseDTO)
+                .toList();
+
         return Response.ok(lista).build();
     }
 

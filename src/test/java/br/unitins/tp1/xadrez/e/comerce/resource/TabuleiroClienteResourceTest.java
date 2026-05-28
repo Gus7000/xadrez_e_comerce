@@ -33,7 +33,7 @@ class TabuleiroClienteResourceTest {
 
         given()
                 .when()
-                .get("/tabuleiros")
+            .get("/cliente/tabuleiro")
                 .then()
                 .statusCode(200)
                 .body("size()", is(2))
@@ -46,7 +46,7 @@ class TabuleiroClienteResourceTest {
 
         given()
                 .when()
-                .get("/tabuleiros/1")
+            .get("/cliente/tabuleiro/1")
                 .then()
                 .statusCode(200)
                 .body("id", equalTo(1))
@@ -59,7 +59,7 @@ class TabuleiroClienteResourceTest {
 
         given()
                 .when()
-                .get("/tabuleiros?tamanho=40x40")
+            .get("/cliente/tabuleiro/find/tamanho/40x40")
                 .then()
                 .statusCode(200)
                 .body("size()", is(1))
@@ -72,7 +72,7 @@ class TabuleiroClienteResourceTest {
 
         given()
                 .when()
-                .get("/tabuleiros?materialId=1")
+            .get("/cliente/tabuleiro/find/material/1")
                 .then()
                 .statusCode(200)
                 .body("size()", is(1))

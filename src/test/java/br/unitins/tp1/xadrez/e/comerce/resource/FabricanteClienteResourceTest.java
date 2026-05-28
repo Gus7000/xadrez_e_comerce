@@ -33,7 +33,7 @@ class FabricanteClienteResourceTest {
 
         given()
                 .when()
-                .get("/fabricantes")
+            .get("/cliente/fabricante")
                 .then()
                 .statusCode(200)
                 .body("size()", is(2))
@@ -47,7 +47,7 @@ class FabricanteClienteResourceTest {
 
         given()
                 .when()
-                .get("/fabricantes/1")
+            .get("/cliente/fabricante/1")
                 .then()
                 .statusCode(200)
                 .body("id", equalTo(1))
@@ -60,7 +60,7 @@ class FabricanteClienteResourceTest {
 
         given()
                 .when()
-                .get("/fabricantes?nome=Fab")
+            .get("/cliente/fabricante/find/nome/Fab")
                 .then()
                 .statusCode(200)
                 .body("size()", is(1))

@@ -40,7 +40,7 @@ class JogoXadrezClienteResourceTest {
 
         given()
                 .when()
-                .get("/jogos-xadrez")
+            .get("/cliente/jogo-xadrez")
                 .then()
                 .statusCode(200)
                 .body("size()", is(2))
@@ -53,7 +53,7 @@ class JogoXadrezClienteResourceTest {
 
         given()
                 .when()
-                .get("/jogos-xadrez/1")
+            .get("/cliente/jogo-xadrez/1")
                 .then()
                 .statusCode(200)
                 .body("id", equalTo(1))
@@ -67,7 +67,7 @@ class JogoXadrezClienteResourceTest {
 
         given()
                 .when()
-                .get("/jogos-xadrez?kitPecaId=1")
+            .get("/cliente/jogo-xadrez/find/kit-peca/1")
                 .then()
                 .statusCode(200)
                 .body("size()", is(1))
@@ -80,7 +80,7 @@ class JogoXadrezClienteResourceTest {
 
         given()
                 .when()
-                .get("/jogos-xadrez?tabuleiroId=1")
+            .get("/cliente/jogo-xadrez/find/tabuleiro/1")
                 .then()
                 .statusCode(200)
                 .body("size()", is(1))

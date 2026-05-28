@@ -19,11 +19,10 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/admin/fabricantes")
+@Path("/admin/fabricante")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @RolesAllowed("ADMIN")
@@ -33,18 +32,28 @@ public class FabricanteResource {
     FabricanteService service;
 
     @GET
-    public Response findAll(@QueryParam("nome") String nome, @QueryParam("cnpj") String cnpj) {
-        if (cnpj != null && !cnpj.isBlank()) {
-            Fabricante fabricante = service.findByCnpj(cnpj);
-            return Response.ok(List.of(FabricanteMapper.toResponseDTO(fabricante))).build();
-        }
-
-        List<Fabricante> fabricantes = (nome != null && !nome.isBlank())
-                ? service.findByNome(nome)
-                : service.findAll();
-
+    public Response findAll() {
+        List<Fabricante> fabricantes = service.findAll();
         List<FabricanteResponseDTO> lista = fabricantes.stream().map(FabricanteMapper::toResponseDTO).toList();
         return Response.ok(lista).build();
+    }
+
+    @GET
+    @Path("/find/nome/{nome}")
+    public Response findByNome(@PathParam("nome") String nome) {
+        List<FabricanteResponseDTO> lista = service.findByNome(nome)
+                .stream()
+                .map(FabricanteMapper::toResponseDTO)
+                .toList();
+
+        return Response.ok(lista).build();
+    }
+
+    @GET
+    @Path("/find/cnpj/{cnpj}")
+    public Response findByCnpj(@PathParam("cnpj") String cnpj) {
+        Fabricante fabricante = service.findByCnpj(cnpj);
+        return Response.ok(FabricanteMapper.toResponseDTO(fabricante)).build();
     }
 
     @GET
