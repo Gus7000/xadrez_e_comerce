@@ -1,8 +1,8 @@
 package br.unitins.tp1.xadrez.e.comerce.resource;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import br.unitins.tp1.xadrez.e.comerce.DTO.PedidoRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.PedidoResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.PedidoStatusUpdateDTO;
 import br.unitins.tp1.xadrez.e.comerce.mapper.PedidoMapper;
@@ -10,31 +10,39 @@ import br.unitins.tp1.xadrez.e.comerce.model.Pedido;
 import br.unitins.tp1.xadrez.e.comerce.service.PedidoService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/admin/pedido")
+@Path("/admin/pedidos")
 @Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
 @RolesAllowed("ADMIN")
 public class PedidoResource {
 
     @Inject
     PedidoService service;
 
+    private <T> List<T> paginate(List<T> values, int page, int size) {
+        if (values == null || values.isEmpty()) {
+            return List.of();
+        }
+
+        int safePage = Math.max(page, 0);
+        int safeSize = Math.max(size, 1);
+        int fromIndex = Math.min(safePage * safeSize, values.size());
+        int toIndex = Math.min(fromIndex + safeSize, values.size());
+        return new ArrayList<>(values.subList(fromIndex, toIndex));
+    }
+
     @GET
-    public Response findAll() {
-        List<PedidoResponseDTO> lista = service.findAll().stream().map(PedidoMapper::toResponseDTO).toList();
+    public Response findAll(@QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("size") @DefaultValue("20") int size) {
+        List<PedidoResponseDTO> lista = paginate(service.findAll(), page, size).stream().map(PedidoMapper::toResponseDTO).toList();
         return Response.ok(lista).build();
     }
 
@@ -45,33 +53,10 @@ public class PedidoResource {
         return Response.ok(PedidoMapper.toResponseDTO(pedido)).build();
     }
 
-    @GET
-    @Path("/find/usuario/{usuarioId}")
-    public Response findByUsuario(@PathParam("usuarioId") Long usuarioId) {
-        List<PedidoResponseDTO> lista = service.findByUsuarioId(usuarioId).stream().map(PedidoMapper::toResponseDTO).toList();
-        return Response.ok(lista).build();
-    }
-
-    @POST
-    @Transactional
-    public Response create(@Valid PedidoRequestDTO dto) {
-        Pedido created = service.create(dto);
-        return Response.status(201).entity(PedidoMapper.toResponseDTO(created)).build();
-    }
-
-    @PUT
+    @jakarta.ws.rs.PATCH
     @Path("/{id}/status")
-    @Transactional
-    public Response updateStatus(@PathParam("id") Long id, @Valid PedidoStatusUpdateDTO dto) {
+    public Response updateStatus(@PathParam("id") Long id, PedidoStatusUpdateDTO dto) {
         service.updateStatus(id, dto.status());
-        return Response.noContent().build();
-    }
-
-    @DELETE
-    @Path("/{id}")
-    @Transactional
-    public Response delete(@PathParam("id") Long id) {
-        service.delete(id);
         return Response.noContent().build();
     }
 }

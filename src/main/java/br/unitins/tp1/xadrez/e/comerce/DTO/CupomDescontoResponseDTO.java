@@ -13,7 +13,6 @@ public record CupomDescontoResponseDTO(
     Integer usoMaximo,
     Integer usosRealizados,
     Boolean porUsuario,
-    LocalDate expiraEm,
     Double percentualDesconto,
     BigDecimal valorDesconto,
     LocalDateTime dataCadastro

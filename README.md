@@ -84,9 +84,16 @@ Easily start your REST Web Services
 
 ## Atualizacoes do projeto
 
-### Endpoints principais da API
+### Mapa atual dos resources
 
-Admin (requisição com role ADMIN):
+Todos os paths seguem kebab-case, com separação clara entre catálogo público, contexto do cliente autenticado (`/me`) e administração (`/admin`).
+
+O login não é feito por endpoint REST da aplicação. A autenticação é delegada ao Keycloak, e o aplicativo consome o JWT para identificar o usuário logado.
+
+#### Admin
+
+Usar role `ADMIN`.
+
 - `/admin/fabricante`
 - `/admin/material`
 - `/admin/peca`
@@ -95,13 +102,30 @@ Admin (requisição com role ADMIN):
 - `/admin/jogo-xadrez`
 - `/admin/relogio`
 - `/admin/usuarios`
-- `/admin/endereco`
-- `/admin/pedido`
-- `/admin/lista-desejos`
-- `/admin/pagamento`
 - `/admin/cupom`
+- `/admin/pedidos`
+- `/admin/pedidos/{id}/status`
+- `/admin/pagamentos/{id}`
+- `/admin/utilizadores/{utilizadorId}/enderecos`
+- `/admin/lista-desejos`
 
-Cliente (visões públicas / catálogo):
+#### Cliente autenticado
+
+Usar role `CLIENTE`.
+
+- `/me`
+- `/me/historico`
+- `/me/pedidos`
+- `/me/pedidos/{id}`
+- `/me/pedidos/{idPedido}/pagamento`
+- `/me/enderecos`
+- `/me/enderecos/{id}`
+- `/me/lista-desejos`
+- `/me/lista-desejos/{jogoId}`
+- `/usuarios/completar-cadastro`
+
+#### Catálogo público
+
 - `/cliente/fabricante`
 - `/cliente/kit-peca`
 - `/cliente/jogo-xadrez`
@@ -109,17 +133,12 @@ Cliente (visões públicas / catálogo):
 - `/cliente/relogio`
 - `/cliente/peca`
 
-Endpoints "me" (usuário autenticado):
-- `/me/pedidos`
-- `/me/lista-desejos`
-- `/me/pagamentos`
-- `/me` (dados do usuário autenticado)
+#### Autenticação
 
-Autenticação:
-- `/auth/login`
-- `/auth/register`
+Autenticação externa via Keycloak. Não existem endpoints `/auth/login` ou `/auth/register` dentro da API.
 
-Endpoints de enums / consulta rápida:
+#### Enums e consultas rápidas
+
 - `/cor`
 - `/tipo-peca`
 - `/mecanismo`

@@ -8,14 +8,14 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "lista_desejos")
 public class ListaDesejos extends DefaultEntity {
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 

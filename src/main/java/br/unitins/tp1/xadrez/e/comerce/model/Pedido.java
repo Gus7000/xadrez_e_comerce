@@ -14,6 +14,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -43,6 +44,9 @@ public class Pedido extends DefaultEntity {
     @ManyToOne
     @JoinColumn(name = "cupom_id")
     private CupomDesconto cupom;
+
+    @OneToOne(mappedBy = "pedido", fetch = FetchType.LAZY)
+    private Pagamento pagamento;
 
     public Usuario getUsuario() {
         return usuario;
@@ -122,5 +126,13 @@ public class Pedido extends DefaultEntity {
 
     public void setCupom(CupomDesconto cupom) {
         this.cupom = cupom;
+    }
+
+    public Pagamento getPagamento() {
+        return pagamento;
+    }
+
+    public void setPagamento(Pagamento pagamento) {
+        this.pagamento = pagamento;
     }
 }

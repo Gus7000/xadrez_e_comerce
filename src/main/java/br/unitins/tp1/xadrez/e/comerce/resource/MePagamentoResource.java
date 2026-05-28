@@ -1,13 +1,9 @@
 package br.unitins.tp1.xadrez.e.comerce.resource;
 
-import java.util.List;
-
-import br.unitins.tp1.xadrez.e.comerce.mapper.PagamentoMapper;
 import br.unitins.tp1.xadrez.e.comerce.model.Pagamento;
 import br.unitins.tp1.xadrez.e.comerce.model.Usuario;
 import br.unitins.tp1.xadrez.e.comerce.service.PagamentoService;
 import br.unitins.tp1.xadrez.e.comerce.service.UsuarioService;
-import org.eclipse.microprofile.jwt.JsonWebToken;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
@@ -17,14 +13,16 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.NotFoundException;
+import io.quarkus.security.identity.SecurityIdentity;
+import br.unitins.tp1.xadrez.e.comerce.mapper.PagamentoMapper;
 
-@Path("/me/pagamentos")
+@Path("/me/pedidos/{idPedido}/pagamento")
 @Produces(MediaType.APPLICATION_JSON)
-@RolesAllowed({"CLIENTE","ADMIN"})
+@RolesAllowed("CLIENTE")
 public class MePagamentoResource {
 
     @Inject
-    JsonWebToken jwt;
+    SecurityIdentity securityIdentity;
 
     @Inject
     UsuarioService usuarioService;
@@ -32,20 +30,14 @@ public class MePagamentoResource {
     @Inject
     PagamentoService pagamentoService;
 
-    @GET
-    public Response listMyPagamentos() {
-        String keycloakId = jwt.getSubject();
-        Usuario usuario = usuarioService.findByKeycloakId(keycloakId);
-        List<Pagamento> pagamentos = pagamentoService.findByUsuarioId(usuario.getId());
-        return Response.ok(pagamentos.stream().map(PagamentoMapper::toResponseDTO).toList()).build();
+    private Usuario currentUsuario() {
+        return usuarioService.findByKeycloakId(securityIdentity.getPrincipal().getName());
     }
 
     @GET
-    @Path("/{id}")
-    public Response getMyPagamento(@PathParam("id") Long id) {
-        String keycloakId = jwt.getSubject();
-        Usuario usuario = usuarioService.findByKeycloakId(keycloakId);
-        Pagamento pagamento = pagamentoService.findById(id);
+    public Response getMyPagamento(@PathParam("idPedido") Long idPedido) {
+        Usuario usuario = currentUsuario();
+        Pagamento pagamento = pagamentoService.findByPedidoId(idPedido);
         if (pagamento.getPedido() == null || pagamento.getPedido().getUsuario() == null
                 || !pagamento.getPedido().getUsuario().getId().equals(usuario.getId())) {
             throw new NotFoundException("Pagamento não encontrado");

@@ -10,7 +10,6 @@ public record CupomDescontoRequestDTO(
     Boolean ativo,
     Integer usoMaximo,
     Boolean porUsuario,
-    LocalDate expiraEm,
     Double percentualDesconto,
     BigDecimal valorDesconto
 ) {

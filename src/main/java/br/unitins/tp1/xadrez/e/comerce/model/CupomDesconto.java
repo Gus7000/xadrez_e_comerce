@@ -1,7 +1,9 @@
 package br.unitins.tp1.xadrez.e.comerce.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import br.unitins.tp1.xadrez.e.comerce.DTO.CupomDescontoResponseDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
@@ -27,8 +29,6 @@ public abstract class CupomDesconto extends DefaultEntity {
     private Integer usosRealizados;
 
     private boolean porUsuario;
-
-    private LocalDate expiraEm;
 
     public String getCodigo() {
         return codigo;
@@ -78,11 +78,7 @@ public abstract class CupomDesconto extends DefaultEntity {
         this.porUsuario = porUsuario;
     }
 
-    public LocalDate getExpiraEm() {
-        return expiraEm;
-    }
+    public abstract BigDecimal calcularDesconto(BigDecimal subtotal);
 
-    public void setExpiraEm(LocalDate expiraEm) {
-        this.expiraEm = expiraEm;
-    }
+    public abstract CupomDescontoResponseDTO toDTO();
 }

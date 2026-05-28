@@ -50,7 +50,6 @@ public class CupomDescontoServiceImpl implements CupomDescontoService {
         entidade.setAtivo(cupom.isAtivo());
         entidade.setUsoMaximo(cupom.getUsoMaximo());
         entidade.setPorUsuario(cupom.isPorUsuario());
-        entidade.setExpiraEm(cupom.getExpiraEm());
         // campos específicos (FIXO / PERCENTUAL) devem ser tratados externamente se necessário
     }
 

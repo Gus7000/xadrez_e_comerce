@@ -12,10 +12,11 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/cliente/fabricante")
+@Path("/fabricantes")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class FabricanteClienteResource {
@@ -24,8 +25,12 @@ public class FabricanteClienteResource {
     FabricanteService service;
 
     @GET
-    public Response findAll() {
-        List<FabricanteClienteResponseDTO> lista = service.findAll().stream().map(FabricanteMapper::toClienteResponseDTO).toList();
+    public Response findAll(@QueryParam("nome") String nome) {
+        List<Fabricante> fabricantes = (nome != null && !nome.isBlank())
+                ? service.findByNome(nome)
+                : service.findAll();
+
+        List<FabricanteClienteResponseDTO> lista = fabricantes.stream().map(FabricanteMapper::toClienteResponseDTO).toList();
         return Response.ok(lista).build();
     }
 
@@ -36,10 +41,4 @@ public class FabricanteClienteResource {
         return Response.ok(FabricanteMapper.toClienteResponseDTO(fabricante)).build();
     }
 
-    @GET
-    @Path("/find/nome/{nome}")
-    public Response findByNome(@PathParam("nome") String nome) {
-        List<FabricanteClienteResponseDTO> lista = service.findByNome(nome).stream().map(FabricanteMapper::toClienteResponseDTO).toList();
-        return Response.ok(lista).build();
-    }
 }

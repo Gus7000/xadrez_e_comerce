@@ -12,10 +12,11 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/cliente/jogo-xadrez")
+@Path("/jogos-xadrez")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class JogoXadrezClienteResource {
@@ -24,8 +25,18 @@ public class JogoXadrezClienteResource {
     JogoXadrezService service;
 
     @GET
-    public Response findAll() {
-        List<JogoXadrezClienteResponseDTO> lista = service.findAll().stream().map(JogoXadrezMapper::toClienteResponseDTO).toList();
+    public Response findAll(@QueryParam("kitPecaId") Long kitPecaId, @QueryParam("tabuleiroId") Long tabuleiroId) {
+        List<JogoXadrez> jogos;
+
+        if (kitPecaId != null) {
+            jogos = service.findByKitPeca(kitPecaId);
+        } else if (tabuleiroId != null) {
+            jogos = service.findByTabuleiro(tabuleiroId);
+        } else {
+            jogos = service.findAll();
+        }
+
+        List<JogoXadrezClienteResponseDTO> lista = jogos.stream().map(JogoXadrezMapper::toClienteResponseDTO).toList();
         return Response.ok(lista).build();
     }
 
@@ -36,17 +47,4 @@ public class JogoXadrezClienteResource {
         return Response.ok(JogoXadrezMapper.toClienteResponseDTO(jogoXadrez)).build();
     }
 
-    @GET
-    @Path("/find/kit-peca/{kitPecaId}")
-    public Response findByKitPeca(@PathParam("kitPecaId") Long kitPecaId) {
-        List<JogoXadrezClienteResponseDTO> lista = service.findByKitPeca(kitPecaId).stream().map(JogoXadrezMapper::toClienteResponseDTO).toList();
-        return Response.ok(lista).build();
-    }
-
-    @GET
-    @Path("/find/tabuleiro/{tabuleiroId}")
-    public Response findByTabuleiro(@PathParam("tabuleiroId") Long tabuleiroId) {
-        List<JogoXadrezClienteResponseDTO> lista = service.findByTabuleiro(tabuleiroId).stream().map(JogoXadrezMapper::toClienteResponseDTO).toList();
-        return Response.ok(lista).build();
-    }
 }

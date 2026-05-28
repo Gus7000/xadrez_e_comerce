@@ -13,7 +13,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/usuarios")
+@Path("/me")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @RolesAllowed("CLIENTE")
@@ -23,7 +23,7 @@ public class UsuarioCadastroResource {
     UsuarioService usuarioService;
 
     @PUT
-    @Path("/completar-cadastro")
+    @Path("/perfil")
     @Transactional
     public Response completarCadastro(@Valid CadastroCompletoDTO dto) {
         usuarioService.obterOuCriarUsuarioLocal();

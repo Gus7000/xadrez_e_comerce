@@ -19,10 +19,11 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/admin/jogo-xadrez")
+@Path("/admin/jogos-xadrez")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @RolesAllowed("ADMIN")
@@ -32,8 +33,18 @@ public class JogoXadrezResource {
     JogoXadrezService service;
 
     @GET
-    public Response findAll() {
-        List<JogoXadrezResponseDTO> lista = service.findAll().stream().map(JogoXadrezMapper::toResponseDTO).toList();
+    public Response findAll(@QueryParam("kitPecaId") Long kitPecaId, @QueryParam("tabuleiroId") Long tabuleiroId) {
+        List<JogoXadrez> jogos;
+
+        if (kitPecaId != null) {
+            jogos = service.findByKitPeca(kitPecaId);
+        } else if (tabuleiroId != null) {
+            jogos = service.findByTabuleiro(tabuleiroId);
+        } else {
+            jogos = service.findAll();
+        }
+
+        List<JogoXadrezResponseDTO> lista = jogos.stream().map(JogoXadrezMapper::toResponseDTO).toList();
         return Response.ok(lista).build();
     }
 
@@ -42,20 +53,6 @@ public class JogoXadrezResource {
     public Response findById(@PathParam("id") Long id) {
         JogoXadrez jogoXadrez = service.findById(id);
         return Response.ok(JogoXadrezMapper.toResponseDTO(jogoXadrez)).build();
-    }
-
-    @GET
-    @Path("/find/kit-peca/{kitPecaId}")
-    public Response findByKitPeca(@PathParam("kitPecaId") Long kitPecaId) {
-        List<JogoXadrezResponseDTO> lista = service.findByKitPeca(kitPecaId).stream().map(JogoXadrezMapper::toResponseDTO).toList();
-        return Response.ok(lista).build();
-    }
-
-    @GET
-    @Path("/find/tabuleiro/{tabuleiroId}")
-    public Response findByTabuleiro(@PathParam("tabuleiroId") Long tabuleiroId) {
-        List<JogoXadrezResponseDTO> lista = service.findByTabuleiro(tabuleiroId).stream().map(JogoXadrezMapper::toResponseDTO).toList();
-        return Response.ok(lista).build();
     }
 
     @POST

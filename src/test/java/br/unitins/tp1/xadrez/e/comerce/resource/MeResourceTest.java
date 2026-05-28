@@ -30,7 +30,7 @@ class MeResourceTest {
     @Test
     void shouldReturnLoggedUserProfile() {
         reset(usuarioService);
-        when(usuarioService.obterOuCriarUsuarioLocal()).thenReturn(buildUsuario());
+        when(usuarioService.findByKeycloakId("cliente@mail.com")).thenReturn(buildUsuario());
 
         given()
                 .when()

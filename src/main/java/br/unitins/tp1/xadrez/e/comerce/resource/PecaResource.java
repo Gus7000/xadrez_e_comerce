@@ -19,10 +19,11 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/admin/peca")
+@Path("/admin/pecas")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @RolesAllowed("ADMIN")
@@ -32,8 +33,22 @@ public class PecaResource {
     PecaService service;
 
     @GET
-    public Response findAll() {
-        List<PecaResponseDTO> lista = service.findAll().stream().map(PecaMapper::toResponseDTO).toList();
+    public Response findAll(@QueryParam("corId") Long corId,
+                            @QueryParam("tipoId") Long tipoId,
+                            @QueryParam("materialId") Long materialId) {
+        List<Peca> pecas;
+
+        if (corId != null) {
+            pecas = service.findByCor(corId);
+        } else if (tipoId != null) {
+            pecas = service.findByTipo(tipoId);
+        } else if (materialId != null) {
+            pecas = service.findByMaterial(materialId);
+        } else {
+            pecas = service.findAll();
+        }
+
+        List<PecaResponseDTO> lista = pecas.stream().map(PecaMapper::toResponseDTO).toList();
         return Response.ok(lista).build();
     }
 
@@ -42,27 +57,6 @@ public class PecaResource {
     public Response findById(@PathParam("id") Long id) {
         Peca peca = service.findById(id);
         return Response.ok(PecaMapper.toResponseDTO(peca)).build();
-    }
-
-    @GET
-    @Path("/find/cor/{corId}")
-    public Response findByCor(@PathParam("corId") Long corId) {
-        List<PecaResponseDTO> lista = service.findByCor(corId).stream().map(PecaMapper::toResponseDTO).toList();
-        return Response.ok(lista).build();
-    }
-
-    @GET
-    @Path("/find/tipo/{tipoId}")
-    public Response findByTipo(@PathParam("tipoId") Long tipoId) {
-        List<PecaResponseDTO> lista = service.findByTipo(tipoId).stream().map(PecaMapper::toResponseDTO).toList();
-        return Response.ok(lista).build();
-    }
-
-    @GET
-    @Path("/find/material/{materialId}")
-    public Response findByMaterial(@PathParam("materialId") Long materialId) {
-        List<PecaResponseDTO> lista = service.findByMaterial(materialId).stream().map(PecaMapper::toResponseDTO).toList();
-        return Response.ok(lista).build();
     }
 
     @POST

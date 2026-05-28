@@ -13,7 +13,6 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import br.unitins.tp1.xadrez.e.comerce.DTO.MeListaDesejosItemRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.model.JogoXadrez;
 import br.unitins.tp1.xadrez.e.comerce.model.ListaDesejos;
 import br.unitins.tp1.xadrez.e.comerce.model.Usuario;
@@ -22,7 +21,7 @@ import br.unitins.tp1.xadrez.e.comerce.service.UsuarioService;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
-import io.restassured.http.ContentType;
+
 
 @QuarkusTest
 @TestSecurity(user = "cliente", roles = { "CLIENTE" })
@@ -42,7 +41,7 @@ class MeListaDesejosResourceTest {
 
     @Test
     void shouldReturnMyLista() {
-        when(usuarioService.obterOuCriarUsuarioLocal()).thenReturn(buildUsuario(1L, true));
+        when(usuarioService.findByKeycloakId("cliente")).thenReturn(buildUsuario(1L, true));
         when(listaService.findOrCreateByUsuarioId(1L)).thenReturn(buildLista(1L, 1L));
 
         given()
@@ -55,26 +54,24 @@ class MeListaDesejosResourceTest {
 
     @Test
     void shouldAddItem() {
-        when(usuarioService.obterOuCriarUsuarioLocal()).thenReturn(buildUsuario(1L, true));
+        when(usuarioService.findByKeycloakId("cliente")).thenReturn(buildUsuario(1L, true));
         doNothing().when(listaService).addItem(anyLong(), anyLong());
 
         given()
-                .contentType(ContentType.JSON)
-                .body(new MeListaDesejosItemRequestDTO(1L))
                 .when()
-                .post("/me/lista-desejos/itens")
+            .post("/me/lista-desejos/1")
                 .then()
                 .statusCode(201);
     }
 
     @Test
     void shouldRemoveItem() {
-        when(usuarioService.obterOuCriarUsuarioLocal()).thenReturn(buildUsuario(1L, true));
+        when(usuarioService.findByKeycloakId("cliente")).thenReturn(buildUsuario(1L, true));
         doNothing().when(listaService).removeItem(anyLong(), anyLong());
 
         given()
                 .when()
-                .delete("/me/lista-desejos/itens/1")
+            .delete("/me/lista-desejos/1")
                 .then()
                 .statusCode(204);
     }

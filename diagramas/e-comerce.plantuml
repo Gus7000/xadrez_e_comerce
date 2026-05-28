@@ -8,16 +8,12 @@ class DefaultEntity {
 
 class Usuario {
   - email: String
-  - senha: String
+  - keycloakid: String
   - nome: String
   - telefone: String
   - cpf: String
   - cadastroCompleto: boolean
 }
-enum Perfil {
-  ADMIN
-  CLIENTE
-  }
 
 class Endereco {
   - rua: String
@@ -29,12 +25,8 @@ class Endereco {
   - pais: String
 }
 
-
 class ListaDesejos {
 }
-
-
-
 
 class Pedido {
   - status: PedidoStatus
@@ -63,7 +55,6 @@ class EnderecoPedido {
   - pais: String
 }
 
-
 enum MetodoPagamento {
   PIX
   CARTAO_CREDITO
@@ -90,13 +81,13 @@ class PedidoItem {
   - precoUnitario: BigDecimal
 }
 
-class JogoXadrez{
-    -nome: String
-  -preco: BigDecimal
-    -descricao: String
-    <<adminOnly>>
-    -estoqueDisponivel: int
-  -custoProducao: BigDecimal
+class JogoXadrez {
+  - nome: String
+  - preco: BigDecimal
+  - descricao: String
+  <<adminOnly>>
+  - estoqueDisponivel: int
+  - custoProducao: BigDecimal
 }
 
 abstract class CupomDesconto {
@@ -106,7 +97,6 @@ abstract class CupomDesconto {
   - usoMaximo: Integer
   - usosRealizados: Integer
   - porUsuario: boolean
-  - expiraEm: Date
 }
 
 class CupomDescontoPercentual {
@@ -120,26 +110,27 @@ class CupomDescontoFixo {
 CupomDescontoPercentual --|> CupomDesconto
 CupomDescontoFixo --|> CupomDesconto
 
+' --- CORREÇÕES DE RELACIONAMENTOS E CARDINALIDADES ---
 
+Usuario "1" *--> "*" Endereco 
+Usuario "1" *--> "1" ListaDesejos 
+Usuario "1" --> "*" Pedido 
 
-Usuario "1" o--> "*" Endereco
-Usuario "1" *--> "1" ListaDesejos
-Usuario "1" o--> "*" Pedido
-Usuario "1" --> "1" Perfil
+' Ajustado para Muitos-para-Muitos:
+ListaDesejos "*" o--> "*" JogoXadrez 
 
-ListaDesejos "*" o--> "*" JogoXadrez
+Pedido "1" *--> "*" PedidoItem 
+PedidoItem "*" --> "1" JogoXadrez 
+Pedido "1" *--> "1" EnderecoPedido 
+Pedido "1" *--> "1" Pagamento 
 
-Pedido "1" *--> "*" PedidoItem
-PedidoItem "*" o--> "1" JogoXadrez
-Pedido "1" *--> "1" EnderecoPedido
-Pedido "1" *--> "1" Pagamento
-Pedido "0..1" --> "1" CupomDesconto
+' Ajustado: Muitos pedidos podem usar 1 cupom:
+Pedido "*" --> "0..1" CupomDesconto 
 
-
-
-Pedido "1"--> "1" PedidoStatus
-Pagamento "1"--> "1"MetodoPagamento
-Pagamento "1"--> "1"PagamentoStatus
+' Ajustado: Muitos pedidos/pagamentos podem ter o mesmo status/método:
+Pedido "*" --> "1" PedidoStatus 
+Pagamento "*" --> "1" MetodoPagamento 
+Pagamento "*" --> "1" PagamentoStatus 
 
 note bottom of DefaultEntity
   Todas as classes herdam
@@ -147,7 +138,7 @@ note bottom of DefaultEntity
 end note
 
 note top of Usuario
-  O login é por email e senha.
+  O login é delegado ao Keycloak.
   cadastroCompleto indica se o cliente já pode comprar.
 end note
 

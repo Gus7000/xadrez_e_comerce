@@ -59,6 +59,7 @@ public class ListaDesejosServiceImpl implements ListaDesejosService {
 
         ListaDesejos listaDesejos = new ListaDesejos();
         listaDesejos.setUsuario(usuario);
+        usuario.setListaDesejos(listaDesejos);
         listaDesejos.setJogos(buscarJogos(dto.jogoIds()));
 
         repository.persist(listaDesejos);
@@ -80,6 +81,7 @@ public class ListaDesejosServiceImpl implements ListaDesejosService {
         }
 
         listaDesejos.setUsuario(usuario);
+        usuario.setListaDesejos(listaDesejos);
         listaDesejos.setJogos(buscarJogos(dto.jogoIds()));
     }
 
@@ -108,6 +110,7 @@ public class ListaDesejosServiceImpl implements ListaDesejosService {
 
         ListaDesejos nova = new ListaDesejos();
         nova.setUsuario(usuario);
+        usuario.setListaDesejos(nova);
         nova.setJogos(new HashSet<>());
         repository.persist(nova);
         return nova;

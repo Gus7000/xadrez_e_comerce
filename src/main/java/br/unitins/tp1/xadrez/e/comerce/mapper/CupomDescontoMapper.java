@@ -1,6 +1,6 @@
 package br.unitins.tp1.xadrez.e.comerce.mapper;
 
-import java.math.BigDecimal;
+
 
 import br.unitins.tp1.xadrez.e.comerce.DTO.CupomDescontoRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.CupomDescontoResponseDTO;
@@ -29,39 +29,12 @@ public class CupomDescontoMapper {
         entidade.setAtivo(dto.ativo() != null ? dto.ativo() : Boolean.FALSE);
         entidade.setUsoMaximo(dto.usoMaximo());
         entidade.setPorUsuario(dto.porUsuario() != null ? dto.porUsuario() : Boolean.FALSE);
-        entidade.setExpiraEm(dto.expiraEm());
 
         return entidade;
     }
 
     public static CupomDescontoResponseDTO toResponseDTO(CupomDesconto entidade) {
         if (entidade == null) return null;
-
-        Double percentual = null;
-        BigDecimal valor = null;
-        String tipo = null;
-
-        if (entidade instanceof CupomDescontoFixo) {
-            tipo = "FIXO";
-            valor = ((CupomDescontoFixo) entidade).getValorDesconto();
-        } else if (entidade instanceof CupomDescontoPercentual) {
-            tipo = "PERCENTUAL";
-            percentual = ((CupomDescontoPercentual) entidade).getPercentualDesconto();
-        }
-
-        return new CupomDescontoResponseDTO(
-            entidade.getId(),
-            entidade.getCodigo(),
-            tipo,
-            entidade.getDataValidade(),
-            entidade.isAtivo(),
-            entidade.getUsoMaximo(),
-            entidade.getUsosRealizados(),
-            entidade.isPorUsuario(),
-            entidade.getExpiraEm(),
-            percentual,
-            valor,
-            entidade.getDataCadastro()
-        );
+        return entidade.toDTO();
     }
 }

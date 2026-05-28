@@ -1,14 +1,13 @@
 package br.unitins.tp1.xadrez.e.comerce.service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.unitins.tp1.xadrez.e.comerce.DTO.PedidoItemRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.PedidoRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.model.CupomDesconto;
-import br.unitins.tp1.xadrez.e.comerce.model.CupomDescontoFixo;
-import br.unitins.tp1.xadrez.e.comerce.model.CupomDescontoPercentual;
 import br.unitins.tp1.xadrez.e.comerce.model.JogoXadrez;
 import br.unitins.tp1.xadrez.e.comerce.model.Pedido;
 import br.unitins.tp1.xadrez.e.comerce.model.PedidoItem;
@@ -22,6 +21,7 @@ import br.unitins.tp1.xadrez.e.comerce.repository.UsuarioRepository;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
@@ -91,6 +91,7 @@ public class PedidoServiceImpl implements PedidoService {
             if (cupom == null) {
                 throw new NotFoundException("Cupom não encontrado");
             }
+            validarCupom(cupom, usuario);
             pedido.setCupom(cupom);
         }
 
@@ -129,7 +130,7 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.setItems(items);
         pedido.setSubtotal(subtotal);
 
-        BigDecimal desconto = aplicarDesconto(cupom, subtotal);
+        BigDecimal desconto = cupom == null ? BigDecimal.ZERO : cupom.calcularDesconto(subtotal);
         pedido.setDesconto(desconto);
 
         BigDecimal frete = BigDecimal.ZERO;
@@ -170,26 +171,32 @@ public class PedidoServiceImpl implements PedidoService {
         }
     }
 
-    private BigDecimal aplicarDesconto(CupomDesconto cupom, BigDecimal subtotal) {
+    private void validarCupom(CupomDesconto cupom, Usuario usuario) {
         if (cupom == null) {
-            return BigDecimal.ZERO;
+            return;
         }
 
-        if (cupom instanceof CupomDescontoFixo fixo) {
-            BigDecimal valorDesconto = fixo.getValorDesconto() != null ? fixo.getValorDesconto() : BigDecimal.ZERO;
-            return valorDesconto.min(subtotal);
+        if (!cupom.isAtivo()) {
+            throw new BadRequestException("Cupom inativo");
         }
 
-        if (cupom instanceof CupomDescontoPercentual percentual) {
-            Double percentualDesconto = percentual.getPercentualDesconto();
-            if (percentualDesconto == null || percentualDesconto <= 0) {
-                return BigDecimal.ZERO;
+        LocalDate dataValidade = cupom.getDataValidade();
+        if (dataValidade != null && LocalDate.now().isAfter(dataValidade)) {
+            throw new BadRequestException("Cupom expirado");
+        }
+
+        Integer usoMaximo = cupom.getUsoMaximo();
+        Integer usosRealizados = cupom.getUsosRealizados() != null ? cupom.getUsosRealizados() : 0;
+        if (usoMaximo != null && usosRealizados >= usoMaximo) {
+            throw new BadRequestException("Cupom esgotado");
+        }
+
+        if (cupom.isPorUsuario() && usuario != null) {
+            long usosDoUsuario = repository.countByUsuarioAndCupom(usuario, cupom);
+            if (usosDoUsuario > 0) {
+                throw new BadRequestException("Você já utilizou este cupom");
             }
-
-            BigDecimal desconto = subtotal.multiply(BigDecimal.valueOf(percentualDesconto / 100.0));
-            return desconto.min(subtotal);
         }
-
-        return BigDecimal.ZERO;
     }
+
 }
