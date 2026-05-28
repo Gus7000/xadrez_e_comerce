@@ -9,7 +9,7 @@ public class UsuarioMapper {
         return new UsuarioResponseDTO(
                 usuario.getId(),
                 usuario.getEmail(),
-                usuario.getPerfil(),
+                usuario.getKeycloakId(),
                 usuario.getDataCadastro());
     }
 }

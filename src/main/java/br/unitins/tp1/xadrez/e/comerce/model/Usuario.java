@@ -2,9 +2,12 @@ package br.unitins.tp1.xadrez.e.comerce.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "usuario")
@@ -13,12 +16,9 @@ public class Usuario extends DefaultEntity {
     @Column(nullable = false, unique = true, length = 80)
     private String email;
 
-    @Column(name = "senha_hash", nullable = false, length = 255)
-    private String senhaHash;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private Perfil perfil;
+    @Column(name = "keycloak_id", length = 80, unique = true)
+    private String keycloakId;
 
     @Column(length = 120)
     private String nome;
@@ -32,13 +32,11 @@ public class Usuario extends DefaultEntity {
     @Column(name = "cadastro_completo")
     private boolean cadastroCompleto = false;
 
-    public String getLogin() {
-        return email;
-    }
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    private List<Endereco> enderecos = new ArrayList<>();
 
-    public void setLogin(String login) {
-        this.email = login;
-    }
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    private List<Pedido> pedidos = new ArrayList<>();
 
     public String getEmail() {
         return email;
@@ -48,20 +46,12 @@ public class Usuario extends DefaultEntity {
         this.email = email;
     }
 
-    public String getSenhaHash() {
-        return senhaHash;
+    public String getKeycloakId() {
+        return keycloakId;
     }
 
-    public void setSenhaHash(String senhaHash) {
-        this.senhaHash = senhaHash;
-    }
-
-    public Perfil getPerfil() {
-        return perfil;
-    }
-
-    public void setPerfil(Perfil perfil) {
-        this.perfil = perfil;
+    public void setKeycloakId(String keycloakId) {
+        this.keycloakId = keycloakId;
     }
 
     public String getNome() {
@@ -94,5 +84,21 @@ public class Usuario extends DefaultEntity {
 
     public void setCadastroCompleto(boolean cadastroCompleto) {
         this.cadastroCompleto = cadastroCompleto;
+    }
+
+    public List<Endereco> getEnderecos() {
+        return enderecos;
+    }
+
+    public void setEnderecos(List<Endereco> enderecos) {
+        this.enderecos = enderecos;
+    }
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
     }
 }

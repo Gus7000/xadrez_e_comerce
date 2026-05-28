@@ -7,7 +7,7 @@ import br.unitins.tp1.xadrez.e.comerce.model.Pagamento;
 import br.unitins.tp1.xadrez.e.comerce.model.Usuario;
 import br.unitins.tp1.xadrez.e.comerce.service.PagamentoService;
 import br.unitins.tp1.xadrez.e.comerce.service.UsuarioService;
-import io.quarkus.security.identity.SecurityIdentity;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
@@ -24,7 +24,7 @@ import jakarta.ws.rs.NotFoundException;
 public class MePagamentoResource {
 
     @Inject
-    SecurityIdentity securityIdentity;
+    JsonWebToken jwt;
 
     @Inject
     UsuarioService usuarioService;
@@ -34,8 +34,8 @@ public class MePagamentoResource {
 
     @GET
     public Response listMyPagamentos() {
-        String login = securityIdentity.getPrincipal().getName();
-        Usuario usuario = usuarioService.findByLogin(login);
+        String keycloakId = jwt.getSubject();
+        Usuario usuario = usuarioService.findByKeycloakId(keycloakId);
         List<Pagamento> pagamentos = pagamentoService.findByUsuarioId(usuario.getId());
         return Response.ok(pagamentos.stream().map(PagamentoMapper::toResponseDTO).toList()).build();
     }
@@ -43,8 +43,8 @@ public class MePagamentoResource {
     @GET
     @Path("/{id}")
     public Response getMyPagamento(@PathParam("id") Long id) {
-        String login = securityIdentity.getPrincipal().getName();
-        Usuario usuario = usuarioService.findByLogin(login);
+        String keycloakId = jwt.getSubject();
+        Usuario usuario = usuarioService.findByKeycloakId(keycloakId);
         Pagamento pagamento = pagamentoService.findById(id);
         if (pagamento.getPedido() == null || pagamento.getPedido().getUsuario() == null
                 || !pagamento.getPedido().getUsuario().getId().equals(usuario.getId())) {

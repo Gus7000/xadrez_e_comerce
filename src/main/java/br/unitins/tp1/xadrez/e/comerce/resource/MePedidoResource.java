@@ -10,7 +10,6 @@ import br.unitins.tp1.xadrez.e.comerce.model.Pedido;
 import br.unitins.tp1.xadrez.e.comerce.model.Usuario;
 import br.unitins.tp1.xadrez.e.comerce.service.PedidoService;
 import br.unitins.tp1.xadrez.e.comerce.service.UsuarioService;
-import io.quarkus.security.identity.SecurityIdentity;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -32,9 +31,6 @@ import jakarta.ws.rs.NotFoundException;
 public class MePedidoResource {
 
     @Inject
-    SecurityIdentity securityIdentity;
-
-    @Inject
     UsuarioService usuarioService;
 
     @Inject
@@ -42,8 +38,7 @@ public class MePedidoResource {
 
     @GET
     public Response listMyPedidos() {
-        String login = securityIdentity.getPrincipal().getName();
-        Usuario usuario = usuarioService.findByLogin(login);
+        Usuario usuario = usuarioService.obterOuCriarUsuarioLocal();
         List<Pedido> pedidos = pedidoService.findByUsuarioId(usuario.getId());
         return Response.ok(pedidos.stream().map(PedidoMapper::toResponseDTO).toList()).build();
     }
@@ -51,8 +46,7 @@ public class MePedidoResource {
     @GET
     @Path("/{id}")
     public Response getMyPedido(@PathParam("id") Long id) {
-        String login = securityIdentity.getPrincipal().getName();
-        Usuario usuario = usuarioService.findByLogin(login);
+        Usuario usuario = usuarioService.obterOuCriarUsuarioLocal();
         Pedido pedido = pedidoService.findById(id);
         if (pedido.getUsuario() == null || !pedido.getUsuario().getId().equals(usuario.getId())) {
             throw new NotFoundException("Pedido não encontrado");
@@ -63,8 +57,13 @@ public class MePedidoResource {
     @POST
     @Transactional
     public Response createMyPedido(@Valid MePedidoRequestDTO dto) {
-        String login = securityIdentity.getPrincipal().getName();
-        Usuario usuario = usuarioService.findByLogin(login);
+        Usuario usuario = usuarioService.obterOuCriarUsuarioLocal();
+
+        if (!usuario.isCadastroCompleto()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("É necessário completar o cadastro antes de fazer um pedido.")
+                    .build();
+        }
 
         PedidoRequestDTO createDto = new PedidoRequestDTO(
                 usuario.getId(),

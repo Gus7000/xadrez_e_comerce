@@ -42,7 +42,7 @@ class MeListaDesejosResourceTest {
 
     @Test
     void shouldReturnMyLista() {
-        when(usuarioService.findByLogin("cliente")).thenReturn(buildUsuario(1L));
+        when(usuarioService.obterOuCriarUsuarioLocal()).thenReturn(buildUsuario(1L, true));
         when(listaService.findOrCreateByUsuarioId(1L)).thenReturn(buildLista(1L, 1L));
 
         given()
@@ -55,7 +55,7 @@ class MeListaDesejosResourceTest {
 
     @Test
     void shouldAddItem() {
-        when(usuarioService.findByLogin("cliente")).thenReturn(buildUsuario(1L));
+        when(usuarioService.obterOuCriarUsuarioLocal()).thenReturn(buildUsuario(1L, true));
         doNothing().when(listaService).addItem(anyLong(), anyLong());
 
         given()
@@ -69,7 +69,7 @@ class MeListaDesejosResourceTest {
 
     @Test
     void shouldRemoveItem() {
-        when(usuarioService.findByLogin("cliente")).thenReturn(buildUsuario(1L));
+        when(usuarioService.obterOuCriarUsuarioLocal()).thenReturn(buildUsuario(1L, true));
         doNothing().when(listaService).removeItem(anyLong(), anyLong());
 
         given()
@@ -79,10 +79,11 @@ class MeListaDesejosResourceTest {
                 .statusCode(204);
     }
 
-    private Usuario buildUsuario(Long id) {
+    private Usuario buildUsuario(Long id, boolean cadastroCompleto) {
         Usuario u = new Usuario();
         u.setId(id);
         u.setEmail("c" + id + "@mail.com");
+        u.setCadastroCompleto(cadastroCompleto);
         return u;
     }
 

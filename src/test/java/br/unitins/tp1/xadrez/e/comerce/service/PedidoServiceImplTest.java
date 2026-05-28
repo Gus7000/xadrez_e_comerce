@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 import br.unitins.tp1.xadrez.e.comerce.DTO.PedidoItemRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.PedidoRequestDTO;
-import br.unitins.tp1.xadrez.e.comerce.model.Perfil;
 import br.unitins.tp1.xadrez.e.comerce.model.Pedido;
 import br.unitins.tp1.xadrez.e.comerce.model.PedidoStatus;
 import br.unitins.tp1.xadrez.e.comerce.model.Usuario;
@@ -51,7 +50,7 @@ class PedidoServiceImplTest {
         Usuario usuario = new Usuario();
         usuario.setId(1L);
         usuario.setEmail("cliente@mail.com");
-        usuario.setPerfil(Perfil.CLIENTE);
+        usuario.setKeycloakId("kc-cliente-1");
         usuario.setCadastroCompleto(false);
 
         when(usuarioRepository.findById(1L)).thenReturn(usuario);
@@ -72,7 +71,7 @@ class PedidoServiceImplTest {
         Usuario usuario = new Usuario();
         usuario.setId(1L);
         usuario.setEmail("cliente@mail.com");
-        usuario.setPerfil(Perfil.CLIENTE);
+        usuario.setKeycloakId("kc-cliente-1");
         usuario.setCadastroCompleto(true);
 
         when(usuarioRepository.findById(1L)).thenReturn(usuario);

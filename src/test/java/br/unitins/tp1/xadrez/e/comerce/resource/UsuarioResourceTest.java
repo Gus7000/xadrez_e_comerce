@@ -20,7 +20,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import br.unitins.tp1.xadrez.e.comerce.DTO.UsuarioRequestDTO;
-import br.unitins.tp1.xadrez.e.comerce.model.Perfil;
 import br.unitins.tp1.xadrez.e.comerce.model.Usuario;
 import br.unitins.tp1.xadrez.e.comerce.service.UsuarioService;
 import io.quarkus.test.InjectMock;
@@ -66,7 +65,7 @@ class UsuarioResourceTest {
                 .statusCode(200)
                 .body("id", equalTo(1))
                 .body("email", is("admin@mail.com"))
-                .body("perfil", is("ADMIN"));
+                .body("keycloakId", is("admin@mail.com"));
     }
 
     @Test
@@ -74,15 +73,15 @@ class UsuarioResourceTest {
         when(usuarioService.create(any(UsuarioRequestDTO.class))).thenReturn(buildUsuario(1L, "admin@mail.com"));
 
         given()
-            .contentType(ContentType.JSON)
-                .body("{\"email\":\"admin@mail.com\",\"senha\":\"12345678\",\"perfil\":\"ADMIN\"}")
+                .contentType(ContentType.JSON)
+                .body("{\"email\":\"admin@mail.com\",\"keycloakId\":\"kc-admin-1\"}")
                 .when()
                 .post("/admin/usuarios")
                 .then()
                 .statusCode(201)
                 .body("id", equalTo(1))
-            .body("email", is("admin@mail.com"))
-                .body("perfil", is("ADMIN"))
+                .body("email", is("admin@mail.com"))
+                .body("keycloakId", is("admin@mail.com"))
                 .body("dataCadastro", notNullValue());
     }
 
@@ -109,7 +108,7 @@ class UsuarioResourceTest {
 
         given()
                 .contentType(ContentType.JSON)
-                .body("{\"email\":\"admin2@mail.com\",\"senha\":\"12345678\",\"perfil\":\"CLIENTE\"}")
+                .body("{\"email\":\"admin2@mail.com\",\"keycloakId\":\"kc-admin-2\"}")
                 .when()
                 .put("/admin/usuarios/1")
                 .then()
@@ -125,7 +124,7 @@ class UsuarioResourceTest {
 
         given()
                 .contentType(ContentType.JSON)
-            .body("{\"email\":\"admin2@mail.com\",\"senha\":\"12345678\",\"perfil\":\"CLIENTE\"}")
+                .body("{\"email\":\"admin2@mail.com\",\"keycloakId\":\"kc-admin-2\"}")
                 .when()
                 .put("/admin/usuarios/999")
                 .then()
@@ -165,14 +164,12 @@ class UsuarioResourceTest {
                 .body("instance", is("/admin/usuarios/999"));
     }
 
-    private Usuario buildUsuario(Long id, String login) {
+    private Usuario buildUsuario(Long id, String email) {
         Usuario usuario = new Usuario();
         usuario.setId(id);
-        usuario.setLogin(login);
-        usuario.setEmail(login);
-        usuario.setSenhaHash("hash");
+        usuario.setEmail(email);
+        usuario.setKeycloakId(email);
         usuario.setDataCadastro(LocalDateTime.of(2026, 5, 8, 10, 0));
-        usuario.setPerfil(login.startsWith("admin") ? Perfil.ADMIN : Perfil.CLIENTE);
         return usuario;
     }
 }

@@ -20,16 +20,12 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import io.quarkus.security.identity.SecurityIdentity;
 
 @Path("/me/lista-desejos")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @RolesAllowed({"CLIENTE","ADMIN"})
 public class MeListaDesejosResource {
-
-    @Inject
-    SecurityIdentity securityIdentity;
 
     @Inject
     UsuarioService usuarioService;
@@ -39,8 +35,7 @@ public class MeListaDesejosResource {
 
     @GET
     public Response getMyLista() {
-        String login = securityIdentity.getPrincipal().getName();
-        Usuario usuario = usuarioService.findByLogin(login);
+        Usuario usuario = usuarioService.obterOuCriarUsuarioLocal();
         ListaDesejos lista = listaDesejosService.findOrCreateByUsuarioId(usuario.getId());
         return Response.ok(ListaDesejosMapper.toResponseDTO(lista)).build();
     }
@@ -49,8 +44,14 @@ public class MeListaDesejosResource {
     @Path("/itens")
     @Transactional
     public Response addItem(@Valid MeListaDesejosItemRequestDTO dto) {
-        String login = securityIdentity.getPrincipal().getName();
-        Usuario usuario = usuarioService.findByLogin(login);
+        Usuario usuario = usuarioService.obterOuCriarUsuarioLocal();
+
+        if (!usuario.isCadastroCompleto()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("É necessário completar o cadastro antes de adicionar itens à lista de desejos.")
+                    .build();
+        }
+
         listaDesejosService.addItem(usuario.getId(), dto.jogoId());
         return Response.status(Response.Status.CREATED).build();
     }
@@ -59,8 +60,14 @@ public class MeListaDesejosResource {
     @Path("/itens/{produtoId}")
     @Transactional
     public Response removeItem(@PathParam("produtoId") Long produtoId) {
-        String login = securityIdentity.getPrincipal().getName();
-        Usuario usuario = usuarioService.findByLogin(login);
+        Usuario usuario = usuarioService.obterOuCriarUsuarioLocal();
+
+        if (!usuario.isCadastroCompleto()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("É necessário completar o cadastro antes de remover itens da lista de desejos.")
+                    .build();
+        }
+
         listaDesejosService.removeItem(usuario.getId(), produtoId);
         return Response.noContent().build();
     }
