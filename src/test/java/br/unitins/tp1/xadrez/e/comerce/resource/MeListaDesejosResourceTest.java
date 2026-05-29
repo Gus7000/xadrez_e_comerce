@@ -17,10 +17,11 @@ import br.unitins.tp1.xadrez.e.comerce.model.JogoXadrez;
 import br.unitins.tp1.xadrez.e.comerce.model.ListaDesejos;
 import br.unitins.tp1.xadrez.e.comerce.model.Usuario;
 import br.unitins.tp1.xadrez.e.comerce.service.ListaDesejosService;
-import br.unitins.tp1.xadrez.e.comerce.service.UsuarioService;
+
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
+import io.restassured.http.ContentType;
 
 
 @QuarkusTest
@@ -30,19 +31,14 @@ class MeListaDesejosResourceTest {
     @InjectMock
     ListaDesejosService listaService;
 
-    @InjectMock
-    UsuarioService usuarioService;
-
     @BeforeEach
     void setUp() {
         reset(listaService);
-        reset(usuarioService);
     }
 
     @Test
     void shouldReturnMyLista() {
-        when(usuarioService.findByKeycloakId("cliente")).thenReturn(buildUsuario(1L, true));
-        when(listaService.findOrCreateByUsuarioId(1L)).thenReturn(buildLista(1L, 1L));
+        when(listaService.findMyLista()).thenReturn(buildLista(1L, 1L));
 
         given()
                 .when()
@@ -54,10 +50,10 @@ class MeListaDesejosResourceTest {
 
     @Test
     void shouldAddItem() {
-        when(usuarioService.findByKeycloakId("cliente")).thenReturn(buildUsuario(1L, true));
-        doNothing().when(listaService).addItem(anyLong(), anyLong());
+        doNothing().when(listaService).addItem(anyLong());
 
         given()
+                .contentType(ContentType.JSON)
                 .when()
             .post("/me/lista-desejos/1")
                 .then()
@@ -66,8 +62,7 @@ class MeListaDesejosResourceTest {
 
     @Test
     void shouldRemoveItem() {
-        when(usuarioService.findByKeycloakId("cliente")).thenReturn(buildUsuario(1L, true));
-        doNothing().when(listaService).removeItem(anyLong(), anyLong());
+        doNothing().when(listaService).removeItem(anyLong());
 
         given()
                 .when()
@@ -76,13 +71,7 @@ class MeListaDesejosResourceTest {
                 .statusCode(204);
     }
 
-    private Usuario buildUsuario(Long id, boolean cadastroCompleto) {
-        Usuario u = new Usuario();
-        u.setId(id);
-        u.setEmail("c" + id + "@mail.com");
-        u.setCadastroCompleto(cadastroCompleto);
-        return u;
-    }
+   
 
     private ListaDesejos buildLista(Long id, Long usuarioId) {
         JogoXadrez jogo1 = new JogoXadrez();

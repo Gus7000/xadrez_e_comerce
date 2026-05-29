@@ -38,14 +38,14 @@ class ListaDesejosResourceTest {
 
     @Test
     void shouldReturnAllListas() {
-        when(service.findAll()).thenReturn(List.of(buildLista(1L, 1L), buildLista(2L, 2L)));
+        when(service.findByUsuarioId(1L)).thenReturn(List.of(buildLista(1L, 1L), buildLista(2L, 1L)));
 
         given()
-                .when()
-                .get("/admin/lista-desejos")
-                .then()
-                .statusCode(200)
-                .body("size()", is(2));
+            .when()
+            .get("/admin/utilizadores/1/lista-desejos")
+            .then()
+            .statusCode(200)
+            .body("size()", is(2));
     }
     
 
