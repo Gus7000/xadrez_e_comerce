@@ -46,7 +46,7 @@ class RelogioClienteResourceTest {
 
         given()
                 .when()
-                .get("/cliente/relogio/find/marca/Marca%20X")
+            .get("/cliente/relogio/find/marca/Marca X")
                 .then()
                 .statusCode(200)
                 .body("size()", is(1))

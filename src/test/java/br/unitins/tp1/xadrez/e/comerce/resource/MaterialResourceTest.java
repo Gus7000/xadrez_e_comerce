@@ -52,7 +52,7 @@ class MaterialResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"nome\":\"Madeira\"}")
                 .when()
-                .post("/material")
+                .post("/admin/material")
                 .then()
                 .statusCode(anyOf(is(200), is(201)))
                 .body("id", equalTo(1))
@@ -65,7 +65,7 @@ class MaterialResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"nome\":null}")
                 .when()
-                .post("/material")
+                .post("/admin/material")
                 .then()
                 .statusCode(422)
                 .contentType("application/problem+json")
@@ -73,7 +73,7 @@ class MaterialResourceTest {
                 .body("title", is("Validation Error"))
                 .body("status", is(422))
                 .body("detail", equalTo("Um ou mais campos não passaram na validação."))
-                .body("instance", is("/material"))
+                .body("instance", is("/admin/material"))
                 .body("timestamp", notNullValue())
                 .body("errors.size()", greaterThanOrEqualTo(1))
                 .body("errors[0].field", notNullValue())
@@ -86,7 +86,7 @@ class MaterialResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"nome\":\"   \"}")
                 .when()
-                .post("/material")
+                .post("/admin/material")
                 .then()
                 .statusCode(422)
                 .contentType("application/problem+json")
@@ -94,7 +94,7 @@ class MaterialResourceTest {
                 .body("title", is("Validation Error"))
                 .body("status", is(422))
                 .body("detail", equalTo("Um ou mais campos não passaram na validação."))
-                .body("instance", is("/material"))
+                .body("instance", is("/admin/material"))
                 .body("timestamp", notNullValue())
                 .body("errors.size()", greaterThanOrEqualTo(1))
                 .body("errors[0].field", notNullValue())
@@ -107,7 +107,7 @@ class MaterialResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"nome\":\"ab\"}")
                 .when()
-                .post("/material")
+                .post("/admin/material")
                 .then()
                 .statusCode(422)
                 .contentType("application/problem+json")
@@ -115,7 +115,7 @@ class MaterialResourceTest {
                 .body("title", is("Validation Error"))
                 .body("status", is(422))
                 .body("detail", equalTo("Um ou mais campos não passaram na validação."))
-                .body("instance", is("/material"))
+                .body("instance", is("/admin/material"))
                 .body("timestamp", notNullValue())
                 .body("errors.size()", greaterThanOrEqualTo(1))
                 .body("errors[0].field", notNullValue())
@@ -136,7 +136,7 @@ class MaterialResourceTest {
 
         given()
                 .when()
-                .get("/material")
+                .get("/admin/material")
                 .then()
                 .statusCode(200)
                 .body("size()", is(2))
@@ -156,7 +156,7 @@ class MaterialResourceTest {
 
         given()
                 .when()
-                .get("/material/10")
+                .get("/admin/material/10")
                 .then()
                 .statusCode(200)
                 .body("id", equalTo(10))
@@ -173,7 +173,7 @@ class MaterialResourceTest {
 
         given()
                 .when()
-            .get("/material/find/tipo/madeira")
+            .get("/admin/material/find/tipo/madeira")
                 .then()
                 .statusCode(200)
                 .body("size()", is(1))
@@ -190,7 +190,7 @@ class MaterialResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"nome\":\"Resina\"}")
                 .when()
-                .put("/material/1")
+                .put("/admin/material/1")
                 .then()
                 .statusCode(204);
 
@@ -203,7 +203,7 @@ class MaterialResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"nome\":\"x\"}")
                 .when()
-                .put("/material/1")
+                .put("/admin/material/1")
                 .then()
                 .statusCode(422)
                 .contentType("application/problem+json")
@@ -211,7 +211,7 @@ class MaterialResourceTest {
                 .body("title", is("Validation Error"))
                 .body("status", is(422))
                 .body("detail", equalTo("Um ou mais campos não passaram na validação."))
-                .body("instance", is("/material/1"))
+                .body("instance", is("/admin/material/1"))
                 .body("timestamp", notNullValue())
                 .body("errors.size()", greaterThanOrEqualTo(1))
                 .body("errors[0].field", notNullValue())
@@ -227,7 +227,7 @@ class MaterialResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"nome\":\"Resina\"}")
                 .when()
-                .put("/material/999")
+                .put("/admin/material/999")
                 .then()
                 .statusCode(404)
                 .contentType("application/problem+json")
@@ -235,7 +235,7 @@ class MaterialResourceTest {
                 .body("title", is("Not Found"))
                 .body("status", is(404))
                 .body("detail", containsString("Material não encontrado"))
-                .body("instance", is("/material/999"))
+                .body("instance", is("/admin/material/999"))
                 .body("timestamp", notNullValue());
             }
 
@@ -245,7 +245,7 @@ class MaterialResourceTest {
 
         given()
                 .when()
-                .delete("/material/1")
+                .delete("/admin/material/1")
                 .then()
                 .statusCode(204);
 
@@ -259,7 +259,7 @@ class MaterialResourceTest {
 
         given()
                 .when()
-                .delete("/material/999")
+                .delete("/admin/material/999")
                 .then()
                 .statusCode(404)
                 .contentType("application/problem+json")
@@ -267,7 +267,7 @@ class MaterialResourceTest {
                 .body("title", is("Not Found"))
                 .body("status", is(404))
                 .body("detail", containsString("Material não encontrado"))
-                .body("instance", is("/material/999"))
+                .body("instance", is("/admin/material/999"))
                 .body("timestamp", notNullValue());
     }
 }
