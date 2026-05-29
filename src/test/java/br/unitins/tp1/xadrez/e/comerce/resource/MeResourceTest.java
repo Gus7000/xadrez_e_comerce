@@ -9,12 +9,11 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
-import br.unitins.tp1.xadrez.e.comerce.model.Usuario;
-import br.unitins.tp1.xadrez.e.comerce.model.Endereco;
+import br.unitins.tp1.xadrez.e.comerce.DTO.EnderecoResponseDTO;
+import br.unitins.tp1.xadrez.e.comerce.DTO.MeResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.service.UsuarioService;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
@@ -30,7 +29,7 @@ class MeResourceTest {
     @Test
     void shouldReturnLoggedUserProfile() {
         reset(usuarioService);
-        when(usuarioService.findByKeycloakId("cliente@mail.com")).thenReturn(buildUsuario());
+        when(usuarioService.obterMeuPerfil()).thenReturn(buildPerfil());
 
         given()
                 .when()
@@ -49,28 +48,27 @@ class MeResourceTest {
                 .body("dataCadastro", notNullValue());
     }
 
-    private Usuario buildUsuario() {
-        Usuario usuario = new Usuario();
-        usuario.setId(1L);
-        usuario.setEmail("cliente@mail.com");
-        usuario.setKeycloakId("cliente@mail.com");
-        usuario.setNome("Usuario Teste");
-        usuario.setTelefone("62999990000");
-        usuario.setCpf("12345678900");
-        usuario.setCadastroCompleto(true);
-        usuario.setDataCadastro(LocalDateTime.of(2026, 5, 8, 10, 0));
-        Endereco endereco = new Endereco();
-        endereco.setRua("Rua Teste");
-        endereco.setNumero("123");
-        endereco.setComplemento("Apto 1");
-        endereco.setCep("74000000");
-        endereco.setCidade("Cidade X");
-        endereco.setEstado("Estado Y");
-        endereco.setPais("Brasil");
-        endereco.setUsuario(usuario);
-        List<Endereco> lista = new ArrayList<>();
-        lista.add(endereco);
-        usuario.setEnderecos(lista);
-        return usuario;
+    private MeResponseDTO buildPerfil() {
+        EnderecoResponseDTO endereco = new EnderecoResponseDTO(
+                1L,
+                "Rua Teste",
+                "123",
+                "Apto 1",
+                "74000000",
+                "Cidade X",
+                "Estado Y",
+            "Brasil",
+            LocalDateTime.of(2026, 5, 8, 10, 0));
+
+        return new MeResponseDTO(
+                1L,
+                "cliente@mail.com",
+                "cliente@mail.com",
+                "Usuario Teste",
+                "62999990000",
+                "12345678900",
+                true,
+                List.of(endereco),
+                LocalDateTime.of(2026, 5, 8, 10, 0));
     }
 }

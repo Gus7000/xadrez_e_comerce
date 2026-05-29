@@ -8,7 +8,6 @@ import br.unitins.tp1.xadrez.e.comerce.model.ListaDesejos;
 import br.unitins.tp1.xadrez.e.comerce.model.Usuario;
 import br.unitins.tp1.xadrez.e.comerce.repository.JogoXadrezRepository;
 import br.unitins.tp1.xadrez.e.comerce.repository.ListaDesejosRepository;
-import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -30,21 +29,13 @@ public class ListaDesejosServiceImpl implements ListaDesejosService {
 
     @Override
     public List<ListaDesejos> findAll() {
-        return repository.listAll(Sort.by("id"));
+        return repository.findAllWithJogos();
     }
 
-    @Override
-    public ListaDesejos findById(Long id) {
-        ListaDesejos listaDesejos = repository.findById(id);
-        if (listaDesejos == null) {
-            throw new NotFoundException("Lista de desejos não encontrada");
-        }
-        return listaDesejos;
-    }
 
     @Override
     public List<ListaDesejos> findByUsuarioId(Long usuarioId) {
-        return repository.findByUsuarioId(usuarioId).list();
+        return repository.findByUsuarioIdWithJogos(usuarioId);
     }
 
     // --- Operações do Usuário Logado (/me) ---
@@ -53,7 +44,7 @@ public class ListaDesejosServiceImpl implements ListaDesejosService {
     @Transactional
     public ListaDesejos findMyLista() {
         Usuario usuario = usuarioService.obterOuCriarUsuarioLocal();
-        ListaDesejos lista = repository.findByUsuarioId(usuario.getId()).firstResult();
+        ListaDesejos lista = repository.findFirstByUsuarioIdWithJogos(usuario.getId());
 
         if (lista != null) {
             return lista;
@@ -86,7 +77,7 @@ public class ListaDesejosServiceImpl implements ListaDesejosService {
     @Transactional
     public void removeItem(Long jogoId) {
         Usuario usuario = usuarioService.obterOuCriarUsuarioLocal();
-        ListaDesejos lista = repository.findByUsuarioId(usuario.getId()).firstResult();
+        ListaDesejos lista = repository.findFirstByUsuarioIdWithJogos(usuario.getId());
         
         if (lista == null) {
             throw new NotFoundException("Lista de desejos não encontrada");

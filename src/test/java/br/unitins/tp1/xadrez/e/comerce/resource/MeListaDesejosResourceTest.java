@@ -22,6 +22,7 @@ import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
+import org.hamcrest.Matchers;
 
 
 @QuarkusTest
@@ -45,7 +46,11 @@ class MeListaDesejosResourceTest {
                 .get("/me/lista-desejos")
                 .then()
                 .statusCode(200)
-                .body("id", is(1));
+                .body("id", is(1))
+                .body("jogos.size()", is(1))
+                .body("jogos[0].id", is(1))
+                .body("jogos[0].nome", is("Jogo 1"))
+                .body("jogos[0].preco", Matchers.comparesEqualTo(100.0f));
     }
 
     @Test
@@ -76,6 +81,10 @@ class MeListaDesejosResourceTest {
     private ListaDesejos buildLista(Long id, Long usuarioId) {
         JogoXadrez jogo1 = new JogoXadrez();
         jogo1.setId(1L);
+        jogo1.setNome("Jogo 1");
+        jogo1.setPreco(100.0);
+        jogo1.setDescricao("Descricao 1");
+        jogo1.setEstoqueDisponivel(5);
         ListaDesejos lista = new ListaDesejos();
         lista.setId(id);
         Usuario usuario = new Usuario();

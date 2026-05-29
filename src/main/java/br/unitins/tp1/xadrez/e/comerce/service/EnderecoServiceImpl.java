@@ -29,14 +29,7 @@ public class EnderecoServiceImpl implements EnderecoService {
         return repository.listAll(Sort.by("id"));
     }
 
-    @Override
-    public Endereco findById(Long id) {
-        Endereco endereco = repository.findById(id);
-        if (endereco == null) {
-            throw new NotFoundException("Endereço não encontrado");
-        }
-        return endereco;
-    }
+
 
     @Override
     public List<Endereco> findByUsuarioId(Long usuarioId) {

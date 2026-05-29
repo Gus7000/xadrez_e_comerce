@@ -3,6 +3,7 @@ package br.unitins.tp1.xadrez.e.comerce.mapper;
 import java.util.Comparator;
 import java.util.List;
 
+import br.unitins.tp1.xadrez.e.comerce.DTO.JogoXadrezSimplesResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.ListaDesejosResponseDTO;
 import br.unitins.tp1.xadrez.e.comerce.model.ListaDesejos;
 
@@ -13,16 +14,16 @@ public class ListaDesejosMapper {
             return null;
         }
 
-        List<Long> jogoIds = listaDesejos.getJogos().stream()
-                .map(jogo -> jogo.getId())
-                .sorted(Comparator.naturalOrder())
-                .toList();
+        List<JogoXadrezSimplesResponseDTO> jogos = listaDesejos.getJogos().stream()
+            .map(jogo -> new JogoXadrezSimplesResponseDTO(jogo.getId(), jogo.getNome(), jogo.getPreco()))
+            .sorted(Comparator.comparing(JogoXadrezSimplesResponseDTO::id))
+            .toList();
 
         return new ListaDesejosResponseDTO(
                 listaDesejos.getId(),
                 listaDesejos.getUsuario() != null ? listaDesejos.getUsuario().getId() : null,
                 listaDesejos.getUsuario() != null ? listaDesejos.getUsuario().getEmail() : null,
-                jogoIds,
+            jogos,
                 listaDesejos.getDataCadastro());
     }
 }

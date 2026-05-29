@@ -10,7 +10,6 @@ public interface ListaDesejosService {
     // ==========================================
     List<ListaDesejos> findAll();
 
-    ListaDesejos findById(Long id);
 
     List<ListaDesejos> findByUsuarioId(Long usuarioId);
 

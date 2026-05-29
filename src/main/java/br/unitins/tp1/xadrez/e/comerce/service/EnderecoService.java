@@ -12,7 +12,6 @@ public interface EnderecoService {
     // ==========================================
     List<Endereco> findAll();
 
-    Endereco findById(Long id);
 
     List<Endereco> findByUsuarioId(Long usuarioId);
 

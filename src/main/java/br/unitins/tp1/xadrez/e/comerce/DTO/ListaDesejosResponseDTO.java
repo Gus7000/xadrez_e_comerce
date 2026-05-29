@@ -7,6 +7,6 @@ public record ListaDesejosResponseDTO(
         Long id,
         Long usuarioId,
         String usuarioEmail,
-        List<Long> jogoIds,
+        List<JogoXadrezSimplesResponseDTO> jogos,
         LocalDateTime dataCadastro) {
 }

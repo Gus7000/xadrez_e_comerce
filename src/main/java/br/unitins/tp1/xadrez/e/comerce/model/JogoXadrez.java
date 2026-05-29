@@ -4,6 +4,7 @@ package br.unitins.tp1.xadrez.e.comerce.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -17,15 +18,15 @@ public class JogoXadrez extends DefaultEntity {
     @Column(name = "estoque_disponivel" )
     private int estoqueDisponivel;
     
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_kit_peca")
     private KitPeca kitPeca;
     
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_tabuleiro")
     private Tabuleiro tabuleiro;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_relogio")
     private Relogio relogio;
 
