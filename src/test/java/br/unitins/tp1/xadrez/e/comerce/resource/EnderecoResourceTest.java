@@ -69,11 +69,11 @@ class EnderecoResourceTest {
 
     @Test
     void shouldCreateEnderecoSuccessfully() {
-        when(enderecoService.create(any(EnderecoRequestDTO.class))).thenReturn(buildEndereco(1L, 1L));
+        when(enderecoService.create(any(Long.class), any(EnderecoRequestDTO.class))).thenReturn(buildEndereco(1L, 1L));
 
         given()
                 .contentType(ContentType.JSON)
-                .body("{\"rua\":\"Rua A\",\"numero\":\"10\",\"complemento\":\"Apto 1\",\"cep\":\"77000000\",\"cidade\":\"Palmas\",\"estado\":\"TO\",\"pais\":\"Brasil\",\"usuarioId\":1}")
+                .body("{\"rua\":\"Rua A\",\"numero\":\"10\",\"complemento\":\"Apto 1\",\"cep\":\"77000000\",\"cidade\":\"Palmas\",\"estado\":\"TO\",\"pais\":\"Brasil\"}")
                 .when()
                 .post("/admin/endereco")
                 .then()
@@ -101,17 +101,17 @@ class EnderecoResourceTest {
 
     @Test
     void shouldUpdateEnderecoSuccessfully() {
-        doNothing().when(enderecoService).update(eq(1L), any(EnderecoRequestDTO.class));
+        doNothing().when(enderecoService).update(eq(1L), any(Long.class), any(EnderecoRequestDTO.class));
 
         given()
                 .contentType(ContentType.JSON)
-                .body("{\"rua\":\"Rua B\",\"numero\":\"20\",\"complemento\":\"Casa\",\"cep\":\"77001000\",\"cidade\":\"Palmas\",\"estado\":\"TO\",\"pais\":\"Brasil\",\"usuarioId\":1}")
+                .body("{\"rua\":\"Rua B\",\"numero\":\"20\",\"complemento\":\"Casa\",\"cep\":\"77001000\",\"cidade\":\"Palmas\",\"estado\":\"TO\",\"pais\":\"Brasil\"}")
                 .when()
                 .put("/admin/endereco/1")
                 .then()
                 .statusCode(204);
 
-        verify(enderecoService).update(eq(1L), any(EnderecoRequestDTO.class));
+        verify(enderecoService).update(eq(1L), any(Long.class), any(EnderecoRequestDTO.class));
     }
 
     @Test

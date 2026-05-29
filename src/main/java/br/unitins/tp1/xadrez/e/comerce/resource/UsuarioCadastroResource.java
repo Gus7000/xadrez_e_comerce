@@ -1,6 +1,6 @@
 package br.unitins.tp1.xadrez.e.comerce.resource;
 
-import br.unitins.tp1.xadrez.e.comerce.DTO.CadastroCompletoDTO;
+import br.unitins.tp1.xadrez.e.comerce.DTO.UsuarioPerfilUpdateDTO;
 import br.unitins.tp1.xadrez.e.comerce.service.UsuarioService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -25,9 +25,8 @@ public class UsuarioCadastroResource {
     @PUT
     @Path("/perfil")
     @Transactional
-    public Response completarCadastro(@Valid CadastroCompletoDTO dto) {
-        usuarioService.obterOuCriarUsuarioLocal();
-        usuarioService.completarCadastro(dto);
+    public Response atualizarPerfil(@Valid UsuarioPerfilUpdateDTO dto) {
+        usuarioService.atualizarPerfil(dto);
         return Response.ok().build();
     }
 }

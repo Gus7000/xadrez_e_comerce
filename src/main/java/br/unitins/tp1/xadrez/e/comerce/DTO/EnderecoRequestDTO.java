@@ -1,7 +1,6 @@
 package br.unitins.tp1.xadrez.e.comerce.DTO;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record EnderecoRequestDTO(
@@ -24,7 +23,5 @@ public record EnderecoRequestDTO(
         String estado,
         @NotBlank(message = "pais não pode estar em branco")
         @Size(max = 80, message = "pais deve ter no máximo 80 caracteres")
-        String pais,
-        @NotNull(message = "usuarioId é obrigatório")
-        Long usuarioId) {
+        String pais) {
 }

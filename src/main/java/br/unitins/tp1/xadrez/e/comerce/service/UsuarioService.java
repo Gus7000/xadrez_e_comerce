@@ -2,7 +2,8 @@ package br.unitins.tp1.xadrez.e.comerce.service;
 
 import java.util.List;
 
-import br.unitins.tp1.xadrez.e.comerce.DTO.CadastroCompletoDTO;
+import br.unitins.tp1.xadrez.e.comerce.DTO.MeResponseDTO;
+import br.unitins.tp1.xadrez.e.comerce.DTO.UsuarioPerfilUpdateDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.UsuarioRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.model.Usuario;
 
@@ -18,7 +19,9 @@ public interface UsuarioService {
 
     Usuario obterOuCriarUsuarioLocal();
 
-    Usuario completarCadastro(CadastroCompletoDTO dto);
+    MeResponseDTO obterMeuPerfil();
+
+    Usuario atualizarPerfil(UsuarioPerfilUpdateDTO dto);
 
     Usuario create(UsuarioRequestDTO dto);
 

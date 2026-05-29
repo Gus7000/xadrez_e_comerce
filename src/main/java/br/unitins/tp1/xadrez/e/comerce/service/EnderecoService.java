@@ -12,9 +12,9 @@ public interface EnderecoService {
 
     List<Endereco> findByUsuarioId(Long usuarioId);
 
-    Endereco create(EnderecoRequestDTO dto);
+    Endereco create(Long usuarioId, EnderecoRequestDTO dto);
 
-    void update(Long id, EnderecoRequestDTO dto);
+    void update(Long id, Long usuarioId, EnderecoRequestDTO dto);
 
     void delete(Long id);
 }

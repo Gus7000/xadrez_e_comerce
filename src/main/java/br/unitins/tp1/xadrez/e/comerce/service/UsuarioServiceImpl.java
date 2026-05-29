@@ -1,10 +1,12 @@
 package br.unitins.tp1.xadrez.e.comerce.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-import br.unitins.tp1.xadrez.e.comerce.DTO.CadastroCompletoDTO;
+import br.unitins.tp1.xadrez.e.comerce.DTO.MeResponseDTO;
+import br.unitins.tp1.xadrez.e.comerce.DTO.UsuarioPerfilUpdateDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.UsuarioRequestDTO;
-import br.unitins.tp1.xadrez.e.comerce.model.Endereco;
+import br.unitins.tp1.xadrez.e.comerce.mapper.EnderecoMapper;
 import br.unitins.tp1.xadrez.e.comerce.model.Usuario;
 import br.unitins.tp1.xadrez.e.comerce.repository.EnderecoRepository;
 import br.unitins.tp1.xadrez.e.comerce.repository.UsuarioRepository;
@@ -106,29 +108,41 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     @Transactional
-    public Usuario completarCadastro(CadastroCompletoDTO dto) {
+    public MeResponseDTO obterMeuPerfil() {
+        Usuario usuario = obterOuCriarUsuarioLocal();
+
+        List<br.unitins.tp1.xadrez.e.comerce.DTO.EnderecoResponseDTO> enderecos = usuario.getEnderecos()
+                .stream()
+                .map(EnderecoMapper::toResponseDTO)
+                .collect(Collectors.toList());
+
+        return new MeResponseDTO(
+                usuario.getId(),
+                usuario.getEmail(),
+                usuario.getKeycloakId(),
+                usuario.getNome(),
+                usuario.getTelefone(),
+                usuario.getCpf(),
+                usuario.isCadastroCompleto(),
+                enderecos,
+                usuario.getDataCadastro());
+    }
+
+    @Override
+    @Transactional
+    public Usuario atualizarPerfil(UsuarioPerfilUpdateDTO dto) {
         Usuario usuario = obterOuCriarUsuarioLocal();
 
         usuario.setNome(dto.nome());
         usuario.setCpf(dto.cpf());
         usuario.setTelefone(dto.telefone());
-        usuario.setCadastroCompleto(true);
 
-        Endereco endereco = enderecoRepository.findByUsuarioId(usuario.getId()).firstResult();
+        boolean temNome = usuario.getNome() != null && !usuario.getNome().isBlank();
+        boolean temTelefone = usuario.getTelefone() != null && !usuario.getTelefone().isBlank();
+        boolean temCpf = usuario.getCpf() != null && !usuario.getCpf().isBlank();
+        boolean temEndereco = enderecoRepository.findByUsuarioId(usuario.getId()).firstResult() != null;
 
-        if (endereco == null) {
-            endereco = new Endereco();
-            endereco.setUsuario(usuario);
-            enderecoRepository.persist(endereco);
-        }
-
-        endereco.setRua(dto.rua());
-        endereco.setNumero(dto.numero());
-        endereco.setComplemento(dto.complemento());
-        endereco.setCep(dto.cep());
-        endereco.setCidade(dto.cidade());
-        endereco.setEstado(dto.estado());
-        endereco.setPais(dto.pais());
+        usuario.setCadastroCompleto(temNome && temTelefone && temCpf && temEndereco);
 
         return usuario;
     }

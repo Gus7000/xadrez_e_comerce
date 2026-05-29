@@ -48,7 +48,7 @@ public class MePedidoResource {
     PagamentoService pagamentoService;
 
     private Usuario currentUsuario() {
-        return usuarioService.findByKeycloakId(securityIdentity.getPrincipal().getName());
+        return usuarioService.obterOuCriarUsuarioLocal();
     }
 
     private <T> List<T> paginate(List<T> values, int page, int size) {

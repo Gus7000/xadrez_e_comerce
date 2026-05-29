@@ -4,7 +4,6 @@ import java.util.List;
 
 import br.unitins.tp1.xadrez.e.comerce.DTO.EnderecoRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.DTO.EnderecoResponseDTO;
-import br.unitins.tp1.xadrez.e.comerce.DTO.MeEnderecoRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.mapper.EnderecoMapper;
 import br.unitins.tp1.xadrez.e.comerce.model.Endereco;
 import br.unitins.tp1.xadrez.e.comerce.model.Usuario;
@@ -42,19 +41,7 @@ public class MeEnderecoResource {
     EnderecoService enderecoService;
 
     private Usuario currentUsuario() {
-        return usuarioService.findByKeycloakId(securityIdentity.getPrincipal().getName());
-    }
-
-    private EnderecoRequestDTO toAdminDto(MeEnderecoRequestDTO dto, Long usuarioId) {
-        return new EnderecoRequestDTO(
-                dto.rua(),
-                dto.numero(),
-                dto.complemento(),
-                dto.cep(),
-                dto.cidade(),
-                dto.estado(),
-                dto.pais(),
-                usuarioId);
+        return usuarioService.obterOuCriarUsuarioLocal();
     }
 
     private void validarPertenceAoUsuario(Endereco endereco, Long usuarioId) {
@@ -72,19 +59,19 @@ public class MeEnderecoResource {
 
     @POST
     @Transactional
-    public Response create(@Valid MeEnderecoRequestDTO dto) {
+    public Response create(@Valid EnderecoRequestDTO dto) {
         Usuario usuario = currentUsuario();
-        Endereco created = enderecoService.create(toAdminDto(dto, usuario.getId()));
+        Endereco created = enderecoService.create(usuario.getId(), dto);
         return Response.status(201).entity(EnderecoMapper.toResponseDTO(created)).build();
     }
 
     @PUT
     @Path("/{id}")
     @Transactional
-    public Response update(@PathParam("id") Long id, @Valid MeEnderecoRequestDTO dto) {
+    public Response update(@PathParam("id") Long id, @Valid EnderecoRequestDTO dto) {
         Usuario usuario = currentUsuario();
         validarPertenceAoUsuario(enderecoService.findById(id), usuario.getId());
-        enderecoService.update(id, toAdminDto(dto, usuario.getId()));
+        enderecoService.update(id, usuario.getId(), dto);
         return Response.noContent().build();
     }
 

@@ -35,7 +35,7 @@ public class MeListaDesejosResource {
     ListaDesejosService listaDesejosService;
 
     private Usuario currentUsuario() {
-        return usuarioService.findByKeycloakId(securityIdentity.getPrincipal().getName());
+        return usuarioService.obterOuCriarUsuarioLocal();
     }
 
     @GET

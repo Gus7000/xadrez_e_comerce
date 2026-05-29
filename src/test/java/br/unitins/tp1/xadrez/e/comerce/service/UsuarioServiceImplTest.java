@@ -2,12 +2,10 @@ package br.unitins.tp1.xadrez.e.comerce.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import br.unitins.tp1.xadrez.e.comerce.DTO.CadastroCompletoDTO;
+import br.unitins.tp1.xadrez.e.comerce.DTO.UsuarioPerfilUpdateDTO;
 import br.unitins.tp1.xadrez.e.comerce.model.Endereco;
 import br.unitins.tp1.xadrez.e.comerce.model.Usuario;
 import br.unitins.tp1.xadrez.e.comerce.repository.EnderecoRepository;
@@ -56,10 +54,14 @@ class UsuarioServiceImplTest {
     }
 
     @Test
-    void shouldCompleteCadastroAndPersistEndereco() {
+    void shouldUpdateProfileSuccessfully() {
         Usuario usuario = new Usuario();
         usuario.setId(1L);
         usuario.setKeycloakId("kc-user-1");
+        usuario.setNome(null);
+        usuario.setCpf(null);
+        usuario.setTelefone(null);
+        usuario.setCadastroCompleto(false);
 
         when(jwt.getSubject()).thenReturn("kc-user-1");
         when(usuarioRepository.findByKeycloakId("kc-user-1")).thenReturn(usuario);
@@ -69,24 +71,16 @@ class UsuarioServiceImplTest {
         when(enderecoRepository.findByUsuarioId(1L)).thenReturn(query);
         when(query.firstResult()).thenReturn(null);
 
-        CadastroCompletoDTO dto = new CadastroCompletoDTO(
+        UsuarioPerfilUpdateDTO dto = new UsuarioPerfilUpdateDTO(
                 "Usuario Teste",
                 "12345678900",
-                "62999990000",
-                "Rua A",
-                "10",
-                "Casa 1",
-                "77000000",
-                "Palmas",
-                "TO",
-                "Brasil");
+                "62999990000");
 
-        Usuario atualizado = usuarioService.completarCadastro(dto);
+        Usuario atualizado = usuarioService.atualizarPerfil(dto);
 
-        assertTrue(atualizado.isCadastroCompleto());
+        assertFalse(atualizado.isCadastroCompleto());
         assertEquals("Usuario Teste", atualizado.getNome());
         assertEquals("12345678900", atualizado.getCpf());
         assertEquals("62999990000", atualizado.getTelefone());
-        verify(enderecoRepository).persist(org.mockito.ArgumentMatchers.any(Endereco.class));
     }
 }

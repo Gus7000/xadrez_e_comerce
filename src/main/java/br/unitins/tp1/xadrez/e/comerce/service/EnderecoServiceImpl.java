@@ -44,8 +44,8 @@ public class EnderecoServiceImpl implements EnderecoService {
     }
 
     @Override
-    public Endereco create(EnderecoRequestDTO dto) {
-        Usuario usuario = usuarioRepository.findById(dto.usuarioId());
+    public Endereco create(Long usuarioId, EnderecoRequestDTO dto) {
+        Usuario usuario = usuarioRepository.findById(usuarioId);
 
         if (usuario == null) {
             throw new NotFoundException("Usuário não encontrado");
@@ -58,14 +58,14 @@ public class EnderecoServiceImpl implements EnderecoService {
     }
 
     @Override
-    public void update(Long id, EnderecoRequestDTO dto) {
+    public void update(Long id, Long usuarioId, EnderecoRequestDTO dto) {
         Endereco endereco = repository.findById(id);
 
         if (endereco == null) {
             throw new NotFoundException("Endereço não encontrado");
         }
 
-        Usuario usuario = usuarioRepository.findById(dto.usuarioId());
+        Usuario usuario = usuarioRepository.findById(usuarioId);
 
         if (usuario == null) {
             throw new NotFoundException("Usuário não encontrado");

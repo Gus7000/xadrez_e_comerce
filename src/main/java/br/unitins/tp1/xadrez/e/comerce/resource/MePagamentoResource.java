@@ -31,7 +31,7 @@ public class MePagamentoResource {
     PagamentoService pagamentoService;
 
     private Usuario currentUsuario() {
-        return usuarioService.findByKeycloakId(securityIdentity.getPrincipal().getName());
+        return usuarioService.obterOuCriarUsuarioLocal();
     }
 
     @GET
