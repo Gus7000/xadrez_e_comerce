@@ -6,15 +6,24 @@ import br.unitins.tp1.xadrez.e.comerce.DTO.EnderecoRequestDTO;
 import br.unitins.tp1.xadrez.e.comerce.model.Endereco;
 
 public interface EnderecoService {
+
+    // ==========================================
+    // Consultas Gerais (Admin)
+    // ==========================================
     List<Endereco> findAll();
 
     Endereco findById(Long id);
 
     List<Endereco> findByUsuarioId(Long usuarioId);
 
-    Endereco create(Long usuarioId, EnderecoRequestDTO dto);
+    // ==========================================
+    // Operações do Usuário Logado (/me)
+    // ==========================================
+    List<Endereco> findMyEnderecos(); // <-- Alterado para o padrão em inglês
 
-    void update(Long id, Long usuarioId, EnderecoRequestDTO dto);
+    Endereco create(EnderecoRequestDTO dto);
+
+    void update(Long id, EnderecoRequestDTO dto);
 
     void delete(Long id);
 }

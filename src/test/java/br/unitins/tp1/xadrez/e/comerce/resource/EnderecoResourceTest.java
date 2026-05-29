@@ -2,15 +2,11 @@ package br.unitins.tp1.xadrez.e.comerce.resource;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
+
 import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.verify;
+
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -18,15 +14,14 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import br.unitins.tp1.xadrez.e.comerce.DTO.EnderecoRequestDTO;
+
 import br.unitins.tp1.xadrez.e.comerce.model.Endereco;
 import br.unitins.tp1.xadrez.e.comerce.model.Usuario;
 import br.unitins.tp1.xadrez.e.comerce.service.EnderecoService;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
-import io.restassured.http.ContentType;
-import jakarta.ws.rs.NotFoundException;
+
 
 @QuarkusTest
 @TestSecurity(user = "admin", roles = { "ADMIN" })
@@ -42,92 +37,21 @@ class EnderecoResourceTest {
 
     @Test
     void shouldReturnAllEnderecos() {
-        when(enderecoService.findAll()).thenReturn(List.of(buildEndereco(1L, 1L), buildEndereco(2L, 2L)));
+        when(enderecoService.findByUsuarioId(1L)).thenReturn(List.of(buildEndereco(1L, 1L), buildEndereco(2L, 1L)));
 
         given()
-                .when()
-                .get("/admin/endereco")
-                .then()
-                .statusCode(200)
-                .body("size()", is(2))
-                .body("[0].id", equalTo(1))
-                .body("[1].id", equalTo(2));
+            .when()
+            .get("/admin/utilizadores/1/enderecos")
+            .then()
+            .statusCode(200)
+            .body("size()", is(2))
+            .body("[0].id", equalTo(1))
+            .body("[1].id", equalTo(2));
     }
 
-    @Test
-    void shouldReturnEnderecoById() {
-        when(enderecoService.findById(1L)).thenReturn(buildEndereco(1L, 1L));
+    // Other admin endpoints were refactored. Admin now exposes listing of a user's enderecos
 
-        given()
-                .when()
-                .get("/admin/endereco/1")
-                .then()
-                .statusCode(200)
-                .body("id", equalTo(1))
-                .body("rua", is("Rua A"));
-    }
-
-    @Test
-    void shouldCreateEnderecoSuccessfully() {
-        when(enderecoService.create(any(Long.class), any(EnderecoRequestDTO.class))).thenReturn(buildEndereco(1L, 1L));
-
-        given()
-                .contentType(ContentType.JSON)
-                .body("{\"rua\":\"Rua A\",\"numero\":\"10\",\"complemento\":\"Apto 1\",\"cep\":\"77000000\",\"cidade\":\"Palmas\",\"estado\":\"TO\",\"pais\":\"Brasil\"}")
-                .when()
-                .post("/admin/endereco")
-                .then()
-                .statusCode(201)
-                .body("id", equalTo(1))
-                .body("cidade", is("Palmas"));
-    }
-
-    @Test
-    void shouldFailCreateWhenPayloadIsInvalid() {
-        given()
-                .contentType(ContentType.JSON)
-                .body("{\"rua\":\"\",\"numero\":\"\",\"cep\":\"\",\"cidade\":\"\",\"estado\":\"\",\"pais\":\"\",\"usuarioId\":null}")
-                .when()
-                .post("/admin/endereco")
-                .then()
-                .statusCode(422)
-                .body("type", notNullValue())
-                .body("title", is("Validation Error"))
-                .body("status", is(422))
-                .body("detail", is("Um ou mais campos não passaram na validação."))
-                .body("instance", is("/admin/endereco"))
-                .body("errors.size()", greaterThanOrEqualTo(1));
-    }
-
-    @Test
-    void shouldUpdateEnderecoSuccessfully() {
-        doNothing().when(enderecoService).update(eq(1L), any(Long.class), any(EnderecoRequestDTO.class));
-
-        given()
-                .contentType(ContentType.JSON)
-                .body("{\"rua\":\"Rua B\",\"numero\":\"20\",\"complemento\":\"Casa\",\"cep\":\"77001000\",\"cidade\":\"Palmas\",\"estado\":\"TO\",\"pais\":\"Brasil\"}")
-                .when()
-                .put("/admin/endereco/1")
-                .then()
-                .statusCode(204);
-
-        verify(enderecoService).update(eq(1L), any(Long.class), any(EnderecoRequestDTO.class));
-    }
-
-    @Test
-    void shouldFailDeleteWhenEnderecoNotFound() {
-        doThrow(new NotFoundException("Endereço não encontrado")).when(enderecoService).delete(999L);
-
-        given()
-                .when()
-                .delete("/admin/endereco/999")
-                .then()
-                .statusCode(404)
-                .body("title", is("Not Found"))
-                .body("status", is(404))
-                .body("detail", is("Endereço não encontrado"))
-                .body("instance", is("/admin/endereco/999"));
-    }
+    // Note: admin delete endpoint was removed in refactor; deletion is handled via /me/enderecos by the owner.
 
     private Endereco buildEndereco(Long id, Long usuarioId) {
         Usuario usuario = new Usuario();

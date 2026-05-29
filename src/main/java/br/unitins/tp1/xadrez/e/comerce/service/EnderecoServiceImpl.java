@@ -7,10 +7,10 @@ import br.unitins.tp1.xadrez.e.comerce.mapper.EnderecoMapper;
 import br.unitins.tp1.xadrez.e.comerce.model.Endereco;
 import br.unitins.tp1.xadrez.e.comerce.model.Usuario;
 import br.unitins.tp1.xadrez.e.comerce.repository.EnderecoRepository;
-import br.unitins.tp1.xadrez.e.comerce.repository.UsuarioRepository;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
 @ApplicationScoped
@@ -20,7 +20,9 @@ public class EnderecoServiceImpl implements EnderecoService {
     EnderecoRepository repository;
 
     @Inject
-    UsuarioRepository usuarioRepository;
+    UsuarioService usuarioService;
+
+    // --- Consultas Gerais (Admin) ---
 
     @Override
     public List<Endereco> findAll() {
@@ -30,11 +32,9 @@ public class EnderecoServiceImpl implements EnderecoService {
     @Override
     public Endereco findById(Long id) {
         Endereco endereco = repository.findById(id);
-
         if (endereco == null) {
             throw new NotFoundException("Endereço não encontrado");
         }
-
         return endereco;
     }
 
@@ -43,32 +43,31 @@ public class EnderecoServiceImpl implements EnderecoService {
         return repository.findByUsuarioId(usuarioId).list();
     }
 
+    // --- Operações do Usuário Logado ---
+
     @Override
-    public Endereco create(Long usuarioId, EnderecoRequestDTO dto) {
-        Usuario usuario = usuarioRepository.findById(usuarioId);
+    public List<Endereco> findMyEnderecos() { // <-- Alterado para o padrão em inglês
+        Usuario usuario = usuarioService.obterOuCriarUsuarioLocal();
+        return repository.findByUsuarioId(usuario.getId()).list();
+    }
 
-        if (usuario == null) {
-            throw new NotFoundException("Usuário não encontrado");
-        }
-
+    @Override
+    @Transactional
+    public Endereco create(EnderecoRequestDTO dto) {
+        Usuario usuario = usuarioService.obterOuCriarUsuarioLocal();
         Endereco endereco = EnderecoMapper.toEntity(dto, usuario);
         repository.persist(endereco);
-
         return endereco;
     }
 
     @Override
-    public void update(Long id, Long usuarioId, EnderecoRequestDTO dto) {
+    @Transactional
+    public void update(Long id, EnderecoRequestDTO dto) {
+        Usuario usuario = usuarioService.obterOuCriarUsuarioLocal();
         Endereco endereco = repository.findById(id);
 
-        if (endereco == null) {
+        if (endereco == null || !endereco.getUsuario().getId().equals(usuario.getId())) {
             throw new NotFoundException("Endereço não encontrado");
-        }
-
-        Usuario usuario = usuarioRepository.findById(usuarioId);
-
-        if (usuario == null) {
-            throw new NotFoundException("Usuário não encontrado");
         }
 
         endereco.setRua(dto.rua());
@@ -78,14 +77,15 @@ public class EnderecoServiceImpl implements EnderecoService {
         endereco.setCidade(dto.cidade());
         endereco.setEstado(dto.estado());
         endereco.setPais(dto.pais());
-        endereco.setUsuario(usuario);
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
+        Usuario usuario = usuarioService.obterOuCriarUsuarioLocal();
         Endereco endereco = repository.findById(id);
 
-        if (endereco == null) {
+        if (endereco == null || !endereco.getUsuario().getId().equals(usuario.getId())) {
             throw new NotFoundException("Endereço não encontrado");
         }
 
