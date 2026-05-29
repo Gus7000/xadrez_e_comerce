@@ -28,13 +28,10 @@ public class MeResource {
     @Inject
     UsuarioService usuarioService;
 
-    private Usuario currentUsuario() {
-        return usuarioService.findByKeycloakId(securityIdentity.getPrincipal().getName());
-    }
 
     @GET
     public Response me() {
-        Usuario usuario = currentUsuario();
+        Usuario usuario = usuarioService.obterOuCriarUsuarioLocal();
         List<EnderecoResponseDTO> enderecos = usuario.getEnderecos()
             .stream()
             .map(EnderecoMapper::toResponseDTO)
