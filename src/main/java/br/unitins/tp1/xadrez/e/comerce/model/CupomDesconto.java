@@ -5,17 +5,18 @@ import java.time.LocalDate;
 
 import br.unitins.tp1.xadrez.e.comerce.DTO.CupomDescontoResponseDTO;
 import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "cupom_desconto")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "tipo")
-public abstract class CupomDesconto extends DefaultEntity {
+public class CupomDesconto extends DefaultEntity {
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 40, nullable = false)
+    private TipoCupomDesconto tipo;
 
     @Column(length = 100, unique = true)
     private String codigo;
@@ -29,6 +30,16 @@ public abstract class CupomDesconto extends DefaultEntity {
     private Integer usosRealizados;
 
     private boolean porUsuario;
+
+    private BigDecimal valor;
+
+    public TipoCupomDesconto getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoCupomDesconto tipo) {
+        this.tipo = tipo;
+    }
 
     public String getCodigo() {
         return codigo;
@@ -78,7 +89,39 @@ public abstract class CupomDesconto extends DefaultEntity {
         this.porUsuario = porUsuario;
     }
 
-    public abstract BigDecimal calcularDesconto(BigDecimal subtotal);
+    public BigDecimal getValor() {
+        return valor;
+    }
 
-    public abstract CupomDescontoResponseDTO toDTO();
+    public void setValor(BigDecimal valor) {
+        this.valor = valor;
+    }
+
+    public BigDecimal calcularDesconto(BigDecimal subtotal) {
+        if (subtotal == null || tipo == null) {
+            return BigDecimal.ZERO;
+        }
+
+        BigDecimal valorBase = valor != null ? valor : BigDecimal.ZERO;
+
+        return switch (tipo) {
+            case FIXO -> valorBase.min(subtotal);
+            case PERCENTUAL -> subtotal.multiply(valorBase).divide(BigDecimal.valueOf(100)).min(subtotal);
+            case FRETEGRATIS -> BigDecimal.ZERO;
+        };
+    }
+
+    public CupomDescontoResponseDTO toDTO() {
+        return new CupomDescontoResponseDTO(
+                this.getId(),
+                this.getCodigo(),
+                this.getTipo(),
+                this.getDataValidade(),
+                this.isAtivo(),
+                this.getUsoMaximo(),
+                this.getUsosRealizados(),
+                this.isPorUsuario(),
+                this.getValor(),
+                this.getDataCadastro());
+    }
 }

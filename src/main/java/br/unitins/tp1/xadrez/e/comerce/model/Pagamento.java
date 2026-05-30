@@ -1,22 +1,22 @@
 package br.unitins.tp1.xadrez.e.comerce.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "pagamento")
-public class Pagamento extends DefaultEntity {
-
-    @Enumerated(EnumType.STRING)
-    @Column(length = 30)
-    private MetodoPagamento metodo;
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+public abstract class Pagamento extends DefaultEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 30)
@@ -27,17 +27,11 @@ public class Pagamento extends DefaultEntity {
 
     private BigDecimal valor;
 
+    private LocalDateTime dataConfirmacao;
+
     @OneToOne
     @JoinColumn(name = "pedido_id")
     private Pedido pedido;
-
-    public MetodoPagamento getMetodo() {
-        return metodo;
-    }
-
-    public void setMetodo(MetodoPagamento metodo) {
-        this.metodo = metodo;
-    }
 
     public PagamentoStatus getStatus() {
         return status;
@@ -61,6 +55,14 @@ public class Pagamento extends DefaultEntity {
 
     public void setValor(BigDecimal valor) {
         this.valor = valor;
+    }
+
+    public LocalDateTime getDataConfirmacao() {
+        return dataConfirmacao;
+    }
+
+    public void setDataConfirmacao(LocalDateTime dataConfirmacao) {
+        this.dataConfirmacao = dataConfirmacao;
     }
 
     public Pedido getPedido() {

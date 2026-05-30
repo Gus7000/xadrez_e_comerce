@@ -55,13 +55,6 @@ class EnderecoPedido {
   - pais: String
 }
 
-enum MetodoPagamento {
-  PIX
-  CARTAO_CREDITO
-  CARTAO_DEBITO
-  BOLETO
-}
-
 enum PagamentoStatus {
   PENDENTE
   AUTORIZADO
@@ -69,12 +62,39 @@ enum PagamentoStatus {
   ESTORNADO
 }
 
-class Pagamento {
-  - metodo: MetodoPagamento
+abstract class Pagamento {
   - status: PagamentoStatus
   - identificadorTransacao: String
   - valor: BigDecimal
+  - dataConfirmacao: Date
 }
+
+class PagamentoPix {
+  - chavePix: String
+}
+
+class PagamentoCartaoCredito {
+  - bandeira: String
+  - parcelas: int
+  - nomeTitular: String
+  - ultimosDigitos: String
+}
+
+class PagamentoCartaoDebito {
+  - banco: String
+  - nomeTitular: String
+  - ultimosDigitos: String
+}
+
+class PagamentoBoleto {
+  - linhaDigitavel: String
+  - dataVencimento: Date
+}
+
+PagamentoPix --|> Pagamento
+PagamentoCartaoCredito --|> Pagamento
+PagamentoCartaoDebito --|> Pagamento
+PagamentoBoleto --|> Pagamento
 
 class PedidoItem {
   - quantidade: int
@@ -90,25 +110,22 @@ class JogoXadrez {
   - custoProducao: BigDecimal
 }
 
-abstract class CupomDesconto {
+class CupomDesconto {
   - codigo: String
   - dataValidade: Date
   - ativo: boolean
   - usoMaximo: Integer
   - usosRealizados: Integer
   - porUsuario: boolean
+  - tipo: TipoCupomDesconto
+  - valor: BigDecimal
 }
 
-class CupomDescontoPercentual {
-  - percentualDesconto: double
+enum TipoCupomDesconto {
+  FIXO
+  PERCENTUAL
+  FRETEGRATIS
 }
-
-class CupomDescontoFixo {
-  - valorDesconto: BigDecimal
-}
-
-CupomDescontoPercentual --|> CupomDesconto
-CupomDescontoFixo --|> CupomDesconto
 
 ' --- CORREÇÕES DE RELACIONAMENTOS E CARDINALIDADES ---
 
@@ -129,8 +146,8 @@ Pedido "*" --> "0..1" CupomDesconto
 
 ' Ajustado: Muitos pedidos/pagamentos podem ter o mesmo status/método:
 Pedido "*" --> "1" PedidoStatus 
-Pagamento "*" --> "1" MetodoPagamento 
 Pagamento "*" --> "1" PagamentoStatus 
+CupomDesconto "*" --> "1" TipoCupomDesconto 
 
 note bottom of DefaultEntity
   Todas as classes herdam
@@ -155,7 +172,8 @@ end note
 
 note bottom of CupomDesconto
   O desconto é aplicado no pedido, não no produto.
-  Use subclasses para representar tipos diferentes de cupom.
+  O tipo do cupom é definido por um enum.
+  O valor fica armazenado no próprio cupom.
 end note
 
 @enduml

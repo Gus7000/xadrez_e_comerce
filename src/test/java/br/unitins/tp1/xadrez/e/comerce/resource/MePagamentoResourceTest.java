@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import br.unitins.tp1.xadrez.e.comerce.model.MetodoPagamento;
 import br.unitins.tp1.xadrez.e.comerce.model.Pagamento;
+import br.unitins.tp1.xadrez.e.comerce.model.PagamentoPix;
 import br.unitins.tp1.xadrez.e.comerce.model.PagamentoStatus;
 import br.unitins.tp1.xadrez.e.comerce.model.Pedido;
 import br.unitins.tp1.xadrez.e.comerce.model.Usuario;
@@ -40,7 +40,7 @@ class MePagamentoResourceTest {
 
     @Test
     void shouldReturnMyPagamentoByPedido() {
-        when(usuarioService.findByKeycloakId("cliente@mail.com")).thenReturn(buildUsuario(1L, "cliente@mail.com"));
+        when(usuarioService.obterOuCriarUsuarioLocal()).thenReturn(buildUsuario(1L, "cliente@mail.com"));
         when(pagamentoService.findByPedidoId(1L)).thenReturn(buildPagamento(1L, 1L));
 
         given()
@@ -50,7 +50,8 @@ class MePagamentoResourceTest {
                 .statusCode(200)
                 .body("id", equalTo(1))
                 .body("pedidoId", equalTo(1))
-                .body("metodo", is("PIX"));
+            .body("tipo", is("PIX"))
+            .body("chavePix", is("pix@teste.com"));
     }
 
     private Usuario buildUsuario(Long id, String keycloakId) {
@@ -69,13 +70,13 @@ class MePagamentoResourceTest {
         pedido.setId(pedidoId);
         pedido.setUsuario(usuario);
 
-        Pagamento pagamento = new Pagamento();
+        PagamentoPix pagamento = new PagamentoPix();
         pagamento.setId(id);
         pagamento.setPedido(pedido);
-        pagamento.setMetodo(MetodoPagamento.PIX);
         pagamento.setStatus(PagamentoStatus.PENDENTE);
         pagamento.setIdentificadorTransacao("TX123");
         pagamento.setValor(BigDecimal.valueOf(100.0));
+        pagamento.setChavePix("pix@teste.com");
         pagamento.setDataCadastro(LocalDateTime.of(2026, 5, 8, 10, 0));
         return pagamento;
     }

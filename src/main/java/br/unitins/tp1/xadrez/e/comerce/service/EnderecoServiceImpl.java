@@ -83,5 +83,10 @@ public class EnderecoServiceImpl implements EnderecoService {
         }
 
         repository.delete(endereco);
+
+        long quantidadeEnderecosRestantes = repository.count("usuario.id = ?1", usuario.getId());
+        if (quantidadeEnderecosRestantes == 0) {
+            usuario.setCadastroCompleto(false);
+        }
     }
 }

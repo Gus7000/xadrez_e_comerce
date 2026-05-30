@@ -19,8 +19,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import br.unitins.tp1.xadrez.e.comerce.model.CupomDesconto;
-import br.unitins.tp1.xadrez.e.comerce.model.CupomDescontoFixo;
-import br.unitins.tp1.xadrez.e.comerce.model.CupomDescontoPercentual;
+import br.unitins.tp1.xadrez.e.comerce.model.TipoCupomDesconto;
 import br.unitins.tp1.xadrez.e.comerce.service.CupomDescontoService;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
@@ -74,7 +73,7 @@ class CupomDescontoResourceTest {
 
         given()
                 .contentType(ContentType.JSON)
-                .body("{\"codigo\":\"CUPOM15\",\"tipo\":\"PERCENTUAL\",\"dataValidade\":\"2026-12-31\",\"ativo\":true,\"usoMaximo\":10,\"porUsuario\":true,\"percentualDesconto\":15.0,\"valorDesconto\":null}")
+                .body("{\"codigo\":\"CUPOM15\",\"tipo\":\"PERCENTUAL\",\"dataValidade\":\"2026-12-31\",\"ativo\":true,\"usoMaximo\":10,\"porUsuario\":true,\"valor\":15.0}")
                 .when()
                 .post("/admin/cupom")
                 .then()
@@ -82,7 +81,7 @@ class CupomDescontoResourceTest {
                 .body("id", equalTo(1))
                 .body("codigo", is("CUPOM15"))
                 .body("tipo", is("PERCENTUAL"))
-                .body("percentualDesconto", equalTo(15.0F));
+                .body("valor", equalTo(15.0F));
     }
 
     @Test
@@ -91,7 +90,7 @@ class CupomDescontoResourceTest {
 
         given()
                 .contentType(ContentType.JSON)
-                .body("{\"codigo\":\"CUPOM20\",\"tipo\":\"FIXO\",\"dataValidade\":\"2026-12-31\",\"ativo\":true,\"usoMaximo\":5,\"porUsuario\":false,\"percentualDesconto\":null,\"valorDesconto\":20.0}")
+            .body("{\"codigo\":\"CUPOM20\",\"tipo\":\"FIXO\",\"dataValidade\":\"2026-12-31\",\"ativo\":true,\"usoMaximo\":5,\"porUsuario\":false,\"valor\":20.0}")
                 .when()
                 .put("/admin/cupom/1")
                 .then()
@@ -113,30 +112,32 @@ class CupomDescontoResourceTest {
         verify(service).delete(1L);
     }
 
-    private CupomDescontoFixo buildFixo(Long id) {
-        CupomDescontoFixo cupom = new CupomDescontoFixo();
+    private CupomDesconto buildFixo(Long id) {
+        CupomDesconto cupom = new CupomDesconto();
         cupom.setId(id);
         cupom.setCodigo("CUPOM10");
+        cupom.setTipo(TipoCupomDesconto.FIXO);
         cupom.setDataValidade(LocalDate.of(2026, 12, 31));
         cupom.setAtivo(true);
         cupom.setUsoMaximo(10);
         cupom.setUsosRealizados(2);
         cupom.setPorUsuario(false);
-        cupom.setValorDesconto(BigDecimal.valueOf(10.0));
+        cupom.setValor(BigDecimal.valueOf(10.0));
         cupom.setDataCadastro(LocalDateTime.of(2026, 5, 8, 10, 0));
         return cupom;
     }
 
-    private CupomDescontoPercentual buildPercentual(Long id) {
-        CupomDescontoPercentual cupom = new CupomDescontoPercentual();
+    private CupomDesconto buildPercentual(Long id) {
+        CupomDesconto cupom = new CupomDesconto();
         cupom.setId(id);
         cupom.setCodigo("CUPOM15");
+        cupom.setTipo(TipoCupomDesconto.PERCENTUAL);
         cupom.setDataValidade(LocalDate.of(2026, 12, 31));
         cupom.setAtivo(true);
         cupom.setUsoMaximo(10);
         cupom.setUsosRealizados(1);
         cupom.setPorUsuario(true);
-        cupom.setPercentualDesconto(15.0);
+        cupom.setValor(BigDecimal.valueOf(15.0));
         cupom.setDataCadastro(LocalDateTime.of(2026, 5, 8, 10, 0));
         return cupom;
     }
