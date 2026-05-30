@@ -46,8 +46,8 @@ class MePedidoResourceTest {
 
     @Test
     void shouldReturnMyPedidos() {
-        when(usuarioService.findByKeycloakId("cliente@mail.com")).thenReturn(buildUsuario(1L, true));
-        when(pedidoService.findByUsuarioId(1L)).thenReturn(List.of(buildPedido(1L, 1L)));
+        when(usuarioService.obterOuCriarUsuarioLocal()).thenReturn(buildUsuario(1L, true));
+        when(pedidoService.findByUsuarioId(1L, 0, 20)).thenReturn(List.of(buildPedido(1L, 1L)));
 
         given()
                 .when()
@@ -61,7 +61,7 @@ class MePedidoResourceTest {
 
     @Test
     void shouldReturnMyPedidoById() {
-        when(usuarioService.findByKeycloakId("cliente@mail.com")).thenReturn(buildUsuario(1L, true));
+        when(usuarioService.obterOuCriarUsuarioLocal()).thenReturn(buildUsuario(1L, true));
         when(pedidoService.findById(1L)).thenReturn(buildPedido(1L, 1L));
 
         given()
@@ -75,7 +75,7 @@ class MePedidoResourceTest {
 
     @Test
     void shouldCreateMyPedidoSuccessfully() {
-        when(usuarioService.findByKeycloakId("cliente@mail.com")).thenReturn(buildUsuario(1L, true));
+        when(usuarioService.obterOuCriarUsuarioLocal()).thenReturn(buildUsuario(1L, true));
         when(pedidoService.create(any(PedidoRequestDTO.class))).thenReturn(buildPedido(1L, 1L));
 
         given()
@@ -92,7 +92,7 @@ class MePedidoResourceTest {
 
     @Test
     void shouldRejectCreateWhenCadastroIsIncomplete() {
-        when(usuarioService.findByKeycloakId("cliente@mail.com")).thenReturn(buildUsuario(1L, false));
+        when(usuarioService.obterOuCriarUsuarioLocal()).thenReturn(buildUsuario(1L, false));
 
         given()
                 .contentType(ContentType.JSON)

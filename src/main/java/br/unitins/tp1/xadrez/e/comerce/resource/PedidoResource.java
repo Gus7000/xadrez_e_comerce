@@ -1,6 +1,5 @@
 package br.unitins.tp1.xadrez.e.comerce.resource;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import br.unitins.tp1.xadrez.e.comerce.DTO.PedidoResponseDTO;
@@ -27,22 +26,10 @@ public class PedidoResource {
     @Inject
     PedidoService service;
 
-    private <T> List<T> paginate(List<T> values, int page, int size) {
-        if (values == null || values.isEmpty()) {
-            return List.of();
-        }
-
-        int safePage = Math.max(page, 0);
-        int safeSize = Math.max(size, 1);
-        int fromIndex = Math.min(safePage * safeSize, values.size());
-        int toIndex = Math.min(fromIndex + safeSize, values.size());
-        return new ArrayList<>(values.subList(fromIndex, toIndex));
-    }
-
     @GET
     public Response findAll(@QueryParam("page") @DefaultValue("0") int page,
             @QueryParam("size") @DefaultValue("20") int size) {
-        List<PedidoResponseDTO> lista = paginate(service.findAll(), page, size).stream().map(PedidoMapper::toResponseDTO).toList();
+        List<PedidoResponseDTO> lista = service.findAll(page, size).stream().map(PedidoMapper::toResponseDTO).toList();
         return Response.ok(lista).build();
     }
 

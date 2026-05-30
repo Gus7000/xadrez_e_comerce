@@ -18,9 +18,9 @@ import br.unitins.tp1.xadrez.e.comerce.repository.JogoXadrezRepository;
 import br.unitins.tp1.xadrez.e.comerce.repository.PedidoItemRepository;
 import br.unitins.tp1.xadrez.e.comerce.repository.PedidoRepository;
 import br.unitins.tp1.xadrez.e.comerce.repository.UsuarioRepository;
-import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.WebApplicationException;
@@ -45,13 +45,15 @@ public class PedidoServiceImpl implements PedidoService {
     CupomDescontoRepository cupomRepository;
 
     @Override
-    public List<Pedido> findAll() {
-        return repository.listAll(Sort.by("id"));
+    public List<Pedido> findAll(int page, int size) {
+        int safePage = Math.max(page, 0);
+        int safeSize = Math.max(size, 1);
+        return repository.findPageAllWithItems(safePage, safeSize);
     }
 
     @Override
     public Pedido findById(Long id) {
-        Pedido pedido = repository.findById(id);
+        Pedido pedido = repository.findByIdWithItems(id);
 
         if (pedido == null) {
             throw new NotFoundException("Pedido não encontrado");
@@ -61,11 +63,14 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    public List<Pedido> findByUsuarioId(Long usuarioId) {
-        return repository.find("usuario.id = ?1 order by id", usuarioId).list();
+    public List<Pedido> findByUsuarioId(Long usuarioId, int page, int size) {
+        int safePage = Math.max(page, 0);
+        int safeSize = Math.max(size, 1);
+        return repository.findPageByUsuarioIdWithItems(usuarioId, safePage, safeSize);
     }
 
     @Override
+    @Transactional
     public Pedido create(PedidoRequestDTO dto) {
         validarItens(dto.items());
 
@@ -144,6 +149,7 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
+    @Transactional
     public void updateStatus(Long id, PedidoStatus status) {
         Pedido pedido = repository.findById(id);
 
@@ -155,6 +161,7 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         Pedido pedido = repository.findById(id);
 

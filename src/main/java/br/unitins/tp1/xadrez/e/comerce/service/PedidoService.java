@@ -8,11 +8,11 @@ import br.unitins.tp1.xadrez.e.comerce.model.PedidoStatus;
 
 public interface PedidoService {
 
-    List<Pedido> findAll();
+    List<Pedido> findAll(int page, int size);
 
     Pedido findById(Long id);
 
-    List<Pedido> findByUsuarioId(Long usuarioId);
+    List<Pedido> findByUsuarioId(Long usuarioId, int page, int size);
 
     Pedido create(PedidoRequestDTO dto);
 

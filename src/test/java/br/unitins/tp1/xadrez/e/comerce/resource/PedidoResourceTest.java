@@ -39,7 +39,7 @@ class PedidoResourceTest {
 
     @Test
     void shouldReturnAllPedidos() {
-        when(pedidoService.findAll()).thenReturn(List.of(buildPedido(1L, 1L), buildPedido(2L, 2L)));
+        when(pedidoService.findAll(0, 20)).thenReturn(List.of(buildPedido(1L, 1L), buildPedido(2L, 2L)));
 
         given()
                 .when()

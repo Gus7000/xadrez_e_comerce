@@ -1,6 +1,5 @@
 package br.unitins.tp1.xadrez.e.comerce.resource;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import br.unitins.tp1.xadrez.e.comerce.DTO.PedidoRequestDTO;
@@ -14,7 +13,6 @@ import br.unitins.tp1.xadrez.e.comerce.service.PagamentoService;
 import br.unitins.tp1.xadrez.e.comerce.service.UsuarioService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.Consumes;
@@ -51,23 +49,11 @@ public class MePedidoResource {
         return usuarioService.obterOuCriarUsuarioLocal();
     }
 
-    private <T> List<T> paginate(List<T> values, int page, int size) {
-        if (values == null || values.isEmpty()) {
-            return List.of();
-        }
-
-        int safePage = Math.max(page, 0);
-        int safeSize = Math.max(size, 1);
-        int fromIndex = Math.min(safePage * safeSize, values.size());
-        int toIndex = Math.min(fromIndex + safeSize, values.size());
-        return new ArrayList<>(values.subList(fromIndex, toIndex));
-    }
-
     @GET
     public Response listMyPedidos(@QueryParam("page") @DefaultValue("0") int page,
             @QueryParam("size") @DefaultValue("20") int size) {
         Usuario usuario = currentUsuario();
-        List<Pedido> pedidos = paginate(pedidoService.findByUsuarioId(usuario.getId()), page, size);
+        List<Pedido> pedidos = pedidoService.findByUsuarioId(usuario.getId(), page, size);
         return Response.ok(pedidos.stream().map(PedidoMapper::toResponseDTO).toList()).build();
     }
 
@@ -83,7 +69,6 @@ public class MePedidoResource {
     }
 
     @POST
-    @Transactional
     public Response createMyPedido(@Valid MePedidoRequestDTO dto) {
         Usuario usuario = usuarioService.obterOuCriarUsuarioLocal();
 
