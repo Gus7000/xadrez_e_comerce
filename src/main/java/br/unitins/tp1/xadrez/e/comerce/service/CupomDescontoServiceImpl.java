@@ -46,11 +46,12 @@ public class CupomDescontoServiceImpl implements CupomDescontoService {
         if (entidade == null) throw new NotFoundException("Cupom não encontrado");
 
         entidade.setCodigo(cupom.getCodigo());
+        entidade.setTipo(cupom.getTipo());
         entidade.setDataValidade(cupom.getDataValidade());
         entidade.setAtivo(cupom.isAtivo());
         entidade.setUsoMaximo(cupom.getUsoMaximo());
         entidade.setPorUsuario(cupom.isPorUsuario());
-        // campos específicos (FIXO / PERCENTUAL) devem ser tratados externamente se necessário
+        entidade.setValor(cupom.getValor());
     }
 
     @Override

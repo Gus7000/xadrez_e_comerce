@@ -8,6 +8,7 @@ public record UsuarioResponseDTO(
         Long id,
         @Email
         String email,
+        String nome,
         String keycloakId,
         LocalDateTime dataCadastro) {
 }

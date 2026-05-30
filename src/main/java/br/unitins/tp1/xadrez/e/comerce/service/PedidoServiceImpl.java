@@ -12,6 +12,7 @@ import br.unitins.tp1.xadrez.e.comerce.model.JogoXadrez;
 import br.unitins.tp1.xadrez.e.comerce.model.Pedido;
 import br.unitins.tp1.xadrez.e.comerce.model.PedidoItem;
 import br.unitins.tp1.xadrez.e.comerce.model.PedidoStatus;
+import br.unitins.tp1.xadrez.e.comerce.model.TipoCupomDesconto;
 import br.unitins.tp1.xadrez.e.comerce.model.Usuario;
 import br.unitins.tp1.xadrez.e.comerce.repository.CupomDescontoRepository;
 import br.unitins.tp1.xadrez.e.comerce.repository.JogoXadrezRepository;
@@ -138,7 +139,10 @@ public class PedidoServiceImpl implements PedidoService {
         BigDecimal desconto = cupom == null ? BigDecimal.ZERO : cupom.calcularDesconto(subtotal);
         pedido.setDesconto(desconto);
 
-        BigDecimal frete = BigDecimal.ZERO;
+        BigDecimal frete = BigDecimal.valueOf(20);
+        if (cupom != null && cupom.getTipo() == TipoCupomDesconto.FRETEGRATIS) {
+            frete = BigDecimal.ZERO;
+        }
         BigDecimal taxas = BigDecimal.ZERO;
 
         pedido.setFrete(frete);

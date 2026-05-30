@@ -97,6 +97,16 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-hibernate-validator</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-keycloak-admin-client</artifactId>
+            <version>3.15.7</version>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-keycloak-admin-client-common</artifactId>
+            <version>3.15.7</version>
+        </dependency>
     </dependencies>
 
     <build>
