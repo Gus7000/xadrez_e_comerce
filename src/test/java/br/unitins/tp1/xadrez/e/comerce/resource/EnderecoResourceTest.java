@@ -37,11 +37,11 @@ class EnderecoResourceTest {
 
     @Test
     void shouldReturnAllEnderecos() {
-        when(enderecoService.findByUsuarioId(1L)).thenReturn(List.of(buildEndereco(1L, 1L), buildEndereco(2L, 1L)));
+        when(enderecoService.findAll()).thenReturn(List.of(buildEndereco(1L, 1L), buildEndereco(2L, 1L)));
 
         given()
             .when()
-            .get("/admin/utilizadores/1/enderecos")
+            .get("/admin/enderecos")
             .then()
             .statusCode(200)
             .body("size()", is(2))

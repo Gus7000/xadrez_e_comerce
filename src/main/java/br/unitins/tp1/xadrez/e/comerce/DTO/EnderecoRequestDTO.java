@@ -1,6 +1,7 @@
 package br.unitins.tp1.xadrez.e.comerce.DTO;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public record EnderecoRequestDTO(
@@ -13,6 +14,7 @@ public record EnderecoRequestDTO(
         @Size(max = 100, message = "complemento deve ter no máximo 100 caracteres")
         String complemento,
         @NotBlank(message = "cep não pode estar em branco")
+        @Pattern(regexp = "^\\d{5}-?\\d{3}$", message = "cep deve conter 8 dígitos, com ou sem hífen")
         @Size(max = 20, message = "cep deve ter no máximo 20 caracteres")
         String cep,
         @NotBlank(message = "cidade não pode estar em branco")

@@ -1,6 +1,7 @@
 package br.unitins.tp1.xadrez.e.comerce.DTO;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public record UsuarioPerfilUpdateDTO(
@@ -8,9 +9,11 @@ public record UsuarioPerfilUpdateDTO(
         @Size(max = 120, message = "O nome deve ter no máximo 120 caracteres")
         String nome,
         @NotBlank(message = "O cpf é obrigatório")
+        @Pattern(regexp = "^(\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}|\\d{11})$", message = "O cpf deve conter 11 dígitos, com ou sem pontuação")
         @Size(max = 20, message = "O cpf deve ter no máximo 20 caracteres")
         String cpf,
         @NotBlank(message = "O telefone é obrigatório")
+        @Pattern(regexp = "^\\(?\\d{2}\\)?\\s?\\d{4,5}-?\\d{4}$", message = "O telefone deve informar DDD e 8 ou 9 dígitos")
         @Size(max = 40, message = "O telefone deve ter no máximo 40 caracteres")
         String telefone) {
 }
